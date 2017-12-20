@@ -87,12 +87,15 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        // Fuznioni per la barra di ricerca
+        /**
+         * Function for search bar
+         */
         // non va :(
         //getSupportActionBar().setTitle("Bricks");
         // neanche questo T.T
         //toolbar.setTitle("Bricks");
-        searchView = (MaterialSearchView)findViewById(R.id.search_view);
+
+        searchView = findViewById(R.id.search_view);
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -144,7 +147,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        // Pulsante attualmente inutile in basso a destra
+        /**
+         * Function for fab button
+         */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
