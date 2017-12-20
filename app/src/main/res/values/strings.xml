@@ -2,6 +2,8 @@
     <string name="app_name">Bricks</string>
     <string name="tab_text_1">Map</string>
     <string name="tab_text_2">List</string>
-    <string name="action_settings">Settings</string>
+    <string name="project">Il Progetto</string>
+    <string name="we">Chi siamo</string>
+    <string name="contact">Contatti</string>
     <string name="section_format">Hello World from section: %1$d</string>
 </resources>
