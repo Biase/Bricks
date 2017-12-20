@@ -18,9 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +47,25 @@ public class MainActivity extends AppCompatActivity {
 
     // Variabili
     MaterialSearchView searchView;
+
+    String[] lstSource = {
+            "One",
+            "Two",
+            "Three",
+            "Four",
+            "Five",
+            "Six",
+            "Seven",
+            "Eight",
+            "Nine",
+            "Ten",
+            "Eleven",
+            "Twelve",
+            "Thirteen",
+            "Fourteen",
+            "Fifteen"
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +88,61 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         // Fuznioni per la barra di ricerca
-        getSupportActionBar().setTitle("Bricks");
+        // non va :(
+        //getSupportActionBar().setTitle("Bricks");
+        // neanche questo T.T
         //toolbar.setTitle("Bricks");
         searchView = (MaterialSearchView)findViewById(R.id.search_view);
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                // If closed search view , lstView will return default
+
+                ListView lst = findViewById(R.id.lstView);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, lstSource);
+                lst.setAdapter(adapter);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText != null && !newText.isEmpty()) {
+                    List<String> lstFound = new ArrayList<String>();
+                    for(String items : lstSource) {
+                        if(items.contains(newText)) {
+                            lstFound.add(items);
+                        }
+                    }
+
+                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, lstFound);
+                    ListView obj = findViewById(R.id.lstView);
+                    obj.setAdapter(adapter);
+                }
+                else {
+                    // if search text is null
+                    // return default
+                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, lstSource);
+                    ListView obj = findViewById(R.id.lstView);
+                    obj.setAdapter(adapter);
+                }
+
+                return true;
+            }
+        });
+
+
 
         // Pulsante attualmente inutile in basso a destra
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -76,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
 
     }
 
@@ -141,4 +220,5 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
     }
+
 }

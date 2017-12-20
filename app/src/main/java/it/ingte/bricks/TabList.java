@@ -15,12 +15,21 @@ import android.widget.ListView;
 public class TabList extends Fragment {
 
     String[] lstSource = {
-            "Jack Daniel's",
-            "Absolute",
-            "Belvedere",
-            "Greygoose",
-            "Bulldog",
-            "Bombay"
+            "One",
+            "Two",
+            "Three",
+            "Four",
+            "Five",
+            "Six",
+            "Seven",
+            "Eight",
+            "Nine",
+            "Ten",
+            "Eleven",
+            "Twelve",
+            "Thirteen",
+            "Fourteen",
+            "Fifteen"
     };
 
     @Override
