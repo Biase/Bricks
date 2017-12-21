@@ -14,24 +14,6 @@ import android.widget.ListView;
 
 public class TabList extends Fragment {
 
-    String[] lstSource = {
-            "One",
-            "Two",
-            "Three",
-            "Four",
-            "Five",
-            "Six",
-            "Seven",
-            "Eight",
-            "Nine",
-            "Ten",
-            "Eleven",
-            "Twelve",
-            "Thirteen",
-            "Fourteen",
-            "Fifteen"
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,7 +25,7 @@ public class TabList extends Fragment {
 
     public void perform(View v) {
         ListView lst = v.findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, lstSource);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, MainActivity.lstSource);
         lst.setAdapter(adapter);
     }
 

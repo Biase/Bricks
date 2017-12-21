@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,13 +50,26 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+
     // Variabili
     MaterialSearchView searchView;
-    String[] lstSource = {
-            "A",
-            "D","C","D"
 
-
+    static String[] lstSource = {
+            "One",
+            "Two",
+            "Three",
+            "Four",
+            "Five",
+            "Six",
+            "Seven",
+            "Eight",
+            "Nine",
+            "Ten",
+            "Eleven",
+            "Twelve",
+            "Thirteen",
+            "Fourteen",
+            "Fifteen"
     };
 
 
@@ -79,33 +93,30 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+
         /**
          * Function for search bar
          */
-        // non va :(
-        //getSupportActionBar().setTitle("Bricks");
-        // neanche questo T.T
-        //toolbar.setTitle("Bricks");
 
         searchView = findViewById(R.id.search_view);
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+
             @Override
             public void onSearchViewShown() {
-
+                Log.e("onSearchViewShown", "show");
             }
 
             @Override
             public void onSearchViewClosed() {
                 // If closed search view , lstView will return default
-
-                ListView lst = findViewById(R.id.lstView);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, lstSource);
-                lst.setAdapter(adapter);
+                Log.e("onSearchViewClosed", "in");
+                generateList(lstSource);
             }
         });
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -114,29 +125,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText != null && !newText.isEmpty()) {
-                    List<String> lstFound = new ArrayList<String>();
+                    List<String> lstFound = new ArrayList<>();
                     for(String items : lstSource) {
                         if(items.contains(newText)) {
                             lstFound.add(items);
                         }
                     }
 
-                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, lstFound);
-                    ListView obj = findViewById(R.id.lstView);
-                    obj.setAdapter(adapter);
+                    generateListTemp(lstFound);
                 }
                 else {
                     // if search text is null
                     // return default
-                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, lstSource);
-                    ListView obj = findViewById(R.id.lstView);
-                    obj.setAdapter(adapter);
+                    generateList(lstSource);
                 }
 
                 return true;
             }
         });
-
 
 
         /**
@@ -151,7 +157,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+    public void generateList(String[] source) {
+        ListView lst = findViewById(R.id.lstView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
+        lst.setAdapter(adapter);
+    }
+    public void generateListTemp(List<String> source) {
+        ListView lst = findViewById(R.id.lstView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
+        lst.setAdapter(adapter);
+    }
+
 
 
     @Override
