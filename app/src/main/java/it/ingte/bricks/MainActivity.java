@@ -27,6 +27,10 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import it.ingte.bricks.data.Record;
+import it.ingte.bricks.data.Records;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,23 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Variabili
     MaterialSearchView searchView;
-
     String[] lstSource = {
-            "One",
-            "Two",
-            "Three",
-            "Four",
-            "Five",
-            "Six",
-            "Seven",
-            "Eight",
-            "Nine",
-            "Ten",
-            "Eleven",
-            "Twelve",
-            "Thirteen",
-            "Fourteen",
-            "Fifteen"
+            "A",
+            "D","C","D"
+
+
     };
 
 
@@ -158,8 +150,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
 
     }
 
