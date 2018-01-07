@@ -44,21 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Variabili
     MaterialSearchView searchView;
-
-
-
-    //Dati dell'app
-    static String[] lstSource;
-
-
-    /**
-     * Operazioni per inizializzare le variabili, etc
-     */
-    private void init() {
-        lstSource  = new Records(this, true).getOnlyCode();
-    }
-
-
+    static String[] lstSource;          //Dati raccolti dal file
 
 
     @Override
@@ -66,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Inizializzo la lista di elementi
+        lstSource  = new Records(this, true).getOnlyCode();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 // If closed search view , lstView will return default
                 Log.e("onSearchViewClosed", "in");
             }
-        });
+
+        });//search view listener
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
 
@@ -125,35 +115,30 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
             }
-        });
+        });//search view listener
 
 
         /**
          * Function for fab button
          */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Per ora lasciatelo non si sa mai", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });//FloatingActionButton listener
 
-
-        init();
-
-    }
-
+    }//onCreate
 
 
     public void generateListTemp(List<String> source) {
         ListView lst = findViewById(R.id.lstView);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
         lst.setAdapter(adapter);
-    }
-
-
+    }//generateListTemp
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         return true;
-    }
+    }//onCreateOptionsMenu
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -183,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }//onOptionsItemSelected
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -199,14 +184,9 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // Return the current tabs
             switch (position) {
-                case 0:
-                    TabMap tab1 = new TabMap();
-                    return tab1;
-                case 1:
-                    TabList tab2 = new TabList();
-                    return tab2;
-                default:
-                    return null;
+                case 0: return new TabMap();
+                case 1: return new TabList();
+                default: return null;
             }
         }
 
@@ -215,6 +195,6 @@ public class MainActivity extends AppCompatActivity {
             // Show 2 total pages.
             return 2;
         }
-    }
+    }//SectionsPagerAdapter
 
 }
