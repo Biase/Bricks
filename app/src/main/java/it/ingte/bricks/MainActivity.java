@@ -1,6 +1,5 @@
 package it.ingte.bricks;
 
-import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,25 +12,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import it.ingte.bricks.data.Record;
-import it.ingte.bricks.data.Records;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,27 +45,25 @@ public class MainActivity extends AppCompatActivity {
     // Variabili
     MaterialSearchView searchView;
 
-    static String[] lstSource = {
-            "One",
-            "Two",
-            "Three",
-            "Four",
-            "Five",
-            "Six",
-            "Seven",
-            "Eight",
-            "Nine",
-            "Ten",
-            "Eleven",
-            "Twelve",
-            "Thirteen",
-            "Fourteen",
-            "Fifteen"
-    };
+
+
+    //Dati dell'app
+    static String[] lstSource;
+
+
+    /**
+     * Operazioni per inizializzare le variabili, etc
+     */
+    private void init() {
+        lstSource  = new Records(this, true).getOnlyCode();
+    }
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -111,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             public void onSearchViewClosed() {
                 // If closed search view , lstView will return default
                 Log.e("onSearchViewClosed", "in");
-                generateList(lstSource);
             }
         });
 
@@ -134,11 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
                     generateListTemp(lstFound);
                 }
-                else {
-                    // if search text is null
-                    // return default
-                    generateList(lstSource);
-                }
 
                 return true;
             }
@@ -158,13 +141,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        init();
+
     }
 
-    public void generateList(String[] source) {
-        ListView lst = findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
-        lst.setAdapter(adapter);
-    }
+
+
     public void generateListTemp(List<String> source) {
         ListView lst = findViewById(R.id.lstView);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
