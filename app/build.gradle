@@ -17,6 +17,7 @@ android {
         }
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/mipmap/pallinored.png'] } }
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {

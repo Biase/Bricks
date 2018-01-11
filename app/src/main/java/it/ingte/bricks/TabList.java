@@ -1,12 +1,17 @@
 package it.ingte.bricks;
 
+import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by davide on 17/12/2017.
@@ -14,34 +19,34 @@ import android.widget.ListView;
 
 public class TabList extends Fragment {
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_list, container, false);
-
-        //Carico gli elementi nella tab
-        perform(rootView);
-
-
+        populateList(rootView);
         return rootView;
     }
 
+
     /**
-     * Permette di caricare l'elenco dei progetti all'interno della tab dedicata
+     * Stampo i dati dal DB
+     * @param v
      */
-    public void perform(View v) {
-        //Prendo la lista dove caricare gli elementi
-        ListView lst = v.findViewById(R.id.lstView);
+    public void populateList(View v){
+        //Lista dove inserire i dati
+        ListView lst;
 
-        //Creo l'adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<> (
-                getActivity(),                                            //Non ne ho idea
-                R.layout.da_text,                                         //Elemento da usare dove stampare l'item da inserire nella lista
-                MainActivity.lstSource  //Lista di elementi (Stringhe)
-        );
+        //Prendiamo dalla vista corrente la lista (quella che abbiamo già usato)
+        lst = (ListView) v.findViewById(R.id.lstView);
 
+        //Settiamo il nuova adapter
+        lst.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.da_text, MainActivity.getLstSource()));
 
-        lst.setAdapter(adapter);
     }
+    //CONTINUARE DA QUI
+    public void onCLick(){}
 
 
 

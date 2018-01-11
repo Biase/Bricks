@@ -1,9 +1,11 @@
 package it.ingte.bricks;
 
+import android.database.Cursor;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, GoogleMap.On
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         MapsInitializer.initialize(getContext());
         mMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -60,6 +63,11 @@ public class TabMap extends Fragment implements OnMapReadyCallback, GoogleMap.On
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mimmo, 10));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(trevigiani, 10));
         mMap.setOnMarkerClickListener(this);
+        Cursor cr = MainActivity.manager.getDatabaseAccess().rawQuery("SELECT _id FROM record", null);
+        while(cr.moveToNext()) {
+           Log.e("DIO", "" + cr.getString(0));
+            }
+        cr.close();
     }
 
     @Override
