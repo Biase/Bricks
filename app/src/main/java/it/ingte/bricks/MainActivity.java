@@ -1,5 +1,7 @@
 package it.ingte.bricks;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -30,8 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import it.ingte.bricks.data.Record;
-import it.ingte.bricks.data.Records;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    public static DBmanager manager;
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -54,29 +58,56 @@ public class MainActivity extends AppCompatActivity {
     // Variabili
     MaterialSearchView searchView;
 
-    static String[] lstSource = {
-            "One",
-            "Two",
-            "Three",
-            "Four",
-            "Five",
-            "Six",
-            "Seven",
-            "Eight",
-            "Nine",
-            "Ten",
-            "Eleven",
-            "Twelve",
-            "Thirteen",
-            "Fourteen",
-            "Fifteen"
-    };
+    private static String[] lstSource;
+
+
+    public static String [] getLstSource() {
+        return lstSource;
+    }
+
+
+    private void populateList() {
+        //Dove inseriamo dentro la lettura da editare
+        String param;
+        String id;
+        //Lista contenente la roba da stampare
+        ArrayList<String> rec = new ArrayList<>();
+
+        //Creazione del cursore per i dati dal DB
+        Cursor c = MainActivity.manager.getDatabaseAccess().rawQuery("SELECT Beneficiaryname, Town FROM record",null);
+
+        //Scorre il cursore e inserisce nell'arraylist il contenuto
+        while(c.moveToNext()) {
+           // id = c.getString(0);
+            param = c.getString(1);
+            param = param.split(":")[0];
+            rec.add(c.getString(0) + " in " + param);
+        }
+
+        lstSource = new String[rec.size()];
+        for (int i = 0; i < lstSource.length; i++) {
+            lstSource[i] = (String) rec.get(i);
+        }
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        manager = new DBmanager(this);
+
+        //Qui sotto mettiamo la nostra roba
+
+        //Riempiamo la lista con la roba
+        populateList();
+
+
+
+
+
+
+        //Fino a qua
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,7 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 if(newText != null && !newText.isEmpty()) {
                     List<String> lstFound = new ArrayList<>();
                     for(String items : lstSource) {
-                        if(items.contains(newText)) {
+                        items=items.toLowerCase();
+                        if(items.contains(newText.toLowerCase())) {
                             lstFound.add(items);
                         }
                     }
@@ -156,18 +188,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
     }
 
     public void generateList(String[] source) {
         ListView lst = findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.da_text, source);
         lst.setAdapter(adapter);
     }
     public void generateListTemp(List<String> source) {
         ListView lst = findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, source);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.da_text, source);
         lst.setAdapter(adapter);
     }
 
