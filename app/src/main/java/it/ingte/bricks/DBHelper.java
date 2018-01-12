@@ -90,6 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
         myInput.close();
     }
 
+
     /**
      * This method opens the data base connection.
      * First it create the path up till data base of the device.

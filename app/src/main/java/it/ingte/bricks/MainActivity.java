@@ -1,5 +1,6 @@
 package it.ingte.bricks;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -49,17 +50,21 @@ public class MainActivity extends AppCompatActivity {
     public static DBmanager manager;
 
 
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+   // MySimpleAdapter adapter=null;
+  //  ListView ls=null;
+
 
 
     // Variabili
     MaterialSearchView searchView;
 
-    private static String[] lstSource;
 
+    private static String[] lstSource;
 
     public static String [] getLstSource() {
         return lstSource;
@@ -81,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
            // id = c.getString(0);
             param = c.getString(1);
             param = param.split(":")[0];
-            rec.add(c.getString(0) + " in " + param);
+            rec.add(c.getString(0)+"\n");
+            rec.add(param);
         }
 
         lstSource = new String[rec.size()];
@@ -91,20 +97,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         manager = new DBmanager(this);
-
-        //Qui sotto mettiamo la nostra roba
-
-        //Riempiamo la lista con la roba
         populateList();
+       // adapter=new MySimpleAdapter(this,MainActivity.getLstSource());
+       // ls=(ListView) findViewById(R.id.lstView);
 
-
-
-
+       // ls.setAdapter(adapter);
 
 
         //Fino a qua
@@ -190,9 +194,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+   /* public class MySimpleAdapter extends ArrayAdapter<String>{
+        private final Context ct;
+        private final String [] values;
+        public MySimpleAdapter(Context ct, String[] values){
+            super(ct,R.layout.da_text,values);
+            this.ct=ct;
+            this.values=values;
+
+        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) ct
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View rowView = inflater.inflate(R.layout.da_text, parent, false);
+
+            TextView textView = (TextView) rowView.findViewById(R.id.textView1);
+            TextView textView1 = (TextView) rowView.findViewById(R.id.textView2);
+          //  Cursor c= MainActivity.manager.getDatabaseAccess().rawQuery("select BeneficiaryName from record",null);
+
+            //textView.setText((CharSequence) c);
+
+
+
+            return rowView;
+        }
+    } */
+
+
     public void generateList(String[] source) {
         ListView lst = findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.da_text, source);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.da_text,source);
         lst.setAdapter(adapter);
     }
     public void generateListTemp(List<String> source) {
