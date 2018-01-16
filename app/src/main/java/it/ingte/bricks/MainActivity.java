@@ -38,29 +38,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static DBmanager manager;
-
-
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    ArrayList<Info> info;
     private ViewPager mViewPager;
-   // MySimpleAdapter adapter=null;
-  //  ListView ls=null;
-
-
-
-    // Variabili
     MaterialSearchView searchView;
 
 
@@ -70,50 +51,19 @@ public class MainActivity extends AppCompatActivity {
         return lstSource;
     }
 
-
-    private void populateList() {
-        //Dove inseriamo dentro la lettura da editare
-        String param;
-        String id;
-        //Lista contenente la roba da stampare
-        ArrayList<String> rec = new ArrayList<>();
-
-        //Creazione del cursore per i dati dal DB
-        Cursor c = MainActivity.manager.getDatabaseAccess().rawQuery("SELECT Beneficiaryname, Town FROM record",null);
-
-        //Scorre il cursore e inserisce nell'arraylist il contenuto
-        while(c.moveToNext()) {
-           // id = c.getString(0);
-            param = c.getString(1);
-            param = param.split(":")[0];
-            rec.add(c.getString(0)+"\n");
-            rec.add(param);
-        }
-
-        lstSource = new String[rec.size()];
-        for (int i = 0; i < lstSource.length; i++) {
-            lstSource[i] = (String) rec.get(i);
-        }
-    }
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("qui", "onCreate: Started.");
         manager = new DBmanager(this);
-        populateList();
-       // adapter=new MySimpleAdapter(this,MainActivity.getLstSource());
-       // ls=(ListView) findViewById(R.id.lstView);
+        info = manager.getDbhelper().getData();
 
-       // ls.setAdapter(adapter);
 
 
         //Fino a qua
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three (two in our case)
         // primary sections of the activity.
@@ -133,52 +83,8 @@ public class MainActivity extends AppCompatActivity {
          * Function for search bar
          */
 
-        searchView = findViewById(R.id.search_view);
+       searchView = findViewById(R.id.search_view);
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-
-            @Override
-            public void onSearchViewShown() {
-                Log.e("onSearchViewShown", "show");
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                // If closed search view , lstView will return default
-                Log.e("onSearchViewClosed", "in");
-                generateList(lstSource);
-            }
-        });
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText != null && !newText.isEmpty()) {
-                    List<String> lstFound = new ArrayList<>();
-                    for(String items : lstSource) {
-                        items=items.toLowerCase();
-                        if(items.contains(newText.toLowerCase())) {
-                            lstFound.add(items);
-                        }
-                    }
-
-                    generateListTemp(lstFound);
-                }
-                else {
-                    // if search text is null
-                    // return default
-                    generateList(lstSource);
-                }
-
-                return true;
-            }
-        });
 
 
         /**
@@ -195,44 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-   /* public class MySimpleAdapter extends ArrayAdapter<String>{
-        private final Context ct;
-        private final String [] values;
-        public MySimpleAdapter(Context ct, String[] values){
-            super(ct,R.layout.da_text,values);
-            this.ct=ct;
-            this.values=values;
 
-        }
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) ct
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View rowView = inflater.inflate(R.layout.da_text, parent, false);
-
-            TextView textView = (TextView) rowView.findViewById(R.id.textView1);
-            TextView textView1 = (TextView) rowView.findViewById(R.id.textView2);
-          //  Cursor c= MainActivity.manager.getDatabaseAccess().rawQuery("select BeneficiaryName from record",null);
-
-            //textView.setText((CharSequence) c);
-
-
-
-            return rowView;
-        }
-    } */
-
-
-    public void generateList(String[] source) {
-        ListView lst = findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.da_text,source);
-        lst.setAdapter(adapter);
-    }
-    public void generateListTemp(List<String> source) {
-        ListView lst = findViewById(R.id.lstView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.da_text, source);
-        lst.setAdapter(adapter);
-    }
 
 
 
@@ -240,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
+        //MenuItem item = menu.findItem(R.id.action_search);
+//        searchView.setMenuItem(item);
         return true;
     }
 

@@ -18,7 +18,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
@@ -28,7 +27,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
     //LatLng prevCluster = null;
     MapView mMapView;
     View mView;
-    ClusterManager<Person> mClusterManager;
+    ClusterManager <Person> mClusterManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,8 +54,8 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.482344, 12.238054), 9));
         //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
- //       LatLng trevigiani = new LatLng(45.489090, 12.237890);
- //       LatLng mimmo = new LatLng(45.482344, 12.238054);
+        //       LatLng trevigiani = new LatLng(45.489090, 12.237890);
+        //       LatLng mimmo = new LatLng(45.482344, 12.238054);
 
 //        MarkerOptions mkm = new MarkerOptions();
 //        MarkerOptions mkt = new MarkerOptions();

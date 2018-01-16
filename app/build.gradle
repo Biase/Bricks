@@ -32,4 +32,5 @@ dependencies {
     // Add Library
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.android.support:design:26.0.2'
+    compile 'com.google.maps.android:android-maps-utils:0.5'
 }

@@ -1,9 +1,11 @@
 package it.ingte.bricks;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.IDNA;
 import android.util.Log;
 
 import java.io.File;
@@ -11,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -100,6 +103,26 @@ public class DBHelper extends SQLiteOpenHelper {
         //Open the database
         String myPath = DB_PATH + DATABASE_NAME;
         sqliteDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+    }
+
+    public ArrayList<Info> getData(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String s;
+        ArrayList<Info> info = new ArrayList<Info>();
+        Cursor result= db.rawQuery("select * from record",null);
+
+        while (result.moveToNext()){
+            s=result.getString(11);
+            s=s.split(":")[0];
+            info.add(new Info(result.getString(0),result.getString(1),result.getString(2),
+                    result.getString(3),result.getString(4),
+                    result.getString(5),result.getString(6),result.getString(7),result.getDouble(8),
+                    result.getDouble(9),result.getString(10),s,result.getString(12),result.getString(13),
+                    result.getString(14),result.getInt(15)));
+
+        }
+        return info;
+
     }
 
     /**
