@@ -16,7 +16,7 @@ public class Info implements Serializable{
     String operationSummary; //sintesi progetto
     String startOperation;  // data di inizio lavoro
     String endOpeation;   //data di fine lavoro
-    double eligibleExpenditure;  // spesa ammissibile
+    float eligibleExpenditure;  // spesa ammissibile
     double taxFinanciate;  // tassa di finanziamento
     String cap;
     String town;
@@ -25,7 +25,9 @@ public class Info implements Serializable{
     String category;   //categoria dell'intervento
     int id;
 
-    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, double eligibleExpenditure, double taxFinanciate, String cap, String town, String province, String country, String category, int id) {
+
+
+    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, float eligibleExpenditure, double taxFinanciate, String cap, String town, String province, String country, String category, int id) {
         this.localIdentifier = localIdentifier;
         this.projectCode = projectCode;
         this.beneficiarycode = beneficiarycode;
@@ -108,11 +110,11 @@ public class Info implements Serializable{
         this.endOpeation = endOpeation;
     }
 
-    public double getEligibleExpenditure() {
+    public float getEligibleExpenditure() {
         return eligibleExpenditure;
     }
 
-    public void setEligibleExpenditure(double eligibleExpenditure) {
+    public void setEligibleExpenditure(float eligibleExpenditure) {
         this.eligibleExpenditure = eligibleExpenditure;
     }
 
@@ -156,9 +158,7 @@ public class Info implements Serializable{
         this.province = province;
     }
 
-    public String getCountry() {
-        return country;
-    }
+    public String getCountry() { return country; }
 
     public void setCountry(String country) {
         this.country = country;
@@ -174,7 +174,10 @@ public class Info implements Serializable{
 
     @Override
     public String toString() {
-        return super.toString();
+        return localIdentifier+ " "+ projectCode + " "+ beneficiarycode + " "+beneficiaryName+""
+                +operationName+ " "+operationSummary+" "+startOperation+" "+endOpeation+""
+                +eligibleExpenditure+" "+taxFinanciate+" "+cap+" "+town+" "+province+" "+ country+" "+category;
+
 
     }
 

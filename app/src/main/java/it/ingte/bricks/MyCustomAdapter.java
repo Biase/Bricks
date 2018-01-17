@@ -49,7 +49,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(ct);
-            Log.i("getView","sono dentro if");
             convertView = inflater.inflate(textViewResourceId, parent , false);
 
             holder = new ViewHolder();

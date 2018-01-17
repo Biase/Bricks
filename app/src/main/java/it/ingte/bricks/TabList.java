@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,6 +34,7 @@ import java.util.List;
 
 public class TabList extends Fragment {
     ListView lst;
+    MaterialSearchView searchView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,25 +47,27 @@ public class TabList extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        MaterialSearchView searchView = ((MainActivity) getActivity()).searchView;
+        searchView = ((MainActivity) getActivity()).searchView;
         searchView.setMenuItem(searchItem);
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
 
+
+
             }
 
             @Override
             public void onSearchViewClosed() {
-                populateList();
+                    populateList();
 
-            }
+                }
         });
 
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit (String query) {
                 return false;
             }
 
@@ -79,6 +84,7 @@ public class TabList extends Fragment {
                     }
 
                     generateList(lstFound);
+                    Log.d("POsix","hai cercato qualcosa");
                 }
                 else {
                     // if search text is null
@@ -95,6 +101,8 @@ public class TabList extends Fragment {
 
     }
 
+
+
     public void generateList(List<Info> source) {
         MyCustomAdapter adapter = new MyCustomAdapter(getContext(), R.layout.da_text,source);
         lst.setAdapter(adapter);
@@ -102,13 +110,14 @@ public class TabList extends Fragment {
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.tab_list, container, false);
         lst = (ListView) rootView.findViewById(R.id.lstView);
         populateList();
+
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 ArrayList<Info> a=MainActivity.manager.getDbhelper().getData();
                 Intent intent=new Intent(TabList.this.getActivity(),itemClick.class);
                 intent.putExtra("beneficary",a.get(i).getBeneficiaryName());
@@ -117,7 +126,9 @@ public class TabList extends Fragment {
                 intent.putExtra("endDate",a.get(i).getEndOpeation());
                 intent.putExtra("town",a.get(i).getTown());
                 intent.putExtra("province",a.get(i).getProvince());
+                intent.putExtra("cap",a.get(i).getCap());
                 intent.putExtra("country",a.get(i).getCountry());
+                intent.putExtra("description",a.get(i).getOperationName());
                 startActivity(intent);
             }
         });
@@ -126,17 +137,13 @@ public class TabList extends Fragment {
         return rootView;
     }
 
-
     public void populateList() {
-
-
         //Settiamo il nuova adapter
         ArrayList<Info> myData = MainActivity.manager.getDbhelper().getData();
 
         //stampiamo per verificare che non sia vuoto
         for(Info i : myData)
-            Log.i("Infor", i.getBeneficiaryName());
-
+            Log.i("Infor", i.getCountry());
         lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, myData));
 
     }
