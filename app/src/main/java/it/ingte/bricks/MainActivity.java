@@ -63,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Fino a qua
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Bricks");
+
+
         // Create the adapter that will return a fragment for each of the three (two in our case)
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

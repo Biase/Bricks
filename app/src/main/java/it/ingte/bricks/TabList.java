@@ -52,51 +52,58 @@ public class TabList extends Fragment {
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
+                //prova
+                Toast.makeText(getActivity(),"dio",Toast.LENGTH_LONG).show();
 
-
-
-            }
+                }
 
             @Override
             public void onSearchViewClosed() {
-                    populateList();
+                   populateList();
+
 
                 }
+
         });
 
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        MaterialSearchView.OnQueryTextListener prova = (new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit (String query) {
+            public boolean   onQueryTextSubmit (String query) {
+                Log.d("DIO CANEEEEEE","madonna puttana");
+                //Toast.makeText(getActivity(),"dio porcooooooo",Toast.LENGTH_LONG).show();
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText != null && !newText.isEmpty()) {
-                    List<Info> lstFound = new ArrayList<>();
-                    List<Info> all = MainActivity.manager.getDbhelper().getData();
-
-                    for(Info items : all) {
-                        if(items.getBeneficiaryName().toLowerCase().contains(newText.toLowerCase()) || items.getTown().toLowerCase().contains(newText.toLowerCase())) {
+                String s = newText + "";
+                List<Info> lstFound = new ArrayList<>();
+                List<Info> all = MainActivity.manager.getDbhelper().getData();
+                if (newText != null && !newText.isEmpty()) {
+                    for (Info items : all) {
+                        if (items.getBeneficiaryName().toLowerCase().contains(newText.toLowerCase()) || items.getTown().toLowerCase().contains(newText.toLowerCase())) {
                             lstFound.add(items);
                         }
                     }
+                    if(onQueryTextSubmit(s)==false){
+                        generateList(lstFound);
 
-                    generateList(lstFound);
-                    Log.d("POsix","hai cercato qualcosa");
-                }
+                        }
+
+                    }
+                    //generateList(lstFound);
+
                 else {
-                    // if search text is null
-                    // return default
-                    populateList();
+                    populateList(); // if search text is null return default
+                    }
+                return true;
                 }
 
-                return true;
-            }
+
+
 
         });
-
 
 
     }
@@ -114,10 +121,9 @@ public class TabList extends Fragment {
         lst = (ListView) rootView.findViewById(R.id.lstView);
         populateList();
 
-        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 ArrayList<Info> a=MainActivity.manager.getDbhelper().getData();
                 Intent intent=new Intent(TabList.this.getActivity(),itemClick.class);
                 intent.putExtra("beneficary",a.get(i).getBeneficiaryName());
@@ -140,13 +146,13 @@ public class TabList extends Fragment {
     public void populateList() {
         //Settiamo il nuova adapter
         ArrayList<Info> myData = MainActivity.manager.getDbhelper().getData();
-
         //stampiamo per verificare che non sia vuoto
-        for(Info i : myData)
-            Log.i("Infor", i.getCountry());
+       // for(Info i : myData)
+        //    Log.i("Infor", i.getCountry());
         lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, myData));
 
     }
+
 
 }
 

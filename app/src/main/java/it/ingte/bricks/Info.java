@@ -38,7 +38,7 @@ public class Info implements Serializable{
         this.endOpeation = endOpeation;
         this.eligibleExpenditure = eligibleExpenditure;
         this.taxFinanciate = taxFinanciate;
-        this.cap = cap;
+        this.cap=cap;
         this.town = town;
         this.province = province;
         this.country = country;
@@ -126,11 +126,11 @@ public class Info implements Serializable{
         this.taxFinanciate = taxFinanciate;
     }
 
-    public String getCap() {
+    public String  getCap() {
         return cap;
     }
 
-    public void setCap(String cap) {
+    public void setCap(String  cap) {
         this.cap = cap;
     }
 

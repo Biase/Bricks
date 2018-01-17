@@ -107,15 +107,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Info> getData(){
         SQLiteDatabase db=this.getReadableDatabase();
-        String town,cap,province;
+        String  cap,town,province;
         ArrayList<Info> info = new ArrayList<Info>();
         Cursor result= db.rawQuery("select * from record",null);
         while (result.moveToNext()){
+
             cap=result.getString(10);
             cap=cap.split(":")[0];
 
+
             town=result.getString(11);
             town=town.split(":")[0];
+
 
             province= result.getString(12);
             province= province.split(":")[0];
