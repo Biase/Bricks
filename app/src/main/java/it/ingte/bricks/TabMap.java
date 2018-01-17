@@ -1,6 +1,8 @@
 package it.ingte.bricks;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -11,6 +13,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -28,11 +32,13 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
     //LatLng prevCluster = null;
     MapView mMapView;
     View mView;
+    View mBot;
     ClusterManager<Person> mClusterManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_maps, container, false);
+        mBot =  inflater.inflate(R.layout.dialog, container, false);
         return mView;
     }
 
@@ -143,6 +149,14 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         bottomSheetBehavior.setPeekHeight(
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics()));
         bottomSheetDialog.show();
+        Button button = (Button) parentView.findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProvaActivity.class);
+                startActivity(intent);
+            }
+        });
         return false;
     }
 }
