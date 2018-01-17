@@ -31,6 +31,10 @@ public class DBmanager {
         return dbhelper.getReadableDatabase();
     }
 
+    public DBHelper getDbhelper(){
+        return dbhelper;
+    };
+
 
 }
 
