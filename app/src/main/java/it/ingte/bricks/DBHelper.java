@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.icu.text.IDNA;
 import android.util.Log;
 
 import java.io.File;
@@ -105,29 +104,49 @@ public class DBHelper extends SQLiteOpenHelper {
         sqliteDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
-    public ArrayList<Info> getData(){
-        SQLiteDatabase db=this.getReadableDatabase();
-        String  cap,town,province;
+    public ArrayList<Info> getData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //Stringhe che conterranno i dati clean
+        String cap, town, province;
+
+        //Vettori dove vado ad inserire i valori splittati (non inizializzo perchè poi lo faccio dinamicamente)
+        String[] vectCap, vectTown, vectProvince;
+
         ArrayList<Info> info = new ArrayList<Info>();
-        Cursor result= db.rawQuery("select * from record",null);
-        while (result.moveToNext()){
+        Cursor result = db.rawQuery("select * from record", null);
+        while (result.moveToNext()) {
+            //Prendo la stringa letta dalla colonna per intero
+            cap = result.getString(10);
+            //Genero il vettore dove ogni slot contiene un CAP
+            vectCap = cap.split(":");
 
-            cap=result.getString(10);
-            cap=cap.split(":")[0];
+            //Scorro il vettore dei CAP
+            for (int i = 0; i < vectCap.length; i++) {
+                //Creo una stringa con tutti i CAP separati da virgole
+                cap = cap + ", " + vectCap[i];
+                //Mostro cosa leggo
+                Log.i("Debug", "Ho trovato questo CAP: " + vectCap[i]);
+            }
+
+            //Rimuovo la prima virgola (in teoria funziona così)
+            cap = cap.substring(1);
+
+            //Per il resto è praticamente un copia e incolla
+            //Codice compilato e testato al volo con emulatore
 
 
-            town=result.getString(11);
-            town=town.split(":")[0];
+            town = result.getString(11);
+            town = town.split(":")[0];
 
 
-            province= result.getString(12);
-            province= province.split(":")[0];
+            province = result.getString(12);
+            province = province.split(":")[0];
 
-            info.add(new Info(result.getString(0),result.getString(1),result.getString(2),
-                    result.getString(3),result.getString(4),
-                    result.getString(5),result.getString(6),result.getString(7),result.getFloat(8),
-                    result.getDouble(9),cap,town,province,result.getString(14),
-                    result.getString(15),result.getInt(16)));
+            info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
+                    result.getString(3), result.getString(4),
+                    result.getString(5), result.getString(6), result.getString(7), result.getFloat(8),
+                    result.getDouble(9), cap, town, province, result.getString(14),
+                    result.getString(15), result.getInt(16)));
 
         }
         return info;
