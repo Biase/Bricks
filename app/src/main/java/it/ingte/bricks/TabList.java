@@ -121,6 +121,7 @@ public class TabList extends Fragment {
         lst = (ListView) rootView.findViewById(R.id.lstView);
         populateList();
 
+
        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -134,6 +135,7 @@ public class TabList extends Fragment {
                 intent.putExtra("province",a.get(i).getProvince());
                 intent.putExtra("cap",a.get(i).getCap());
                 intent.putExtra("country",a.get(i).getCountry());
+                intent.putExtra("summary",a.get(i).getOperationSummary());
                 intent.putExtra("description",a.get(i).getOperationName());
                 startActivity(intent);
             }

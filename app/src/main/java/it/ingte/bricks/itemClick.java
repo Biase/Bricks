@@ -22,6 +22,7 @@ public class itemClick extends AppCompatActivity {
         TextView cap = (TextView) findViewById (R.id.cap);
         TextView country= (TextView) findViewById(R.id.country);
         TextView description = (TextView) findViewById(R.id.description);
+        TextView summary =(TextView) findViewById(R.id.summary);
 
 
         beneficary.setText("Beneficiario:\n"+getIntent().getStringExtra("beneficary"));
@@ -32,6 +33,7 @@ public class itemClick extends AppCompatActivity {
         province.setText("Provincia: "+getIntent().getStringExtra("province"));
         cap.setText("CAP: "+getIntent().getStringExtra("cap"));
         country.setText("Nazione: "+getIntent().getStringExtra("country"));
+        summary.setText("Sommario:\n"+getIntent().getStringExtra("summary"));
         description.setText("Breve descrizione: \n"+ getIntent().getStringExtra("description"));
 
 

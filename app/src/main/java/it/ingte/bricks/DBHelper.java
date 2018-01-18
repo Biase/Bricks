@@ -110,43 +110,30 @@ public class DBHelper extends SQLiteOpenHelper {
         String cap, town, province;
 
         //Vettori dove vado ad inserire i valori splittati (non inizializzo perchè poi lo faccio dinamicamente)
-        String[] vectCap, vectTown, vectProvince;
+        String delimiter=":::";
 
         ArrayList<Info> info = new ArrayList<Info>();
         Cursor result = db.rawQuery("select * from record", null);
         while (result.moveToNext()) {
             //Prendo la stringa letta dalla colonna per intero
             cap = result.getString(10);
-            //Genero il vettore dove ogni slot contiene un CAP
-            vectCap = cap.split(":");
+            cap = cap.replace(delimiter,",");
+            Log.d("tag",cap.replace(delimiter,","));
 
-            //Scorro il vettore dei CAP
-            for (int i = 0; i < vectCap.length; i++) {
-                //Creo una stringa con tutti i CAP separati da virgole
-                cap = cap + ", " + vectCap[i];
-                //Mostro cosa leggo
-                Log.i("Debug", "Ho trovato questo CAP: " + vectCap[i]);
-            }
-
-            //Rimuovo la prima virgola (in teoria funziona così)
-            cap = cap.substring(1);
-
-            //Per il resto è praticamente un copia e incolla
-            //Codice compilato e testato al volo con emulatore
 
 
             town = result.getString(11);
-            town = town.split(":")[0];
+            town = town.replace(delimiter,",");
 
 
             province = result.getString(12);
-            province = province.split(":")[0];
+            province = province.replace(delimiter,",");
 
             info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
                     result.getString(3), result.getString(4),
                     result.getString(5), result.getString(6), result.getString(7), result.getFloat(8),
                     result.getDouble(9), cap, town, province, result.getString(14),
-                    result.getString(15), result.getInt(16)));
+                    result.getString(15).toLowerCase(), result.getInt(16)));
 
         }
         return info;
