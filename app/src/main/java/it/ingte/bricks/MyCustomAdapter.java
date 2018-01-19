@@ -1,6 +1,7 @@
 package it.ingte.bricks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +40,8 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
 
         String beneficiary = (getItem(position).getBeneficiaryName());
         String town = (getItem(position).getTown());
@@ -67,7 +69,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         holder.beneficiary.setText(beneficiary);
         holder.town.setText(town);
-
         return convertView;
 
 

@@ -18,7 +18,6 @@ public class itemClick extends AppCompatActivity {
         TextView startDate= (TextView) findViewById(R.id.startDate);
         TextView endDate= (TextView) findViewById(R.id.endDate);
         TextView town= (TextView) findViewById(R.id.town);
-        TextView province= (TextView) findViewById(R.id.province);
         TextView cap = (TextView) findViewById (R.id.cap);
         TextView country= (TextView) findViewById(R.id.country);
         TextView description = (TextView) findViewById(R.id.description);
@@ -30,7 +29,6 @@ public class itemClick extends AppCompatActivity {
         startDate.setText("Data di inizio: "+getIntent().getStringExtra("startDate"));
         endDate.setText("Data di fine: "+getIntent().getStringExtra("endDate"));
         town.setText("Città: "+getIntent().getStringExtra("town"));
-        province.setText("Provincia: "+getIntent().getStringExtra("province"));
         cap.setText("CAP: "+getIntent().getStringExtra("cap"));
         country.setText("Nazione: "+getIntent().getStringExtra("country"));
         summary.setText("Sommario:\n"+getIntent().getStringExtra("summary"));

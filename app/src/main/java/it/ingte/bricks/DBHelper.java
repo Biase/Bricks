@@ -108,32 +108,24 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         //Stringhe che conterranno i dati clean
         String cap, town, province;
-
-        //Vettori dove vado ad inserire i valori splittati (non inizializzo perchè poi lo faccio dinamicamente)
-        String delimiter=":::";
+        String delimiter = ":::";
 
         ArrayList<Info> info = new ArrayList<Info>();
         Cursor result = db.rawQuery("select * from record", null);
+
         while (result.moveToNext()) {
-            //Prendo la stringa letta dalla colonna per intero
             cap = result.getString(10);
-            cap = cap.replace(delimiter,",");
-            Log.d("tag",cap.replace(delimiter,","));
-
-
-
+            cap = cap.replace(delimiter, ",");
             town = result.getString(11);
-            town = town.replace(delimiter,",");
-
-
+            town = town.replace(delimiter, ",");
             province = result.getString(12);
-            province = province.replace(delimiter,",");
+            province = province.replace(delimiter, ",");
 
             info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
-                    result.getString(3), result.getString(4),
-                    result.getString(5), result.getString(6), result.getString(7), result.getFloat(8),
+                    result.getString(3), result.getString(4).toLowerCase(),
+                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getFloat(8),
                     result.getDouble(9), cap, town, province, result.getString(14),
-                    result.getString(15).toLowerCase(), result.getInt(16)));
+                    result.getString(15), result.getInt(16)));
 
         }
         return info;
@@ -161,4 +153,31 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
+    public ArrayList<Info> getResult(String input) throws SQLException {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Info> a = new ArrayList<>();
+        String cap,town,province;
+        String delimiter=":::";
+        String q = "SELECT * FROM record WHERE Town like '%" + input + "%' or Beneficiaryname like '%" + input + "%'";
+        Cursor result = db.rawQuery(q, null);
+        while (result.moveToNext()) {
+            cap = result.getString(10);
+            cap = cap.replace(delimiter, ",");
+            town = result.getString(11);
+            town = town.replace(delimiter, ",");
+            province = result.getString(12);
+            province = province.replace(delimiter, ",");
+            a.add(new Info(result.getString(0), result.getString(1), result.getString(2),
+                    result.getString(3), result.getString(4).toLowerCase(),
+                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getFloat(8),
+                    result.getDouble(9), cap, town, province, result.getString(14),
+                    result.getString(15), result.getInt(16)));
+
+        }
+
+        return a;
+
+    }
 }
+
