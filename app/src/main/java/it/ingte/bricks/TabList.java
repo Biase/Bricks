@@ -3,6 +3,7 @@ package it.ingte.bricks;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Icon;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,7 +39,9 @@ import java.util.List;
 public class TabList extends Fragment {
     ListView lst;
     MaterialSearchView searchView;
-    ArrayList<Info> result;
+    ArrayList<Info> result= MainActivity.info;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +58,15 @@ public class TabList extends Fragment {
         searchView.setMenuItem(searchItem);
         MenuItem filter = menu.findItem(R.id.action_filter);
         searchView.setMenuItem(filter);
+        filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intent = new Intent(TabList.this.getActivity(), Filter.class);
+                startActivity(intent);
+                return false;
+            }
+        });
 
 
 
@@ -68,7 +82,15 @@ public class TabList extends Fragment {
 
             @Override
             public void onSearchViewClosed() {
-               populateList();
+                populateList();
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                        intent.putExtra("myInfo",MainActivity.info.get(i));
+                        startActivity(intent);
+                    }
+                });
 
 
             }
@@ -76,39 +98,35 @@ public class TabList extends Fragment {
         });
 
 
-
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(final String query) {
-                
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
                 }
+
                 result = MainActivity.manager.getDbhelper().getResult(query);
+                if (result.isEmpty()) {
+                    Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
+
+                }
                 generateList(result);
                 lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                        intent.putExtra("beneficary", result.get(i).getBeneficiaryName());
-                        intent.putExtra("price", result.get(i).getEligibleExpenditure());
-                        intent.putExtra("startDate", result.get(i).getStartOperation());
-                        intent.putExtra("endDate", result.get(i).getEndOpeation());
-                        intent.putExtra("town", result.get(i).getTown());
-                        intent.putExtra("cap", result.get(i).getCap());
-                        intent.putExtra("country", result.get(i).getCountry());
-                        intent.putExtra("summary", result.get(i).getOperationSummary());
-                        intent.putExtra("description", result.get(i).getOperationName());
+                        intent.putExtra("myInfo", MainActivity.info.get(i));
                         startActivity(intent);
+
                     }
                 });
 
                 return true;
             }
-
 
 
             @Override
@@ -139,15 +157,9 @@ public class TabList extends Fragment {
          /*fine parte search */
 
 
-
-
-
-
-
-
     }
 
-     public void generateList(List<Info> source) {
+    public void generateList(List<Info> source) {
         MyCustomAdapter adapter = new MyCustomAdapter(getContext(), R.layout.da_text, source);
         lst.setAdapter(adapter);
     }
@@ -160,17 +172,8 @@ public class TabList extends Fragment {
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayList<Info> a = MainActivity.manager.getDbhelper().getData();
                 Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                intent.putExtra("beneficary", a.get(i).getBeneficiaryName());
-                intent.putExtra("price", a.get(i).getEligibleExpenditure());
-                intent.putExtra("startDate", a.get(i).getStartOperation());
-                intent.putExtra("endDate", a.get(i).getEndOpeation());
-                intent.putExtra("town", a.get(i).getTown());
-                intent.putExtra("cap", a.get(i).getCap());
-                intent.putExtra("country", a.get(i).getCountry());
-                intent.putExtra("summary", a.get(i).getOperationSummary());
-                intent.putExtra("description", a.get(i).getOperationName());
+                intent.putExtra("myInfo", MainActivity.info.get(i));
                 startActivity(intent);
             }
         });
@@ -180,12 +183,7 @@ public class TabList extends Fragment {
     }
 
     public void populateList() {
-        //Settiamo il nuova adapter
-        ArrayList<Info> myData = MainActivity.manager.getDbhelper().getData();
-        //stampiamo per verificare che non sia vuoto
-        // for(Info i : myData)
-        //    Log.i("Infor", i.getCountry());
-        lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, myData));
+        lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, MainActivity.info));
 
     }
 

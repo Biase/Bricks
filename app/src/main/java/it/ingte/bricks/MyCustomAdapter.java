@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
     private  static final String TAG = "MyCustomAdapter";
     private Context ct;
     private int textViewResourceId;
+    private List<Info> info;
 
 
 
@@ -29,6 +31,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
     public MyCustomAdapter(Context ct, int textViewResourceId, List<Info> info) {
         super(ct, textViewResourceId, info);
         this.ct = ct;
+
         this.textViewResourceId=textViewResourceId;
 
     }
@@ -38,6 +41,9 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
         TextView town;
     }
 
+
+
+
     @NonNull
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -45,6 +51,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         String beneficiary = (getItem(position).getBeneficiaryName());
         String town = (getItem(position).getTown());
+      //  String price = (getItem(position).getEligibleExpenditure());
 
         ViewHolder holder;
         final View result;
@@ -56,6 +63,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
             holder = new ViewHolder();
             holder.beneficiary = (TextView) convertView.findViewById(R.id.textView1);
             holder.town = (TextView) convertView.findViewById(R.id.textView2);
+         //   holder.price =(TextView) convertView.findViewById(R.id.textView3);
 
 
             convertView.setTag(holder);
@@ -69,6 +77,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         holder.beneficiary.setText(beneficiary);
         holder.town.setText(town);
+     //   holder.price.setText(price);
         return convertView;
 
 

@@ -123,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
                     result.getString(3), result.getString(4).toLowerCase(),
-                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getFloat(8),
+                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getString(8),
                     result.getDouble(9), cap, town, province, result.getString(14),
                     result.getString(15), result.getInt(16)));
 
@@ -170,7 +170,7 @@ public class DBHelper extends SQLiteOpenHelper {
             province = province.replace(delimiter, ",");
             a.add(new Info(result.getString(0), result.getString(1), result.getString(2),
                     result.getString(3), result.getString(4).toLowerCase(),
-                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getFloat(8),
+                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getString(8),
                     result.getDouble(9), cap, town, province, result.getString(14),
                     result.getString(15), result.getInt(16)));
 
@@ -179,5 +179,34 @@ public class DBHelper extends SQLiteOpenHelper {
         return a;
 
     }
+    public ArrayList<Info> getPriceMajor() throws SQLException{
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Info> a = new ArrayList<>();
+        Cursor result = db.rawQuery("select * from record where Eligibleexpenditure > 100.000",null);
+        while (result.moveToNext()){
+            a.add(new Info(result.getString(0), result.getString(1), result.getString(2),
+                    result.getString(3), result.getString(4).toLowerCase(),
+                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getString(8),
+                    result.getDouble(9), result.getString(10), result.getString(11), result.getString(12), result.getString(14),
+                    result.getString(15), result.getInt(16)));
+        }
+        return a;
+
+    }
+    public ArrayList<Info> getPriceMinor() throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Info> a = new ArrayList<>();
+        Cursor result = db.rawQuery("select * from record where Eligibleexpenditure <= 100.000", null);
+        while (result.moveToNext()) {
+            a.add(new Info(result.getString(0), result.getString(1), result.getString(2),
+                    result.getString(3), result.getString(4).toLowerCase(),
+                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getString(8),
+                    result.getDouble(9), result.getString(10), result.getString(11), result.getString(12), result.getString(14),
+                    result.getString(15), result.getInt(16)));
+        }
+        return a;
+    }
+
+
 }
 

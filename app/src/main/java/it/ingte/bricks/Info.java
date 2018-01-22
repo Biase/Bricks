@@ -16,7 +16,7 @@ public class Info implements Serializable{
     String operationSummary; //sintesi progetto
     String startOperation;  // data di inizio lavoro
     String endOpeation;   //data di fine lavoro
-    float eligibleExpenditure;  // spesa ammissibile
+    String eligibleExpenditure;  // spesa ammissibile
     double taxFinanciate;  // tassa di finanziamento
     String cap;
     String town;
@@ -27,7 +27,7 @@ public class Info implements Serializable{
 
 
 
-    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, float eligibleExpenditure, double taxFinanciate, String cap, String town, String province, String country, String category, int id) {
+    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, String eligibleExpenditure, double taxFinanciate, String cap, String town, String province, String country, String category, int id) {
         this.localIdentifier = localIdentifier;
         this.projectCode = projectCode;
         this.beneficiarycode = beneficiarycode;
@@ -110,11 +110,11 @@ public class Info implements Serializable{
         this.endOpeation = endOpeation;
     }
 
-    public float getEligibleExpenditure() {
+    public String getEligibleExpenditure() {
         return eligibleExpenditure;
     }
 
-    public void setEligibleExpenditure(float eligibleExpenditure) {
+    public void setEligibleExpenditure(String eligibleExpenditure) {
         this.eligibleExpenditure = eligibleExpenditure;
     }
 

@@ -7,4 +7,11 @@
     <string name="contact">Contatti</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_maps">Map</string>
+    
+    
+    <string-array name="PriceList">
+        <item>Select a price</item>
+        <item> Maggiore di  100.000</item>
+        <item> Minore o uguale di 100.000 </item>
+    </string-array>
 </resources>

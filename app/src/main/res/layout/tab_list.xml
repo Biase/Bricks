@@ -15,4 +15,12 @@
         android:fastScrollAlwaysVisible="true"
         android:fastScrollEnabled="true" />
 
+  <!--  <fragment
+        android:id="@+id/MyFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        class="it.ingte.bricks.TabList" >
+
+    </fragment> !-->
+
 </RelativeLayout>

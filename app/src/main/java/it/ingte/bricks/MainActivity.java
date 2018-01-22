@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static DBmanager manager;
-    ArrayList<Info> info;
+    public static ArrayList<Info> info;
     private ViewPager mViewPager;
     MaterialSearchView searchView;
 
