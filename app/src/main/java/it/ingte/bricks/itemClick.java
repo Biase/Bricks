@@ -29,7 +29,7 @@ public class itemClick extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_click);
         ListView listView = (ListView) findViewById(R.id.myList);
-        Info info = (Info) getIntent().getSerializableExtra("myInfo");
+        Info info = (Info) getIntent().getParcelableExtra("myInfo");
         list.add("Beneficiario : " + info.getBeneficiaryName());
         list.add("Costo : €" + info.getEligibleExpenditure());
         list.add("Data di inizio : " + info.getStartOperation());

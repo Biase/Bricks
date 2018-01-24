@@ -47,6 +47,7 @@ public class TabList extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+      //  getFragmentManager();
 
     }
 
@@ -58,6 +59,7 @@ public class TabList extends Fragment {
         searchView.setMenuItem(searchItem);
         MenuItem filter = menu.findItem(R.id.action_filter);
         searchView.setMenuItem(filter);
+
         filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
@@ -109,7 +111,7 @@ public class TabList extends Fragment {
 
                 }
 
-                result = MainActivity.manager.getDbhelper().getResult(query);
+            //    result = MainActivity.manager.getDbhelper().getResult(query);
                 if (result.isEmpty()) {
                     Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
 
@@ -119,7 +121,7 @@ public class TabList extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                        intent.putExtra("myInfo", MainActivity.info.get(i));
+                        intent.putExtra("myInfo", result.get(i));
                         startActivity(intent);
 
                     }
@@ -159,7 +161,7 @@ public class TabList extends Fragment {
 
     }
 
-    public void generateList(List<Info> source) {
+    public void generateList(ArrayList<Info> source) {
         MyCustomAdapter adapter = new MyCustomAdapter(getContext(), R.layout.da_text, source);
         lst.setAdapter(adapter);
     }
@@ -168,7 +170,14 @@ public class TabList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_list, container, false);
         lst = (ListView) rootView.findViewById(R.id.lstView);
+
+
+     //  Bundle bundle = getArguments();
+       // ArrayList<Info> a = bundle.getParcelableArrayList("data");
+
+
         populateList();
+
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -178,7 +187,10 @@ public class TabList extends Fragment {
             }
         });
 
-        Log.i("Posizione", "Sono uscito dal populateList");
+
+
+      // ArrayList<Info> a = (ArrayList) bundle.getParcelableArrayList("data");
+    //   generateList(a);
         return rootView;
     }
 

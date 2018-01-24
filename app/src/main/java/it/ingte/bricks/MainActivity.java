@@ -1,38 +1,32 @@
 package it.ingte.bricks;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
+
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
 
 
 
@@ -43,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Info> info;
     private ViewPager mViewPager;
     MaterialSearchView searchView;
+
+
 
 
     private static String[] lstSource;
@@ -61,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //Fino a qua
+
+     //   ArrayList<Info> arraylist  = savedInstanceState.getParcelableArrayList("data");
+      //  bundle.getParcelableArrayList("data");
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bricks");
@@ -70,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three (two in our case)
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+
+        TabList tab = new TabList();
+       // getSupportFragmentManager().beginTransaction().replace(R.id.tabItem,tab).commit();
+       // Fragment fragmentTransaction=  mSectionsPagerAdapter.getItem(1);
+      //  fragmentTransaction.getChildFragmentManager().findFragmentById(R.id.frg);
+
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
