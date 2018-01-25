@@ -128,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_project) {
-            Intent intent = new Intent(this, Project.class);
-            this.startActivity(intent);
+            Intent intentProject = new Intent(this, Project.class);
+            this.startActivity(intentProject);
             return true;
         }
         if (id == R.id.action_contact) {
-            Intent intent = new Intent(this, Contact.class);
-            this.startActivity(intent);
+            Intent intentContact = new Intent(this, Contact.class);
+            this.startActivity(intentContact);
             return true;
         }
 
