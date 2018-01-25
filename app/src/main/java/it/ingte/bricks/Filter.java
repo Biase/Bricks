@@ -1,5 +1,6 @@
 package it.ingte.bricks;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +20,9 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
@@ -31,6 +34,8 @@ import static java.lang.Float.parseFloat;
 
 public class Filter extends AppCompatActivity implements Serializable {
     public Bundle bundle;
+    Boolean[] elem = new Boolean[10];
+
 
 
     private int select;
@@ -39,10 +44,12 @@ public class Filter extends AppCompatActivity implements Serializable {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter);
+        Intent i = getIntent();
+        ArrayList<Info> a = i.getParcelableExtra("bbb");
         Spinner spin1 = (Spinner) findViewById(R.id.spinner1);
         TextView te = (TextView) findViewById(R.id.textView3);
         bundle = new Bundle();
-        Button button = (Button) findViewById(R.id.button1);
+        //  Button button = (Button) findViewById(R.id.button1);
         te.setText("Prezzo:");
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.PriceList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -52,9 +59,11 @@ public class Filter extends AppCompatActivity implements Serializable {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Filter.this.select = i + 1;
                 if (select == 2) {
-                    Log.d("tag", "prima scelta");
+                    elem[0]= true;
+
+
                 } else
-                    Log.d("tagggg", "sec scelta");
+                   elem[1]=true;
 
 
             }
@@ -66,40 +75,43 @@ public class Filter extends AppCompatActivity implements Serializable {
 
 
         });
+    }
 
-
-        button.setOnClickListener(new View.OnClickListener() {
+ /*
+       button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int q=0;
+
 
                 ArrayList<Info> a = MainActivity.info;
                 ArrayList<Info> b = new ArrayList<>();
                 if (select == 2) {
                     for (Info i : a) {
                         float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-                        if (w > 100.000) {
+                        if (w > 100000) {
                             b.add(i);
                             q++;
-
 
                         }
                     }
 
+                    public void ritorna(View v){
+                    Intent intent = new Intent(Filter.this,TabList.class);
+                    intent.putParcelableArrayListExtra("bbb",b);
+                    setResult(RESULT_OK, intent);
+                    Log.d("lkjhgfds",""+b);
+                    finish();
+                }
+                }
 
 
-                    Log.d("qqqqqq", "ciaaaaaa" + q);
-                    TabList newFragment = new TabList();
-                    newFragment.setArguments(bundle);
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.putParcelableArrayListExtra("data", b);
-                    startActivity(intent);
 
 
                  } else {
                     for (Info i : a) {
                         float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-                        if (w <= 100.000) {
+                        if (w <= 100000) {
                             b.add(i);
                             q++;
                         }
@@ -111,7 +123,28 @@ public class Filter extends AppCompatActivity implements Serializable {
 
                 }
             }
-        });
+        }); */
+
+    public void ritorna(View v) {
+        ArrayList<Info> a = MainActivity.info;
+        ArrayList<Info> result = new ArrayList<>();
+        if (select == 2) {
+            for (Info i : a) {
+                /*
+                float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
+                if (w > 100000) {
+                    result.add(i);
+                }
+                */
+
+            }
+
+            Intent i = new Intent(this, TabList.class);
+            i.putExtra("bbb",elem);
+            setResult(RESULT_OK,i);
+            finish();
+            Log.d("x: ", "AAAAAAA");
+        }
     }
 }
 

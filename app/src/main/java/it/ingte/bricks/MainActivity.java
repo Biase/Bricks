@@ -53,13 +53,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("qui", "onCreate: Started.");
-        if(savedInstanceState==null) {
-            manager = new DBmanager(this);
-            info = manager.getDbhelper().getData();
-        }
-        else{
-            prova();
-        }
+        manager = new DBmanager(this);
+        info = manager.getDbhelper().getData();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -72,10 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 
-        //   TabList tab = new TabList();
-        // getSupportFragmentManager().beginTransaction().replace(R.id.tabItem,tab).commit();
-        // Fragment fragmentTransaction=  mSectionsPagerAdapter.getItem(1);
-        //  fragmentTransaction.getChildFragmentManager().findFragmentById(R.id.frg);
+
 
 
         // Set up the ViewPager with the sections adapter.

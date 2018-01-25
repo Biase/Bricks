@@ -51,7 +51,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         String beneficiary = (getItem(position).getBeneficiaryName());
         String town = (getItem(position).getTown());
-      //  String price = (getItem(position).getEligibleExpenditure());
 
         ViewHolder holder;
         final View result;

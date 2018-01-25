@@ -1,5 +1,6 @@
 package it.ingte.bricks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,6 +33,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by davide on 17/12/2017.
  */
@@ -43,11 +46,29 @@ public class TabList extends Fragment {
     ArrayList<Info> result = new ArrayList<>();
 
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        Log.d("YEE", "UUUHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHH");
+        /*
+        if (requestCode == 1) {
+            ArrayList<Info> a = data.getParcelableArrayListExtra("bbb");
+            generateList(a);
+        }
+        */
+    }
+
+
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -57,16 +78,18 @@ public class TabList extends Fragment {
         searchView.setMenuItem(searchItem);
         MenuItem filter = menu.findItem(R.id.action_filter);
         searchView.setMenuItem(filter);
-
-        filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+       filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent intent = new Intent(TabList.this.getActivity(), Filter.class);
-                startActivity(intent);
+               // intent.putParcelableArrayListExtra("bbb");
+                startActivityForResult(intent,1);
                 return false;
             }
         });
+
+
 
 
 
@@ -160,8 +183,10 @@ public class TabList extends Fragment {
             }
         });
 
+
         return rootView;
     }
+
 
     public void populateList() {
         lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, original));
