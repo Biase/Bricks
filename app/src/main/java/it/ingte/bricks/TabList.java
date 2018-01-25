@@ -46,7 +46,6 @@ public class TabList extends Fragment {
     ArrayList<Info> result = new ArrayList<>();
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,20 +53,37 @@ public class TabList extends Fragment {
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         Log.d("YEE", "UUUHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHH");
-        /*
+
         if (requestCode == 1) {
-            ArrayList<Info> a = data.getParcelableArrayListExtra("bbb");
-            generateList(a);
+            if (resultCode == RESULT_OK) {
+                boolean[] res = data.getBooleanArrayExtra("result");
+                Log.d("ciaaaaaa",""+data.getBooleanArrayExtra("result"));
+                /*if (res[0] == true) {
+                    ArrayList<Info> b = filterMajor();
+                    generateList(b);
+                } */
+
+            }
         }
-        */
     }
 
+    public ArrayList<Info> filterMajor() {
+        ArrayList<Info> a = MainActivity.info;
+        ArrayList<Info> result = new ArrayList<>();
+        for (Info i : a) {
+            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
+            if (w > 100000) {
+                result.add(i);
+            }
 
+
+        }
+        return result;
+    }
 
 
     @Override
@@ -78,13 +94,12 @@ public class TabList extends Fragment {
         searchView.setMenuItem(searchItem);
         MenuItem filter = menu.findItem(R.id.action_filter);
         searchView.setMenuItem(filter);
-       filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent intent = new Intent(TabList.this.getActivity(), Filter.class);
-               // intent.putParcelableArrayListExtra("bbb");
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
                 return false;
             }
         });

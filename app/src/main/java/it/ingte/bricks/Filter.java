@@ -34,7 +34,7 @@ import static java.lang.Float.parseFloat;
 
 public class Filter extends AppCompatActivity implements Serializable {
     public Bundle bundle;
-    Boolean[] elem = new Boolean[10];
+    boolean[] elem = new boolean[10];
 
 
 
@@ -58,10 +58,11 @@ public class Filter extends AppCompatActivity implements Serializable {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Filter.this.select = i + 1;
-                if (select == 2) {
+                if (select == 1) {
                     elem[0]= true;
-
-
+                    for(int j=1;i<elem.length;i++){
+                    elem[j]=false;
+                    }
                 } else
                    elem[1]=true;
 
@@ -128,22 +129,14 @@ public class Filter extends AppCompatActivity implements Serializable {
     public void ritorna(View v) {
         ArrayList<Info> a = MainActivity.info;
         ArrayList<Info> result = new ArrayList<>();
-        if (select == 2) {
-            for (Info i : a) {
-                /*
-                float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-                if (w > 100000) {
-                    result.add(i);
-                }
-                */
-
-            }
-
+        if (select == 1) {
             Intent i = new Intent(this, TabList.class);
-            i.putExtra("bbb",elem);
+            i.putExtra("result",elem);
+            for(Boolean q : elem) {
+                Log.d("Dgdfghfg", "" + q);
+            }
             setResult(RESULT_OK,i);
             finish();
-            Log.d("x: ", "AAAAAAA");
         }
     }
 }
