@@ -22,12 +22,7 @@
         android:orderInCategory="100"
         android:title="@string/project" />
     <item
-        android:id="@+id/action_we"
-        android:orderInCategory="101"
-        android:title="@string/we" />
-    <item
         android:id="@+id/action_contact"
-        android:orderInCategory="102"
-        android:title="@string/contact"
-        app:showAsAction="never" />
+        android:orderInCategory="101"
+        android:title="@string/contact" />
 </menu>
