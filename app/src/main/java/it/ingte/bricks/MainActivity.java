@@ -1,6 +1,10 @@
 package it.ingte.bricks;
 
-
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Function for fab button
          */
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
     }
 
 
@@ -123,12 +129,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_project) {
-            return true;
-        }
-        if (id == R.id.action_we) {
+            Intent intent = new Intent(this, Project.class);
+            this.startActivity(intent);
             return true;
         }
         if (id == R.id.action_contact) {
+            Intent intent = new Intent(this, Contact.class);
+            this.startActivity(intent);
             return true;
         }
 

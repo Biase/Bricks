@@ -45,7 +45,8 @@
         <activity android:name=".itemClick">
         </activity>
         <activity android:name=".Filter"></activity>
-
+        <activity android:name=".Project"></activity>
+        <activity android:name=".Contact"></activity>
     </application>
 
 </manifest>
