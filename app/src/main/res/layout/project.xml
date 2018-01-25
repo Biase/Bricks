@@ -2,17 +2,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundProject" >
+
+    <ImageView
+        android:id="@+id/imgView_1"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/info_img"
+        android:padding="30dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.5"/>
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="21dp"
         android:paddingTop="3dp"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
+        android:textSize="18dp"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
+        android:textColor="@color/colorWhite" />
 
 
- </RelativeLayout>
+</RelativeLayout>

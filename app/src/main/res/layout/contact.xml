@@ -1,18 +1,170 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="21dp"
         android:paddingTop="3dp"
+        android:text="CONTATTI"
         android:textSize="25dp" />
 
 
- </RelativeLayout>
+    <!-- Dati per Bassetto Davide -->
+    <ImageView
+        android:id="@+id/imageBiase"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignStart="@+id/textView1"
+        android:layout_alignTop="@+id/textViewNameBiase"
+        android:src="@drawable/biase" />
+
+    <TextView
+        android:id="@+id/textViewNameBiase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@+id/imageBiase"
+        android:text="Bassetto Davide"
+        android:textSize="18dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textViewContactBiase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewNameBiase"
+        android:layout_below="@+id/textViewNameBiase"
+        android:text="858500@stud.unive.it" />
+
+    <TextView
+        android:id="@+id/textViewInfoBiase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactBiase"
+        android:layout_below="@+id/textViewContactBiase"
+        android:text="Software Librarian" />
+
+
+
+    <!-- Dati per Murador Marco -->
+    <ImageView
+        android:id="@+id/imageMarco"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignStart="@+id/imageBiase"
+        android:layout_below="@+id/imageBiase"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/marco" />
+
+    <TextView
+        android:id="@+id/textViewNameMarco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactBiase"
+        android:layout_alignTop="@+id/imageMarco"
+        android:text="Murador Marco"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewContactMarco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewNameMarco"
+        android:layout_below="@+id/textViewNameMarco"
+        android:text="858042@stud.unive.it" />
+
+    <TextView
+        android:id="@+id/textViewInfoMarco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactMarco"
+        android:layout_below="@+id/textViewContactMarco"
+        android:text="Backup Engineer" />
+
+
+
+    <!-- Dati per Parisi Domenico -->
+    <ImageView
+        android:id="@+id/imageDomenico"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignStart="@+id/imageMarco"
+        android:layout_below="@+id/imageMarco"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/mimmo" />
+
+    <TextView
+        android:id="@+id/textViewNameDomenico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactMarco"
+        android:layout_alignTop="@+id/imageDomenico"
+        android:text="Parisi Domenico"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewContactDomenico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewNameDomenico"
+        android:layout_below="@+id/textViewNameDomenico"
+        android:text="857273@stud.unive.it" />
+
+    <TextView
+        android:id="@+id/textViewInfoDomenico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactDomenico"
+        android:layout_below="@+id/textViewContactDomenico"
+        android:text="Project Manager" />
+
+
+    <!-- Dati per Quartarone Paolo -->
+    <ImageView
+        android:id="@+id/imagePaolo"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignStart="@+id/imageDomenico"
+        android:layout_below="@+id/imageDomenico"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/paolo" />
+
+    <TextView
+        android:id="@+id/textViewNamePaolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactDomenico"
+        android:layout_alignTop="@+id/imagePaolo"
+        android:text="Quartarone Paolo"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewContactPaolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewNamePaolo"
+        android:layout_below="@+id/textViewNamePaolo"
+        android:text="859724@stud.unive.it" />
+
+    <TextView
+        android:id="@+id/textViewInfoPaolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewContactPaolo"
+        android:layout_below="@+id/textViewContactPaolo"
+        android:text="Software Architect" />
+
+</RelativeLayout>
