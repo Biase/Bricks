@@ -63,7 +63,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
             holder = new ViewHolder();
             holder.beneficiary = (TextView) convertView.findViewById(R.id.textView1);
             holder.town = (TextView) convertView.findViewById(R.id.textView2);
-         //   holder.price =(TextView) convertView.findViewById(R.id.textView3);
 
 
             convertView.setTag(holder);
@@ -77,7 +76,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         holder.beneficiary.setText(beneficiary);
         holder.town.setText(town);
-     //   holder.price.setText(price);
         return convertView;
 
 

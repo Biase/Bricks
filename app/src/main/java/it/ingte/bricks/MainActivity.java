@@ -18,8 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-
+import android.widget.Toast;
 
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -39,11 +38,9 @@ public class MainActivity extends AppCompatActivity {
     MaterialSearchView searchView;
 
 
-
-
     private static String[] lstSource;
 
-    public static String [] getLstSource() {
+    public static String[] getLstSource() {
         return lstSource;
     }
 
@@ -52,16 +49,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("qui", "onCreate: Started.");
-        manager = new DBmanager(this);
-        info = manager.getDbhelper().getData();
-
-
-
-
-     //   ArrayList<Info> arraylist  = savedInstanceState.getParcelableArrayList("data");
-      //  bundle.getParcelableArrayList("data");
-
-
+        if(savedInstanceState==null) {
+            manager = new DBmanager(this);
+            info = manager.getDbhelper().getData();
+        }
+        else{
+            prova();
+        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 
-        TabList tab = new TabList();
-       // getSupportFragmentManager().beginTransaction().replace(R.id.tabItem,tab).commit();
-       // Fragment fragmentTransaction=  mSectionsPagerAdapter.getItem(1);
-      //  fragmentTransaction.getChildFragmentManager().findFragmentById(R.id.frg);
+        //   TabList tab = new TabList();
+        // getSupportFragmentManager().beginTransaction().replace(R.id.tabItem,tab).commit();
+        // Fragment fragmentTransaction=  mSectionsPagerAdapter.getItem(1);
+        //  fragmentTransaction.getChildFragmentManager().findFragmentById(R.id.frg);
 
 
         // Set up the ViewPager with the sections adapter.
@@ -94,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
          * Function for search bar
          */
 
-       searchView = findViewById(R.id.search_view);
-
+        searchView = findViewById(R.id.search_view);
 
 
         /**
@@ -110,10 +103,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
 
 
     @Override
@@ -178,4 +167,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public ArrayList<Info> prova() {
+        Bundle b = getIntent().getExtras();
+        ArrayList<Info> a = null;
+        if (b != null) {
+            a = b.getParcelableArrayList("data");
+        } else {
+            Toast.makeText(getApplicationContext(), "ciao", Toast.LENGTH_SHORT).show();
+        }
+        return a;
+
+
+    }
 }

@@ -39,16 +39,14 @@ import java.util.List;
 public class TabList extends Fragment {
     ListView lst;
     MaterialSearchView searchView;
-    ArrayList<Info> result= MainActivity.info;
-
+    ArrayList<Info> original = MainActivity.info;
+    ArrayList<Info> result = new ArrayList<>();
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-      //  getFragmentManager();
-
     }
 
     @Override
@@ -89,7 +87,7 @@ public class TabList extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                        intent.putExtra("myInfo",MainActivity.info.get(i));
+                        intent.putExtra("myInfo", original.get(i));
                         startActivity(intent);
                     }
                 });
@@ -102,8 +100,10 @@ public class TabList extends Fragment {
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
 
+
             @Override
             public boolean onQueryTextSubmit(final String query) {
+                result = MainActivity.manager.getDbhelper().getResult(query);
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
@@ -111,7 +111,7 @@ public class TabList extends Fragment {
 
                 }
 
-            //    result = MainActivity.manager.getDbhelper().getResult(query);
+
                 if (result.isEmpty()) {
                     Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
 
@@ -133,31 +133,11 @@ public class TabList extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-             /*  String s = newText + "";
-
-                if (newText != null && !newText.isEmpty()) {
-                    List<Info> lstFound = new ArrayList<>();
-                    List<Info> all = MainActivity.manager.getDbhelper().getData();
-                    Log.d("contenuto s", s);
-                    for (Info items : all) {
-                        if (items.getBeneficiaryName().toLowerCase().contains(newText.toLowerCase()) ||
-                                items.getTown().toLowerCase().contains(newText.toLowerCase())) {
-                            lstFound.add(items);
-                        }
-                    }
-                 //   generateList(lstFound);
-
-                } else {
-                    populateList(); // if search text is null return default
-                } */
-
                 return true;
             }
 
 
         });
-         /*fine parte search */
-
 
     }
 
@@ -170,32 +150,21 @@ public class TabList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_list, container, false);
         lst = (ListView) rootView.findViewById(R.id.lstView);
-
-
-     //  Bundle bundle = getArguments();
-       // ArrayList<Info> a = bundle.getParcelableArrayList("data");
-
-
         populateList();
-
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                intent.putExtra("myInfo", MainActivity.info.get(i));
+                intent.putExtra("myInfo", original.get(i));
                 startActivity(intent);
             }
         });
 
-
-
-      // ArrayList<Info> a = (ArrayList) bundle.getParcelableArrayList("data");
-    //   generateList(a);
         return rootView;
     }
 
     public void populateList() {
-        lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, MainActivity.info));
+        lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, original));
 
     }
 

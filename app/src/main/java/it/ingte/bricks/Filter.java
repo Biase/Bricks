@@ -80,19 +80,19 @@ public class Filter extends AppCompatActivity implements Serializable {
                         float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
                         if (w > 100.000) {
                             b.add(i);
+                            q++;
 
 
                         }
                     }
 
 
-                    bundle.putParcelableArrayList("data", b);
-                    Log.d("qqqqqq", "ciaaaaaa" + b);
+
+                    Log.d("qqqqqq", "ciaaaaaa" + q);
                     TabList newFragment = new TabList();
                     newFragment.setArguments(bundle);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.putExtras(bundle);
-                     //  Intent intent = new Intent(getApplicationContext(),newFragment.getClass());
+                    intent.putParcelableArrayListExtra("data", b);
                     startActivity(intent);
 
 

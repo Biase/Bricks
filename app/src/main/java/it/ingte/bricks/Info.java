@@ -2,6 +2,7 @@ package it.ingte.bricks;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Date;
  * Created by marco on 15/01/18.
  */
 
-public class Info implements Parcelable{
+public class Info implements Parcelable {
     String localIdentifier;  // codice locale progetto
     String projectCode;      // codice unico progetto
     String beneficiarycode;  // codice fiscale beneficiario
@@ -20,7 +21,7 @@ public class Info implements Parcelable{
     String operationSummary; //sintesi progetto
     String startOperation;  // data di inizio lavoro
     String endOpeation;   //data di fine lavoro
-    float eligibleExpenditure;  // spesa ammissibile
+    double eligibleExpenditure;  // spesa ammissibile
     String taxFinanciate;  // tassa di finanziamento
     String cap;
     String town;
@@ -30,8 +31,7 @@ public class Info implements Parcelable{
     String id;
 
 
-
-    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, float eligibleExpenditure, String taxFinanciate, String cap, String town, String province, String country, String category, String id) {
+    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, double eligibleExpenditure, String taxFinanciate, String cap, String town, String province, String country, String category, String id) {
         this.localIdentifier = localIdentifier;
         this.projectCode = projectCode;
         this.beneficiarycode = beneficiarycode;
@@ -42,7 +42,7 @@ public class Info implements Parcelable{
         this.endOpeation = endOpeation;
         this.eligibleExpenditure = eligibleExpenditure;
         this.taxFinanciate = taxFinanciate;
-        this.cap=cap;
+        this.cap = cap;
         this.town = town;
         this.province = province;
         this.country = country;
@@ -54,7 +54,9 @@ public class Info implements Parcelable{
         return localIdentifier;
     }
 
-    public void setLocalIdentifier(String localIdentifier) { this.localIdentifier = localIdentifier; }
+    public void setLocalIdentifier(String localIdentifier) {
+        this.localIdentifier = localIdentifier;
+    }
 
     public String getProjectCode() {
         return projectCode;
@@ -68,13 +70,17 @@ public class Info implements Parcelable{
         return beneficiarycode;
     }
 
-    public void setBeneficiarycode(String beneficiarycode) { this.beneficiarycode = beneficiarycode; }
+    public void setBeneficiarycode(String beneficiarycode) {
+        this.beneficiarycode = beneficiarycode;
+    }
 
     public String getBeneficiaryName() {
         return beneficiaryName;
     }
 
-    public void setBeneficiaryName(String beneficiaryName) { this.beneficiaryName = beneficiaryName; }
+    public void setBeneficiaryName(String beneficiaryName) {
+        this.beneficiaryName = beneficiaryName;
+    }
 
     public String getOperationName() {
         return operationName;
@@ -88,7 +94,9 @@ public class Info implements Parcelable{
         return operationSummary;
     }
 
-    public void setOperationSummary(String operationSummary) { this.operationSummary = operationSummary; }
+    public void setOperationSummary(String operationSummary) {
+        this.operationSummary = operationSummary;
+    }
 
     public String getStartOperation() {
         return startOperation;
@@ -106,11 +114,13 @@ public class Info implements Parcelable{
         this.endOpeation = endOpeation;
     }
 
-    public float getEligibleExpenditure() {
+    public double getEligibleExpenditure() {
         return eligibleExpenditure;
     }
 
-    public void setEligibleExpenditure(float eligibleExpenditure) { this.eligibleExpenditure = eligibleExpenditure;}
+    public void setEligibleExpenditure(double eligibleExpenditure) {
+        this.eligibleExpenditure = eligibleExpenditure;
+    }
 
     public String getTaxFinanciate() {
         return taxFinanciate;
@@ -120,11 +130,11 @@ public class Info implements Parcelable{
         this.taxFinanciate = taxFinanciate;
     }
 
-    public String  getCap() {
+    public String getCap() {
         return cap;
     }
 
-    public void setCap(String  cap) {
+    public void setCap(String cap) {
         this.cap = cap;
     }
 
@@ -152,7 +162,9 @@ public class Info implements Parcelable{
         this.province = province;
     }
 
-    public String getCountry() { return country; }
+    public String getCountry() {
+        return country;
+    }
 
     public void setCountry(String country) {
         this.country = country;
@@ -168,16 +180,19 @@ public class Info implements Parcelable{
 
     @Override
     public String toString() {
-        return localIdentifier+ " "+ projectCode + " "+ beneficiarycode + " "+beneficiaryName+""
-                +operationName+ " "+operationSummary+" "+startOperation+" "+endOpeation+""
-                +eligibleExpenditure+" "+taxFinanciate+" "+cap+" "+town+" "+province+" "+ country+" "+category;
+        return localIdentifier + " " + projectCode + " " + beneficiarycode + " " + beneficiaryName + ""
+                + operationName + " " + operationSummary + " " + startOperation + " " + endOpeation + ""
+                + eligibleExpenditure + " " + taxFinanciate + " " + cap + " " + town + " " + province + " " + country + " " + category;
 
 
     }
 
-    public Info(Parcel in){
-        String [] data = new String[15];
-        in.readFloat();
+    /**
+     *
+     * @param in Cosa che passa oggetti tra activity
+     */
+    public Info(Parcel in) {
+        String[] data = new String[16];
         in.readStringArray(data);
 
         this.localIdentifier = data[0];
@@ -188,7 +203,7 @@ public class Info implements Parcelable{
         this.operationSummary = data[5];
         this.startOperation = data[6];
         this.endOpeation = data[7];
-      //  this.eligibleExpenditure = data[8];
+        this.eligibleExpenditure = Double.parseDouble(data[8]);
         this.taxFinanciate = data[9];
         this.cap = data[10];
         this.town = data[11];
@@ -196,7 +211,6 @@ public class Info implements Parcelable{
         this.country = data[13];
         this.category = data[14];
         this.id = data[15];
-
 
     }
 
@@ -208,7 +222,7 @@ public class Info implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
 
-        parcel.writeStringArray(new String []{
+        parcel.writeStringArray(new String[]{
                 this.localIdentifier,
                 this.projectCode,
                 this.beneficiarycode,
@@ -217,7 +231,7 @@ public class Info implements Parcelable{
                 this.operationSummary,
                 this.startOperation,
                 this.endOpeation,
-          //      this.eligibleExpenditure,
+                "" + this.eligibleExpenditure,
                 this.taxFinanciate,
                 this.cap,
                 this.town,
@@ -226,11 +240,12 @@ public class Info implements Parcelable{
                 this.category,
                 this.id
         });
-        parcel.writeFloat(this.eligibleExpenditure);
+        parcel.writeDouble(this.eligibleExpenditure);
+
 
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
 
         @Override
         public Info createFromParcel(Parcel parcel) {
