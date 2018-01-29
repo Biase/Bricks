@@ -61,85 +61,34 @@ public class Filter extends AppCompatActivity implements Serializable {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Filter.this.select = i + 1;
                 if (select == 1) {
-                    elem[0]= true;
-                    for(int j=1;i<elem.length;i++){
-                    elem[j]=false;
-                    }
-                } else
-                   elem[1]=true;
+                    elem[0] = true;
+                } else {
+                    elem[1] = true;
+                }
+
 
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
 
-
         });
     }
 
- /*
-       button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int q=0;
 
 
-                ArrayList<Info> a = MainActivity.info;
-                ArrayList<Info> b = new ArrayList<>();
-                if (select == 2) {
-                    for (Info i : a) {
-                        float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-                        if (w > 100000) {
-                            b.add(i);
-                            q++;
-
-                        }
-                    }
-
-                    public void ritorna(View v){
-                    Intent intent = new Intent(Filter.this,TabList.class);
-                    intent.putParcelableArrayListExtra("bbb",b);
-                    setResult(RESULT_OK, intent);
-                    Log.d("lkjhgfds",""+b);
-                    finish();
-                }
-                }
-
-
-
-
-                 } else {
-                    for (Info i : a) {
-                        float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-                        if (w <= 100000) {
-                            b.add(i);
-                            q++;
-                        }
-
-                    }
-
-                    bundle.putParcelableArrayList("data", b);
-                    Log.d("aaaaaaa", "baaaaaa" + q);
-
-                }
-            }
-        }); */
 
     public void ritorna(View v) {
         ArrayList<Info> a = MainActivity.info;
         ArrayList<Info> result = new ArrayList<>();
-        if (select == 1) {
+      //  if (select == 1)
             Intent i = new Intent(this, TabList.class);
             i.putExtra("result",elem);
-            for(Boolean q : elem) {
-                Log.d("Dgdfghfg", "" + q);
-            }
             setResult(RESULT_OK,i);
             finish();
-        }
+
     }
 }
 
