@@ -44,6 +44,8 @@ public class TabList extends Fragment {
     MaterialSearchView searchView;
     ArrayList<Info> original = MainActivity.info;
     ArrayList<Info> result = new ArrayList<>();
+    ArrayList<Info> listMajorPrice = filterMajor();
+    ArrayList<Info> listMinorPrice = filterMinor();
 
 
     @Override
@@ -56,40 +58,49 @@ public class TabList extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("YEE", "UUUHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHH");
-
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 boolean[] res = data.getBooleanArrayExtra("result");
-                for(Boolean a : res){
-                    Log.d("elem i ","sono l'elemento i"+a);
-                }
                 if (res[0] == true) {
-                    ArrayList<Info> b = filterMajor();
-                    generateList(b);
-                  //  for(Info a : b){
-                        //Log.d("asdghjhkgf","PROVA"+a);
+                    generateList(listMajorPrice);
                     }
+                else if(res[1]==true){
+                    generateList(listMinorPrice);
+                }
 
                 }
 
             }
+            lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(TabList.this.getActivity(),itemClick.class);
+                    intent.putExtra("myInfo", listMinorPrice.get(i));
+                    startActivity(intent);
+
+                }
+            });
         }
-    
+
+    public ArrayList<Info> filterMinor(){
+        ArrayList<Info> result = new ArrayList<>();
+        for(Info i :original){
+            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
+            if(w <= 100000){
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
 
     public ArrayList<Info> filterMajor() {
-        int q=0;
-        ArrayList<Info> a = MainActivity.info;
         ArrayList<Info> result = new ArrayList<>();
-        for (Info i : a) {
+        for (Info i : original) {
             float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
             if (w > 100000) {
                 result.add(i);
-                q++;
-                Log.d("prova di stampa","qqqqqq"+q);
             }
-
-
         }
         return result;
     }

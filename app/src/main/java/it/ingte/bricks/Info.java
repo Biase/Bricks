@@ -56,7 +56,6 @@ public class Info implements Parcelable {
         this.id = id;
         this.lat= lat;
         this.lng = lng;
-
     }
 
     public String getLocalIdentifier() {
