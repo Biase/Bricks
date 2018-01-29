@@ -1,16 +1,23 @@
 package it.ingte.bricks;
 
+import it.ingte.bricks.ProvaActivity;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -22,16 +29,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
+import java.util.ArrayList;
+
 public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterItemClickListener<Person>{
+    ArrayList<Info> myData;
+    ArrayList<Person> personInfo;
+    ListView lst;
     GoogleMap mMap;
-    //Marker prev = null;
-    //LatLng prevCluster = null;
+    ViewGroup container;
     MapView mMapView;
     View mView;
     ClusterManager<Person> mClusterManager;
+    ArrayList<Person> clusterPerson = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.container = container;
         mView = inflater.inflate(R.layout.activity_maps, container, false);
         return mView;
     }
@@ -55,8 +68,8 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.482344, 12.238054), 9));
         //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
- //       LatLng trevigiani = new LatLng(45.489090, 12.237890);
- //       LatLng mimmo = new LatLng(45.482344, 12.238054);
+        //       LatLng trevigiani = new LatLng(45.489090, 12.237890);
+        //       LatLng mimmo = new LatLng(45.482344, 12.238054);
 
 //        MarkerOptions mkm = new MarkerOptions();
 //        MarkerOptions mkt = new MarkerOptions();
@@ -77,38 +90,48 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         mClusterManager.setOnClusterItemClickListener(this);
         addPersonItems();
         mClusterManager.cluster();
-
     }
+
     private void addPersonItems() {
-        Person p = new Person(45.489090, 12.237890);
-        Person p1 = new Person(45.482344, 12.238054);
-        Person p2 = new Person(45.682344, 12.138054);
+        //int pos = 0;
+        ArrayList<Info> info = MainActivity.manager.getDbhelper().getData();
+        for(Info i: info) {
+            String capSplit = i.getCap();
+            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince());
+            if(!exist(clusterPerson, p.getPosition())){
+                clusterPerson.add(p);
+                mClusterManager.addItem(p);
+            }
+        }
+        //mClusterManager.addItem(new Person(mCap[pos][1], mCap[pos][2], "Hai selezionato questo progetto!", " "));
+        //mClusterManager.addItem(new Person(0, 0, "Hai selezionato questo progetto!", " "));
 
-        mClusterManager.addItem(new Person(45.482344, 12.228054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.448344, 12.138054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462344, 12.248054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.582344, 12.228054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.448344, 12.238454, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462344, 12.248954, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.482344, 12.228854, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.448244, 12.134154, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462344, 12.248054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.482744, 12.228054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.648144, 12.148054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462544, 12.288054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.492344, 12.328054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.448344, 12.122054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462344, 12.248474, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.582344, 12.228994, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.448344, 12.237454, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462344, 12.248474, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.482344, 12.228854, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.448244, 12.134554, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.467744, 12.248054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.482749, 12.228054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.648111, 12.148054, "Hai selezionato questo progetto!", " "));
-        mClusterManager.addItem(new Person(45.462714, 12.288054, "Hai selezionato questo progetto!", " "));
-    }
+        /**
+         mClusterManager.addItem(new Person(45.482344, 12.228054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.492344, 12.228054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.502344, 12.228054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.582344, 12.228054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.448344, 12.238454, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.462344, 12.248954, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.482344, 12.228854, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.448244, 12.134154, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.462344, 12.248054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.482744, 12.228054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.648144, 12.148054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.462544, 12.288054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.492344, 12.328054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.448344, 12.122054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.462344, 12.248474, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.582344, 12.228994, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.448344, 12.237454, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.462344, 12.248474, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.482344, 12.228854, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.448244, 12.134554, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.467744, 12.248054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.482749, 12.228054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.648111, 12.148054, "Hai selezionato questo progetto!", " "));
+         mClusterManager.addItem(new Person(45.462714, 12.288054, "Hai selezionato questo progetto!", " "));
+         */}
 
     protected void setupMap(GoogleMap mMap) {
         if (mMap != null) {
@@ -135,14 +158,45 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
 
     @Override
     public boolean onClusterItemClick(Person person) {
-        person.getName();
+        final Person mimmo = person;
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
         View parentView = getLayoutInflater().inflate(R.layout.dialog, null);
         bottomSheetDialog.setContentView(parentView);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) parentView.getParent());
-        bottomSheetBehavior.setPeekHeight(
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics()));
+        bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics()));
         bottomSheetDialog.show();
+        ArrayList<Info> info = MainActivity.manager.getDbhelper().getData();
+        int project = 0;
+        for (Info i: info){
+            if(i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude){
+                project++;
+            }
+        }
+        TextView tx = (TextView) parentView.findViewById(R.id.textView2);
+        tx.setText("Numero di progetti: "+project);
+        Button button = (Button) parentView.findViewById(R.id.button2);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TabMap.this.getActivity(), ProvaActivity.class);
+                intent.putExtra("name", mimmo.getBeneficiaryName());
+                intent.putExtra("operation", mimmo.getOperation());
+                intent.putExtra("town", mimmo.getTown());
+                intent.putExtra("position", mimmo.getPosition());
+                startActivity(intent);
+            }
+        });
         return false;
     }
+
+    public boolean exist(ArrayList<Person> info, LatLng pos){
+        for (Person p: info){
+            if(p.getPosition().longitude == pos.longitude && p.getPosition().latitude == pos.latitude){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

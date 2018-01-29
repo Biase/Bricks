@@ -10,25 +10,50 @@ import com.google.maps.android.clustering.ClusterItem;
 public class Person implements ClusterItem {
 
     LatLng mPosition;
-    String name;
+    String beneficiaryName;
     String twitterHandle;
+    String operation;
+    String town;
+    double price;
+    String dateStart;
+    String dateFinish;
+    String cap;
+    String summary;
+    String provincia;
 
-    public Person(double lat, double lng, String name, String twitterHandle) {
-        this.name = name;
+    public Person(double lat, double lng, String beneficiaryName, String twitterHandle, double price, String operation, String summary, String town, String dateStart, String dateFinish, String cap, String provincia) {
+        this.beneficiaryName = beneficiaryName;
         this.twitterHandle = twitterHandle;
         mPosition = new LatLng(lat, lng);
+        this.operation = operation;
+        this.town = town;
+        this.price = price;
+        this.dateFinish = dateFinish;
+        this.dateStart = dateStart;
+        this.cap = cap;
+        this.summary = summary;
+        this.provincia = provincia;
+    }
+
+    public Person(String beneficiaryName, String operation, String town){
+        this.beneficiaryName = beneficiaryName;
+        this.operation = operation;
+        this.town = town;
+    }
+
+    public Person(String beneficiaryName, String operation, String town, double price){
+        this.beneficiaryName = beneficiaryName;
+        this.operation = operation;
+        this.town = town;
+        this.price = price;
     }
 
     public Person(double lat, double lng){
         mPosition = new LatLng(lat, lng);
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public String getBeneficiaryName(){
+        return beneficiaryName;
     }
 
     @Override
@@ -38,7 +63,7 @@ public class Person implements ClusterItem {
 
     @Override
     public String getTitle() {
-        return name;
+        return beneficiaryName;
     }
 
     @Override
@@ -46,4 +71,19 @@ public class Person implements ClusterItem {
         return twitterHandle;
     }
 
+    public String getOperation(){ return operation;  }
+
+    public String getTown(){ return town;  }
+
+    public double getPrice(){ return price;  }
+
+    public String getDateStart(){ return dateStart; }
+
+    public String getDateFinish(){ return dateFinish; }
+
+    public String getCap(){ return cap; }
+
+    public String getSummary(){ return summary; }
+
+    public String getProvincia() { return provincia; }
 }
