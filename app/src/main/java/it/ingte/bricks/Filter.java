@@ -49,12 +49,14 @@ public class Filter extends AppCompatActivity implements Serializable {
         Spinner spin1 = (Spinner) findViewById(R.id.spinner1);
         TextView te = (TextView) findViewById(R.id.textView3);
         bundle = new Bundle();
-        //  Button button = (Button) findViewById(R.id.button1);
+        Button button = (Button) findViewById(R.id.button1);
         te.setText("Prezzo:");
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.PriceList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin1.setAdapter(adapter);
         spin1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Filter.this.select = i + 1;

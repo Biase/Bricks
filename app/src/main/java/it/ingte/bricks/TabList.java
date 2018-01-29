@@ -61,23 +61,32 @@ public class TabList extends Fragment {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 boolean[] res = data.getBooleanArrayExtra("result");
-                Log.d("ciaaaaaa",""+data.getBooleanArrayExtra("result"));
-                /*if (res[0] == true) {
+                for(Boolean a : res){
+                    Log.d("elem i ","sono l'elemento i"+a);
+                }
+                if (res[0] == true) {
                     ArrayList<Info> b = filterMajor();
                     generateList(b);
-                } */
+                  //  for(Info a : b){
+                        //Log.d("asdghjhkgf","PROVA"+a);
+                    }
+
+                }
 
             }
         }
-    }
+    
 
     public ArrayList<Info> filterMajor() {
+        int q=0;
         ArrayList<Info> a = MainActivity.info;
         ArrayList<Info> result = new ArrayList<>();
         for (Info i : a) {
             float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
             if (w > 100000) {
                 result.add(i);
+                q++;
+                Log.d("prova di stampa","qqqqqq"+q);
             }
 
 

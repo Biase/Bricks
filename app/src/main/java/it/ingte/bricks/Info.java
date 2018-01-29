@@ -26,12 +26,17 @@ public class Info implements Parcelable {
     String cap;
     String town;
     String province;
+    String region;
     String country;
     String category;   //categoria dell'intervento
     String id;
+    double lat;
+    double lng;
 
 
-    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, double eligibleExpenditure, String taxFinanciate, String cap, String town, String province, String country, String category, String id) {
+
+
+    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, double eligibleExpenditure, String taxFinanciate, String cap, String town, String province, String region, String country, String category, String id, double lat, double lng) {
         this.localIdentifier = localIdentifier;
         this.projectCode = projectCode;
         this.beneficiarycode = beneficiarycode;
@@ -45,9 +50,13 @@ public class Info implements Parcelable {
         this.cap = cap;
         this.town = town;
         this.province = province;
+        this.region = region;
         this.country = country;
         this.category = category;
         this.id = id;
+        this.lat= lat;
+        this.lng = lng;
+
     }
 
     public String getLocalIdentifier() {
@@ -162,6 +171,10 @@ public class Info implements Parcelable {
         this.province = province;
     }
 
+    public String getRegion() {return region;}
+
+    public void setRegion(String region) {this.region = region;}
+
     public String getCountry() {
         return country;
     }
@@ -178,11 +191,19 @@ public class Info implements Parcelable {
         this.category = category;
     }
 
+    public double getLat() { return lat; }
+
+    public void setLat(double lat) { this.lat = lat; }
+
+    public double getLng() { return lng; }
+
+    public void setLng(double lng) { this.lng = lng; }
+
     @Override
     public String toString() {
         return localIdentifier + " " + projectCode + " " + beneficiarycode + " " + beneficiaryName + ""
                 + operationName + " " + operationSummary + " " + startOperation + " " + endOpeation + ""
-                + eligibleExpenditure + " " + taxFinanciate + " " + cap + " " + town + " " + province + " " + country + " " + category;
+                + eligibleExpenditure + " " + taxFinanciate + " " + cap + " " + town + " " + province + " " +region+" " + country + " " + category+" "+lat+ " "+ lng;
 
 
     }
@@ -192,7 +213,7 @@ public class Info implements Parcelable {
      * @param in Cosa che passa oggetti tra activity
      */
     public Info(Parcel in) {
-        String[] data = new String[16];
+        String[] data = new String[19];
         in.readStringArray(data);
 
         this.localIdentifier = data[0];
@@ -208,9 +229,12 @@ public class Info implements Parcelable {
         this.cap = data[10];
         this.town = data[11];
         this.province = data[12];
-        this.country = data[13];
-        this.category = data[14];
-        this.id = data[15];
+        this.region = data[13];
+        this.country = data[14];
+        this.category = data[15];
+        this.id = data[16];
+        this.lat= Double.parseDouble(data[17]);
+        this.lng = Double.parseDouble(data[18]);
 
     }
 
@@ -236,11 +260,16 @@ public class Info implements Parcelable {
                 this.cap,
                 this.town,
                 this.province,
+                this.region,
                 this.country,
                 this.category,
-                this.id
+                this.id,
+                ""+this.lat,
+                ""+this.lng
         });
         parcel.writeDouble(this.eligibleExpenditure);
+        parcel.writeDouble(this.lat);
+        parcel.writeDouble(this.lng);
 
 
     }
