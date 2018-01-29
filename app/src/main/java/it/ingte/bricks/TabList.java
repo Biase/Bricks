@@ -1,5 +1,6 @@
 package it.ingte.bricks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,6 +33,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by davide on 17/12/2017.
  */
@@ -39,16 +42,58 @@ import java.util.List;
 public class TabList extends Fragment {
     ListView lst;
     MaterialSearchView searchView;
-    ArrayList<Info> result= MainActivity.info;
-
+    ArrayList<Info> original = MainActivity.info;
+    ArrayList<Info> result = new ArrayList<>();
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("YEE", "UUUHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHHHHHHHIIIIIIIIIHHHHHHHHHHHHH");
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                boolean[] res = data.getBooleanArrayExtra("result");
+                for(Boolean a : res){
+                    Log.d("elem i ","sono l'elemento i"+a);
+                }
+                if (res[0] == true) {
+                    ArrayList<Info> b = filterMajor();
+                    generateList(b);
+                  //  for(Info a : b){
+                        //Log.d("asdghjhkgf","PROVA"+a);
+                    }
+
+                }
+
+            }
+        }
+    
+
+    public ArrayList<Info> filterMajor() {
+        int q=0;
+        ArrayList<Info> a = MainActivity.info;
+        ArrayList<Info> result = new ArrayList<>();
+        for (Info i : a) {
+            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
+            if (w > 100000) {
+                result.add(i);
+                q++;
+                Log.d("prova di stampa","qqqqqq"+q);
+            }
+
+
+        }
+        return result;
+    }
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -63,10 +108,12 @@ public class TabList extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent intent = new Intent(TabList.this.getActivity(), Filter.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return false;
             }
         });
+
+
 
 
 
@@ -87,7 +134,7 @@ public class TabList extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                        intent.putExtra("myInfo",MainActivity.info.get(i));
+                        intent.putExtra("myInfo", original.get(i));
                         startActivity(intent);
                     }
                 });
@@ -100,8 +147,10 @@ public class TabList extends Fragment {
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
 
+
             @Override
             public boolean onQueryTextSubmit(final String query) {
+                result = MainActivity.manager.getDbhelper().getResult(query);
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
@@ -109,7 +158,7 @@ public class TabList extends Fragment {
 
                 }
 
-                result = MainActivity.manager.getDbhelper().getResult(query);
+
                 if (result.isEmpty()) {
                     Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
 
@@ -119,7 +168,7 @@ public class TabList extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                        intent.putExtra("myInfo", MainActivity.info.get(i));
+                        intent.putExtra("myInfo", result.get(i));
                         startActivity(intent);
 
                     }
@@ -131,35 +180,15 @@ public class TabList extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-             /*  String s = newText + "";
-
-                if (newText != null && !newText.isEmpty()) {
-                    List<Info> lstFound = new ArrayList<>();
-                    List<Info> all = MainActivity.manager.getDbhelper().getData();
-                    Log.d("contenuto s", s);
-                    for (Info items : all) {
-                        if (items.getBeneficiaryName().toLowerCase().contains(newText.toLowerCase()) ||
-                                items.getTown().toLowerCase().contains(newText.toLowerCase())) {
-                            lstFound.add(items);
-                        }
-                    }
-                 //   generateList(lstFound);
-
-                } else {
-                    populateList(); // if search text is null return default
-                } */
-
                 return true;
             }
 
 
         });
-         /*fine parte search */
-
 
     }
 
-    public void generateList(List<Info> source) {
+    public void generateList(ArrayList<Info> source) {
         MyCustomAdapter adapter = new MyCustomAdapter(getContext(), R.layout.da_text, source);
         lst.setAdapter(adapter);
     }
@@ -173,17 +202,18 @@ public class TabList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                intent.putExtra("myInfo", MainActivity.info.get(i));
+                intent.putExtra("myInfo", original.get(i));
                 startActivity(intent);
             }
         });
 
-        Log.i("Posizione", "Sono uscito dal populateList");
+
         return rootView;
     }
 
+
     public void populateList() {
-        lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, MainActivity.info));
+        lst.setAdapter(new MyCustomAdapter(getContext(), R.layout.da_text, original));
 
     }
 

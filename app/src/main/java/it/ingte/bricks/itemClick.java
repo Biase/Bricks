@@ -26,19 +26,23 @@ public class itemClick extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_click);
         ListView listView = (ListView) findViewById(R.id.myList);
-        Info info = (Info) getIntent().getSerializableExtra("myInfo");
+        Info info = (Info) getIntent().getParcelableExtra("myInfo");
         list.add("Beneficiario : " + info.getBeneficiaryName());
         list.add("Costo : €" + info.getEligibleExpenditure());
+        Log.e("qwertyui", "kjhgfd" + info.getEligibleExpenditure());
         list.add("Data di inizio : " + info.getStartOperation());
         list.add("Data di fine : " + info.getEndOpeation());
         list.add("Città : " + info.getTown());
         list.add("CAP :" + info.getCap());
         list.add("Sommario :" + info.getOperationSummary());
         list.add("Breve descrizione :" + info.getOperationName());
-        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, list){
+        list.add("latitudine :"+ info.getLat());
+        list.add("longitudine :"+ info.getLng());
+        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, list) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -57,7 +61,6 @@ public class itemClick extends AppCompatActivity {
             }
         };
         listView.setAdapter(adapter);
-
 
 
     }

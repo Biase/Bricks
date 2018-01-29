@@ -1,13 +1,18 @@
 package it.ingte.bricks;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by marco on 15/01/18.
  */
 
-public class Info implements Serializable{
+public class Info implements Parcelable {
     String localIdentifier;  // codice locale progetto
     String projectCode;      // codice unico progetto
     String beneficiarycode;  // codice fiscale beneficiario
@@ -16,18 +21,22 @@ public class Info implements Serializable{
     String operationSummary; //sintesi progetto
     String startOperation;  // data di inizio lavoro
     String endOpeation;   //data di fine lavoro
-    String eligibleExpenditure;  // spesa ammissibile
-    double taxFinanciate;  // tassa di finanziamento
+    double eligibleExpenditure;  // spesa ammissibile
+    String taxFinanciate;  // tassa di finanziamento
     String cap;
     String town;
     String province;
+    String region;
     String country;
     String category;   //categoria dell'intervento
-    int id;
+    String id;
+    double lat;
+    double lng;
 
 
 
-    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, String eligibleExpenditure, double taxFinanciate, String cap, String town, String province, String country, String category, int id) {
+
+    public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, double eligibleExpenditure, String taxFinanciate, String cap, String town, String province, String region, String country, String category, String id, double lat, double lng) {
         this.localIdentifier = localIdentifier;
         this.projectCode = projectCode;
         this.beneficiarycode = beneficiarycode;
@@ -38,12 +47,16 @@ public class Info implements Serializable{
         this.endOpeation = endOpeation;
         this.eligibleExpenditure = eligibleExpenditure;
         this.taxFinanciate = taxFinanciate;
-        this.cap=cap;
+        this.cap = cap;
         this.town = town;
         this.province = province;
+        this.region = region;
         this.country = country;
         this.category = category;
         this.id = id;
+        this.lat= lat;
+        this.lng = lng;
+
     }
 
     public String getLocalIdentifier() {
@@ -110,27 +123,27 @@ public class Info implements Serializable{
         this.endOpeation = endOpeation;
     }
 
-    public String getEligibleExpenditure() {
+    public double getEligibleExpenditure() {
         return eligibleExpenditure;
     }
 
-    public void setEligibleExpenditure(String eligibleExpenditure) {
+    public void setEligibleExpenditure(double eligibleExpenditure) {
         this.eligibleExpenditure = eligibleExpenditure;
     }
 
-    public double getTaxFinanciate() {
+    public String getTaxFinanciate() {
         return taxFinanciate;
     }
 
-    public void setTaxFinanciate(double taxFinanciate) {
+    public void setTaxFinanciate(String taxFinanciate) {
         this.taxFinanciate = taxFinanciate;
     }
 
-    public String  getCap() {
+    public String getCap() {
         return cap;
     }
 
-    public void setCap(String  cap) {
+    public void setCap(String cap) {
         this.cap = cap;
     }
 
@@ -142,11 +155,11 @@ public class Info implements Serializable{
         this.town = town;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -158,7 +171,13 @@ public class Info implements Serializable{
         this.province = province;
     }
 
-    public String getCountry() { return country; }
+    public String getRegion() {return region;}
+
+    public void setRegion(String region) {this.region = region;}
+
+    public String getCountry() {
+        return country;
+    }
 
     public void setCountry(String country) {
         this.country = country;
@@ -172,13 +191,99 @@ public class Info implements Serializable{
         this.category = category;
     }
 
+    public double getLat() { return lat; }
+
+    public void setLat(double lat) { this.lat = lat; }
+
+    public double getLng() { return lng; }
+
+    public void setLng(double lng) { this.lng = lng; }
+
     @Override
     public String toString() {
-        return localIdentifier+ " "+ projectCode + " "+ beneficiarycode + " "+beneficiaryName+""
-                +operationName+ " "+operationSummary+" "+startOperation+" "+endOpeation+""
-                +eligibleExpenditure+" "+taxFinanciate+" "+cap+" "+town+" "+province+" "+ country+" "+category;
+        return localIdentifier + " " + projectCode + " " + beneficiarycode + " " + beneficiaryName + ""
+                + operationName + " " + operationSummary + " " + startOperation + " " + endOpeation + ""
+                + eligibleExpenditure + " " + taxFinanciate + " " + cap + " " + town + " " + province + " " +region+" " + country + " " + category+" "+lat+ " "+ lng;
 
 
     }
 
+    /**
+     *
+     * @param in Cosa che passa oggetti tra activity
+     */
+    public Info(Parcel in) {
+        String[] data = new String[19];
+        in.readStringArray(data);
+
+        this.localIdentifier = data[0];
+        this.projectCode = data[1];
+        this.beneficiarycode = data[2];
+        this.beneficiaryName = data[3];
+        this.operationName = data[4];
+        this.operationSummary = data[5];
+        this.startOperation = data[6];
+        this.endOpeation = data[7];
+        this.eligibleExpenditure = Double.parseDouble(data[8]);
+        this.taxFinanciate = data[9];
+        this.cap = data[10];
+        this.town = data[11];
+        this.province = data[12];
+        this.region = data[13];
+        this.country = data[14];
+        this.category = data[15];
+        this.id = data[16];
+        this.lat= Double.parseDouble(data[17]);
+        this.lng = Double.parseDouble(data[18]);
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeStringArray(new String[]{
+                this.localIdentifier,
+                this.projectCode,
+                this.beneficiarycode,
+                this.beneficiaryName,
+                this.operationName,
+                this.operationSummary,
+                this.startOperation,
+                this.endOpeation,
+                "" + this.eligibleExpenditure,
+                this.taxFinanciate,
+                this.cap,
+                this.town,
+                this.province,
+                this.region,
+                this.country,
+                this.category,
+                this.id,
+                ""+this.lat,
+                ""+this.lng
+        });
+        parcel.writeDouble(this.eligibleExpenditure);
+        parcel.writeDouble(this.lat);
+        parcel.writeDouble(this.lng);
+
+
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        @Override
+        public Info createFromParcel(Parcel parcel) {
+            return new Info(parcel);
+        }
+
+        @Override
+        public Object[] newArray(int i) {
+            return new Info[i];
+        }
+    };
 }

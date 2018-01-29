@@ -8,32 +8,28 @@ import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
 
 
 
@@ -48,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String[] lstSource;
 
-    public static String [] getLstSource() {
+    public static String[] getLstSource() {
         return lstSource;
     }
 
@@ -61,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
         info = manager.getDbhelper().getData();
 
 
-
-        //Fino a qua
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bricks");
@@ -71,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three (two in our case)
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+
+
+
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         searchView = findViewById(R.id.search_view);
 
 
-
         /**
          * Function for fab button
          */
@@ -104,10 +101,6 @@ public class MainActivity extends AppCompatActivity {
         });
         */
     }
-
-
-
-
 
 
     @Override
@@ -173,4 +166,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public ArrayList<Info> prova() {
+        Bundle b = getIntent().getExtras();
+        ArrayList<Info> a = null;
+        if (b != null) {
+            a = b.getParcelableArrayList("data");
+        } else {
+            Toast.makeText(getApplicationContext(), "ciao", Toast.LENGTH_SHORT).show();
+        }
+        return a;
+
+
+    }
 }
