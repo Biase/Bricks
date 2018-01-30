@@ -42,11 +42,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".itemClick">
-        </activity>
+        <activity android:name=".itemClick"></activity>
         <activity android:name=".Filter"></activity>
         <activity android:name=".Project"></activity>
         <activity android:name=".Contact"></activity>
+        <activity android:name=".ProvaActivity"></activity>
     </application>
 
 </manifest>
