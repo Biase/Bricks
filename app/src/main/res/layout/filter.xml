@@ -5,42 +5,80 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/text0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textSize="25dp"
+        android:textAlignment="center"/>
+
+<!-- spinner prezzo !-->
+    <TextView
+        android:id="@+id/textSpin1"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="40dp"
+        android:layout_alignEnd="@+id/button1"
+        android:layout_alignTop="@+id/spinner1"
         android:paddingTop="3dp"
         android:text="ciao"
+        android:textAlignment="center"
         android:textSize="25dp"
-        />
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="45dp" />
+        android:layout_below="@+id/text0"
+        android:layout_marginTop="34dp"
+        android:paddingBottom="37sp"
+        tools:ignore="UnknownId" />
+
+<!-- spinner provincia !-->
+    <TextView
+        android:id="@+id/textSpin2"
+        android:layout_width="140dp"
+        android:layout_height="37dp"
+        android:layout_alignEnd="@+id/textSpin1"
+        android:layout_alignTop="@+id/spinner2"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
 
-    <!--<Spinner
+    <Spinner
          android:id="@+id/spinner2"
          android:layout_width="240dp"
+         android:paddingBottom="37sp"
          android:layout_height="wrap_content"
          android:layout_alignParentEnd="true"
          android:layout_alignParentTop="true"
-         android:layout_marginTop="125dp" /> !-->
+         android:layout_marginTop="150dp"
+         android:layout_alignRight="@+id/textSpin2"
+        />
+
+<!--spinner per ordine alfabetico !-->
+    <TextView
+        android:id="@+id/textSpin3"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/spinner2" />
+
+
 
     <Button
         android:id="@+id/button1"
-        android:text="APPLICA FILTRI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/spinner1"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="100dp"
-        android:onClick="ritorna"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="19dp"
+        android:onClick="ritorna"
+        android:text="APPLICA FILTRI" />
 
 
- </RelativeLayout>
+
+
+</RelativeLayout>

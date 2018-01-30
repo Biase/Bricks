@@ -112,10 +112,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
    public ArrayList<Info> getData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        //Stringhe che conterranno i dati clean
-       // String cap, town, province;
-     //   String delimiter = ":::";
-
         ArrayList<Info> info = new ArrayList<Info>();
         Cursor result = db.rawQuery("select * from record", null);
 
@@ -157,8 +153,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Info> a = new ArrayList<>();
-        String cap,town,province;
-        String delimiter=":::";
         String q = "SELECT * FROM record WHERE Town like '%" + input + "%' or Beneficiaryname like '%" + input + "%'";
         Cursor result = db.rawQuery(q, null);
         while (result.moveToNext()) {
