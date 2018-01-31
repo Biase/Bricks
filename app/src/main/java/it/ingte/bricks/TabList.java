@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,25 +37,24 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by davide on 17/12/2017.
- */
 
 public class TabList extends Fragment {
     ListView lst;
     MaterialSearchView searchView;
     ArrayList<Info> original = MainActivity.info;
     ArrayList<Info> result = new ArrayList<>();
-    ArrayList<Info> list1 = filter1();
-    ArrayList<Info> list2 = filter2();
-    ArrayList<Info> list3 = filter3();
-    ArrayList<Info> list4 = filter4();
-    ArrayList<Info> list5 = filter5();
-    ArrayList<Info> list6 = filterVe();
-    ArrayList<Info> list7 = filterTre();
-    ArrayList<Info> list8 = filterVer();
-
-
+    final String prezzo1 = "Tra 0.00 € e 25.000 €";
+    final String prezzo2 = "Tra 25.000 € e 50.000 €";
+    final String prezzo3 = "Tra 50.000 € e 75.000 €";
+    final String prezzo4 = "Tra 75.000 € e 100.000 €";
+    final String prezzo5 = "Superiore 100.000 €";
+    final String venezia = "VENEZIA";
+    final String treviso = "TREVISO";
+    final String verona = "VERONA";
+    final String vicenza = "VICENZA";
+    final String rovigo = "ROVIGO";
+    final String padova = "PADOVA";
+    final String belluno = "BELLUNO";
 
 
     @Override
@@ -65,196 +66,132 @@ public class TabList extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-        int q = 0;
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                boolean[] res = data.getBooleanArrayExtra("result");
-                for (int i = 0; i < res.length; i++) {
-                    if (res[i] == true) {
-                        switch (i) {
-                            case 0:
-                                result = list1;
-                                for (Info j : result) {
-                                    Log.d("jhgfdsdfghj", "jhgfdfgh" + j.getEligibleExpenditure() + " " + q);
-                                    q++;
-                                }
-                                generateList(result);
-                                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                                        intent.putExtra("myInfo", result.get(i));
-                                        startActivity(intent);
-                                    }
-                                });
-                                break;
-                            case 1:
-                                result = list2;
-                                generateList(result);
-                                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                                        intent.putExtra("myInfo", result.get(i));
-                                        startActivity(intent);
-                                    }
-                                });
 
-                                break;
-                            case 2:
-                                result = list3;
-                                generateList(result);
-                                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                                        intent.putExtra("myInfo", result.get(i));
-                                        startActivity(intent);
-                                    }
-                                });
-                                break;
-                            case 3:
-                                result = list4;
-                                generateList(result);
-                                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                                        intent.putExtra("myInfo", result.get(i));
-                                        startActivity(intent);
-                                    }
-                                });
-                                break;
-                            case 4:
-                                result = list5;
-                                generateList(result);
-                                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                                        intent.putExtra("myInfo", result.get(i));
-                                        startActivity(intent);
-                                    }
-                                });
-                                break;
-                            case 5:
-                                result.retainAll(list6);
-                                generateList(result);
+        String s = data.getStringExtra("resultPrice");
+        String t = data.getStringExtra("resultProvince");
 
-                                break;
-                            case 6:
-                                result.retainAll(list7);
-                                generateList(result);
-                                break;
-                            case 7:
-                                result.retainAll(list8);
-                                generateList(result);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (prezzo1.equals(s)) {
+                result.clear();
+                for (Info i : original) {
+                    if (i.getEligibleExpenditure() >= 0 && i.getEligibleExpenditure() <= 25000) {
+                        result.add(i);
+                    }
+
+                }
+                generateList(result);
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                        intent.putExtra("myInfo", result.get(i));
+                        startActivity(intent);
+                    }
+                });
+            } else if (prezzo2.equals(s)) {
+                result.clear();
+                for (Info i : original) {
+                    if (i.getEligibleExpenditure() > 25000 && i.getEligibleExpenditure() <= 50000) {
+                        result.add(i);
+                    }
+                }
+                generateList(result);
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                        intent.putExtra("myInfo", result.get(i));
+                        startActivity(intent);
+                    }
+                });
+
+
+            } else if (prezzo3.equals(s)) {
+                result.clear();
+                for (Info i : original) {
+                    if (i.getEligibleExpenditure() > 50000 && i.getEligibleExpenditure() <= 75000) {
+                        result.add(i);
+                    }
+                }
+                generateList(result);
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                        intent.putExtra("myInfo", result.get(i));
+                        startActivity(intent);
+                    }
+                });
+            } else if (prezzo4.equals(s)) {
+                result.clear();
+                for (Info i : original) {
+                    if (i.getEligibleExpenditure() > 75000 && i.getEligibleExpenditure() <= 100000) {
+                        result.add(i);
+                    }
+                }
+                generateList(result);
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                        intent.putExtra("myInfo", result.get(i));
+                        startActivity(intent);
+                    }
+                });
+            } else if (prezzo5.equals(s)) {
+                result.clear();
+                for (Info i : original) {
+                    if (i.getEligibleExpenditure() > 100000) {
+                        result.add(i);
+                    }
+                }
+                generateList(result);
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                        intent.putExtra("myInfo", result.get(i));
+                        startActivity(intent);
+                    }
+                });
+            }
+            final ArrayList<Info> a = new ArrayList<>();
+            if(venezia.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("VENEZIA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                } else {
+                    for (Info i : result) {
+                        Log.d("aaaaaa", "bbbbb " + i.getEligibleExpenditure() + " " + i.getBeneficiaryName());
+                        if (i.getProvince().equals("VENEZIA")) {
+                            Log.e("qqqqqqqqq", "qwertyjnbvd" + i.beneficiaryName + "" + i.getEligibleExpenditure());
+                            a.add(i);
 
                         }
-
-
                     }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
 
                 }
             }
 
 
-        }
-    }
 
-
-    public ArrayList<Info> filterVe() {
-        final ArrayList<Info> ve = new ArrayList<>();
-        for (Info i : original) {
-            if (i.getProvince().equals("VENEZIA")) {
-                ve.add(i);
-            }
-        }
-        return ve;
-    }
-
-    public ArrayList<Info> filterTre() {
-        final ArrayList<Info> tre = new ArrayList<>();
-        for (Info i : original) {
-            if (i.getProvince().equals("TREVISO")) {
-                tre.add(i);
-            }
-        }
-        return tre;
-    }
-
-    public ArrayList<Info> filterVer() {
-        final ArrayList<Info> ver = new ArrayList<>();
-        for (Info i : original) {
-            if (i.getProvince().equals("VERONA")) {
-                ver.add(i);
-            }
-        }
-        return ver;
-    }
-
-
-
-    public ArrayList<Info> filter1() {
-        final ArrayList<Info> first = new ArrayList<>();
-        for (Info i : original) {
-            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-            if (w > 0 && w <= 25000) {
-                first.add(i);
-
-            }
-        }
-        return first;
-    }
-
-    public ArrayList<Info> filter2() {
-        ArrayList<Info> second = new ArrayList<>();
-        for (Info i : original) {
-            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-            if (w > 25000 && w <= 50000) {
-                second.add(i);
-            }
         }
 
 
-        return second;
-    }
-
-
-    public ArrayList<Info> filter3() {
-        ArrayList<Info> third = new ArrayList<>();
-        for (Info i : original) {
-            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-            if (w > 50000 && w <= 75000) {
-                third.add(i);
-            }
-        }
-        return third;
-    }
-
-    public ArrayList<Info> filter4() {
-        ArrayList<Info> fourth = new ArrayList<>();
-        for (Info i : original) {
-            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-            if (w > 75000 && w <= 100000) {
-                fourth.add(i);
-            }
-        }
-        return fourth;
-    }
-
-
-    public ArrayList<Info> filter5() {
-        ArrayList<Info> fifth = new ArrayList<>();
-        for (Info i : original) {
-            float w = Float.parseFloat(String.valueOf(i.getEligibleExpenditure()));
-            if (w > 100000) {
-                fifth.add(i);
-            }
-        }
-        return fifth;
     }
 
 
@@ -289,6 +226,7 @@ public class TabList extends Fragment {
 
 
             }
+
 
             @Override
             public void onSearchViewClosed() {

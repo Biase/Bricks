@@ -33,28 +33,28 @@ import static java.lang.Float.parseFloat;
 
 
 public class Filter extends AppCompatActivity implements Serializable {
-    public Bundle bundle;
-   // HashMap<Boolean,String> hashMap = new HashMap<Boolean, String>();
-    boolean[] elem = new boolean[20];
-    private int select;
+
+
+    Spinner spin1;
+    Spinner spin2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter);
 
-
         TextView text0 = (TextView) findViewById(R.id.text0);
 
-        Spinner spin1 = (Spinner) findViewById(R.id.spinner1);
-        Spinner spin2 = (Spinner) findViewById(R.id.spinner2);
-     //   Spinner spin3 = (Spinner) findViewById(R.id.spinner3);
+        spin1 = (Spinner) findViewById(R.id.spinner1);
+        spin2 = (Spinner) findViewById(R.id.spinner2);
 
 
         TextView text1 = (TextView) findViewById(R.id.textSpin1);
         TextView text2 = (TextView) findViewById(R.id.textSpin2);
 
+
         Button button = (Button) findViewById(R.id.button1);
+
 
         text0.setText("SELEZIONA I FILTRI DA APPLICARE");
         text1.setText("Prezzo :");
@@ -68,26 +68,11 @@ public class Filter extends AppCompatActivity implements Serializable {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Filter.this.select = i + 1;
-                Log.d("selezionato","case"+select);
-                switch (select){
-                    case 2:
-                        elem[0]=true;
-                        break;
-                    case 3:
-                        elem[1]=true;
-                        break;
-                    case 4:
-                        elem[2]=true;
-                        break;
-                    case 5:
-                        elem[3]=true;
-                        break;
-                    case 6:
-                        elem[4]=true;
-                }
+                Log.d("caaaa","asdfgh"+spin1.getSelectedItem().toString());
+
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -95,38 +80,16 @@ public class Filter extends AppCompatActivity implements Serializable {
             }
 
         });
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,R.array.ProvinceList,android.R.layout.simple_spinner_item);
+
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.ProvinceList, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin2.setAdapter(adapter1);
         spin2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Filter.this.select = i+1;
-                Log.d("selezionato","case"+select);
-                switch (select){
-                    case 2:
-                        elem[5]=true;
-                        break;
-                    case 3:
-                        elem[6]=true;
-                        break;
-                    case 4:
-                        elem[6]=true;
-                        break;
-                    case 5:
-                        elem[7]=true;
-                        break;
-                    case 6:
-                        elem[8]=true;
-                        break;
-                    case 7:
-                        elem[9]=true;
-                        break;
-                    case 8:
-                        elem[10]=true;
-                        break;
+
                 }
-            }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -134,26 +97,24 @@ public class Filter extends AppCompatActivity implements Serializable {
             }
         });
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,R.array.Order,android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
     }
-
-
-
-
 
 
     public void ritorna(View v) {
-        ArrayList<Info> a = MainActivity.info;
-        ArrayList<Info> result = new ArrayList<>();
+        String textPrice = spin1.getSelectedItem().toString();
+        String textProvince = spin2.getSelectedItem().toString();
         Intent i = new Intent(this, TabList.class);
-        i.putExtra("result",elem);
-        setResult(RESULT_OK,i);
+        i.putExtra("resultPrice", textPrice);
+        i.putExtra("resultProvince",textProvince);
+        setResult(RESULT_OK, i);
         finish();
 
     }
+
+
 }
+
+
 
 

@@ -58,25 +58,16 @@
          android:layout_alignRight="@+id/textSpin2"
         />
 
-<!--spinner per ordine alfabetico !-->
-    <TextView
-        android:id="@+id/textSpin3"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/spinner2" />
-
-
-
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="15dp"
         android:onClick="ritorna"
         android:text="APPLICA FILTRI" />
+
+
 
 
 
