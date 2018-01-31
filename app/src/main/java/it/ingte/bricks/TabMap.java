@@ -18,12 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -34,13 +32,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.ArrayList;
+import static android.app.Activity.RESULT_OK;
+
 
 public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterItemClickListener<Person>, OnRequestPermissionsResultCallback {
-    ArrayList<Info> myData;
-    ArrayList<Person> personInfo;
-    ListView lst;
     GoogleMap mMap;
     ViewGroup container;
     MapView mMapView;
@@ -53,6 +49,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.container = container;
         mView = inflater.inflate(R.layout.activity_maps, container, false);
+        setHasOptionsMenu(true);
         return mView;
     }
 
@@ -105,12 +102,10 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         }
     }
 
-
     private void addPersonItems() {
-        //int pos = 0;
         ArrayList<Info> info = MainActivity.manager.getDbhelper().getData();
         for(Info i: info) {
-            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince());
+            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 0);
             if(!exist(clusterPerson, p.getPosition())){
                 clusterPerson.add(p);
                 mClusterManager.addItem(p);
@@ -140,6 +135,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         }
         mMap.setMyLocationEnabled(true);
     }
+    int project = 0;
 
     @Override
     public boolean onClusterItemClick(Person person) {
@@ -151,10 +147,37 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics()));
         bottomSheetDialog.show();
         ArrayList<Info> info = MainActivity.manager.getDbhelper().getData();
-        int project = 0;
+        project = 0;
         for (Info i: info){
-            if(i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude){
-                project++;
+            if(person.getControl() == 0) {
+                if (i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude) {
+                    project++;
+                }
+            }
+            if(person.getControl() == 1) {
+                if (person.getPrice() >= 0 && person.getPrice() <= 25000 && i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude) {
+                    project++;
+                }
+            }
+            if(person.getControl() == 2) {
+                if (person.getPrice() > 25000 && person.getPrice() <= 50000 && i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude) {
+                    project++;
+                }
+            }
+            if(person.getControl() == 3) {
+                if (person.getPrice() > 50000 && person.getPrice() <= 75000 && i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude) {
+                    project++;
+                }
+            }
+            if(person.getControl() == 4) {
+                if (person.getPrice() > 75000 && person.getPrice() <= 100000 && i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude) {
+                    project++;
+                }
+            }
+            if(person.getControl() == 5) {
+                if (person.getPrice() > 100000 && i.getBeneficiaryName().equalsIgnoreCase(person.getBeneficiaryName()) && i.getTown().equalsIgnoreCase(person.getTown()) && i.getLat() == person.getPosition().latitude && i.getLng() == person.getPosition().longitude) {
+                    project++;
+                }
             }
         }
         TextView tx = (TextView) parentView.findViewById(R.id.textView2);
@@ -169,6 +192,8 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                 intent.putExtra("operation", mimmo.getOperation());
                 intent.putExtra("town", mimmo.getTown());
                 intent.putExtra("position", mimmo.getPosition());
+                intent.putExtra("control", mimmo.getControl());
+                intent.putExtra("nproject", project);
                 startActivity(intent);
             }
         });
@@ -184,10 +209,10 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         return false;
     }
 
-
     ArrayList<Info> original = MainActivity.info;
     MaterialSearchView searchView;
     ArrayList<Info> result = new ArrayList<>();
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -201,7 +226,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
 
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(TabMap.this.getActivity(), Filter.class);
+                Intent intent = new Intent(TabMap.this.getActivity(), FilterMap.class);
                 startActivityForResult(intent, 1);
                 return false;
             }
@@ -212,36 +237,31 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-
-
             }
 
             @Override
             public void onSearchViewClosed() {
-
-                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(TabMap.this.getActivity(), itemClick.class);
-                        intent.putExtra("myInfo", original.get(i));
-                        startActivity(intent);
+                clusterPerson.clear();
+                mClusterManager.clearItems();
+                for(Info i: MainActivity.info) {
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),0);
+                    if(!exist(clusterPerson, p.getPosition())){
+                        clusterPerson.add(p);
+                        mClusterManager.addItem(p);
                     }
                 }
-                );
-
-
+                mClusterManager.cluster();
             }
-
         });
-
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
 
-
             @Override
             public boolean onQueryTextSubmit(final String query) {
-                result = MainActivity.manager.getDbhelper().getResult(query);
+                clusterPerson.clear();
+                mClusterManager.clearItems();
 
+                result = MainActivity.manager.getDbhelper().getResult(query);
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -253,28 +273,14 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
 
                 }
-                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(TabMap.this.getActivity(), itemClick.class);
-                        intent.putExtra("myInfo", result.get(i));
-                        startActivity(intent);
-
-                    }
-                });
-
-                result = MainActivity.manager.getDbhelper().getResult(query);
-                clusterPerson.clear();
-                mClusterManager.clearItems();
-
                 for(Info i: result) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince());
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),0);
                     if(!exist(clusterPerson, p.getPosition())){
                         clusterPerson.add(p);
                         mClusterManager.addItem(p);
                     }
                 }
-
+                mClusterManager.cluster();
                 return true;
             }
 
@@ -283,11 +289,285 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
             public boolean onQueryTextChange(String newText) {
                 return true;
             }
-
-
         });
-
     }
 
+    final String prezzo1 = "Tra 0.00 € e 25.000 €";
+    final String prezzo2 = "Tra 25.000 € e 50.000 €";
+    final String prezzo3 = "Tra 50.000 € e 75.000 €";
+    final String prezzo4 = "Tra 75.000 € e 100.000 €";
+    final String prezzo5 = "Superiore 100.000 €";
+    final String venezia = "VENEZIA";
+    final String treviso = "TREVISO";
+    final String verona = "VERONA";
+    final String vicenza = "VICENZA";
+    final String rovigo = "ROVIGO";
+    final String padova = "PADOVA";
+    final String belluno = "BELLUNO";
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data != null) {
+            String s = data.getStringExtra("resultPrice");
+            String t = data.getStringExtra("resultProvince");
+            ArrayList<Info> ris = MainActivity.info;
+            int controllo = 0;
+            boolean activate = false;
+            if (requestCode == 1 && resultCode == RESULT_OK) {
+                if (prezzo1.equals(s)) {
+                    activate = true;
+                    controllo = 1;
+                    ArrayList<Info> temp = new ArrayList<>();
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        if (i.getEligibleExpenditure() >= 0 && i.getEligibleExpenditure() <= 25000) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 1);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (prezzo2.equals(s)) {
+                    controllo = 2;
+                    activate = true;
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getEligibleExpenditure() > 25000 && i.getEligibleExpenditure() <= 50000) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 2);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (prezzo3.equals(s)) {
+                    controllo = 3;
+                    activate = true;
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getEligibleExpenditure() > 50000 && i.getEligibleExpenditure() <= 75000) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 3);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (prezzo4.equals(s)) {
+                    controllo = 4;
+                    activate = true;
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getEligibleExpenditure() > 75000 && i.getEligibleExpenditure() <= 100000) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 4);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (prezzo5.equals(s)) {
+                    controllo = 5;
+                    activate = true;
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getEligibleExpenditure() > 100000) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 5);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                }
+                if (venezia.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(venezia)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (verona.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(verona)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (vicenza.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(vicenza)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (treviso.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(treviso)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (padova.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(padova)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (belluno.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(belluno)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else if (rovigo.equalsIgnoreCase(t)) {
+                    ArrayList<Info> temp = new ArrayList<>();
+                    for (Info i : ris) {
+                        if (i.getProvince().equalsIgnoreCase(rovigo)) {
+                            temp.add(i);
+                        }
+                    }
+                    ris = temp;
+                    clusterPerson.clear();
+                    mClusterManager.clearItems();
+                    for (Info i : ris) {
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        if (!exist(clusterPerson, p.getPosition())) {
+                            clusterPerson.add(p);
+                            mClusterManager.addItem(p);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } else {
+                    if (!activate) {
+                        clusterPerson.clear();
+                        mClusterManager.clearItems();
+                        for (Info i : MainActivity.info) {
+                            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 0);
+                            if (!exist(clusterPerson, p.getPosition())) {
+                                clusterPerson.add(p);
+                                mClusterManager.addItem(p);
+                            }
+                        }
+                        mClusterManager.cluster();
+                    }
+                }
+            }
+        } else {
+            clusterPerson.clear();
+            mClusterManager.clearItems();
+            for (Info i : MainActivity.info) {
+                Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 0);
+                if (!exist(clusterPerson, p.getPosition())) {
+                    clusterPerson.add(p);
+                    mClusterManager.addItem(p);
+                }
+            }
+            mClusterManager.cluster();
+        }
+    }
 }

@@ -7,10 +7,9 @@
     <string name="contact">Contatti</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_maps">Map</string>
-    
-    
+
     <string-array name="PriceList">
-         <item>Seleziona prezzo</item>
+        <item>Seleziona prezzo</item>
         <item>Tra 0.00 € e 25.000 €</item>
         <item>Tra 25.000 € e 50.000 €</item>
         <item>Tra 50.000 € e 75.000 €</item>
@@ -19,20 +18,14 @@
     </string-array>
 
     <string-array name="ProvinceList">
-        <item>Seleziona la provincia</item>
-        <item>VENEZIA</item>
-        <item>TREVISO</item>
-        <item>VERONA</item>
-        <item>VICENZA</item>
-        <item>ROVIGO</item>
-        <item>PADOVA</item>
-        <item>BELLUNO</item>
+        <item> Seleziona la provincia </item>
+        <item> VENEZIA </item>
+        <item> TREVISO </item>
+        <item> VERONA </item>
+        <item> VICENZA </item>
+        <item> ROVIGO </item>
+        <item> PADOVA </item>
+        <item> BELLUNO </item>
 
     </string-array>
-
-    <string-array name="Order">
-        <item> Ordine alfabetico </item>
-        <item> A-Z </item>
-        <item> Z-A </item>
-    </string-array>
-</resources>
+    </resources>
