@@ -15,35 +15,36 @@
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
+        <!--android:layout_height="?attr/actionBarSize"-->
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
 
             <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_view"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="45dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
                 app:searchBackground="@color/colorPrimary"
+                app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
                 app:searchSuggestionBackground="@color/colorPrimary"
-                app:searchSuggestionIcon="@drawable/ic_suggestion"
-                app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted" />
+                app:searchSuggestionIcon="@drawable/ic_suggestion" />
 
 
         </android.support.v7.widget.Toolbar>
 
+        <!-- android:layout_height="wrap_content" -->
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="35dp">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"
@@ -61,32 +62,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
-
-
- <!-- <fragment
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/frg"
-        class ="it.ingte.bricks.TabList"/>
-!-->
 
 
 </android.support.design.widget.CoordinatorLayout>

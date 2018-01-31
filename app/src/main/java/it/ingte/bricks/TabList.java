@@ -409,6 +409,7 @@ public class TabList extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 result.clear();
+                a.clear();
                 Intent intent = new Intent(TabList.this.getActivity(), Filter.class);
                 startActivityForResult(intent, 1);
                 return false;
