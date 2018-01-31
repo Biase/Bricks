@@ -17,6 +17,7 @@
         android:textSize="25dp" />
 
 
+    
     <!-- Dati per Bassetto Davide -->
     <ImageView
         android:id="@+id/imageBiase"
