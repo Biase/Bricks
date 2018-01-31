@@ -20,8 +20,9 @@ public class Person implements ClusterItem {
     String cap;
     String summary;
     String provincia;
+    int control;
 
-    public Person(double lat, double lng, String beneficiaryName, String twitterHandle, double price, String operation, String summary, String town, String dateStart, String dateFinish, String cap, String provincia) {
+    public Person(double lat, double lng, String beneficiaryName, String twitterHandle, double price, String operation, String summary, String town, String dateStart, String dateFinish, String cap, String provincia, int control) {
         this.beneficiaryName = beneficiaryName;
         this.twitterHandle = twitterHandle;
         mPosition = new LatLng(lat, lng);
@@ -33,6 +34,7 @@ public class Person implements ClusterItem {
         this.cap = cap;
         this.summary = summary;
         this.provincia = provincia;
+        this.control = control;
     }
 
     public Person(String beneficiaryName, String operation, String town){
@@ -86,4 +88,6 @@ public class Person implements ClusterItem {
     public String getSummary(){ return summary; }
 
     public String getProvincia() { return provincia; }
+
+    public int getControl() { return control; }
 }
