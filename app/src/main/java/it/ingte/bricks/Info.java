@@ -2,6 +2,7 @@ package it.ingte.bricks;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -56,7 +57,6 @@ public class Info implements Parcelable {
         this.id = id;
         this.lat= lat;
         this.lng = lng;
-
     }
 
     public String getLocalIdentifier() {
@@ -286,4 +286,5 @@ public class Info implements Parcelable {
             return new Info[i];
         }
     };
+
 }

@@ -33,11 +33,11 @@ public class itemClick extends AppCompatActivity {
         Info info = (Info) getIntent().getParcelableExtra("myInfo");
         list.add("Beneficiario : " + info.getBeneficiaryName());
         list.add("Costo : €" + info.getEligibleExpenditure());
-        Log.e("qwertyui", "kjhgfd" + info.getEligibleExpenditure());
         list.add("Data di inizio : " + info.getStartOperation());
         list.add("Data di fine : " + info.getEndOpeation());
         list.add("Città : " + info.getTown());
         list.add("CAP :" + info.getCap());
+        list.add("Provincia :"+ info.getProvince());
         list.add("Sommario :" + info.getOperationSummary());
         list.add("Breve descrizione :" + info.getOperationName());
         list.add("latitudine :"+ info.getLat());

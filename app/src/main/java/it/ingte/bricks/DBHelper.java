@@ -112,10 +112,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
    public ArrayList<Info> getData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        //Stringhe che conterranno i dati clean
-       // String cap, town, province;
-     //   String delimiter = ":::";
-
         ArrayList<Info> info = new ArrayList<Info>();
         Cursor result = db.rawQuery("select * from record", null);
 
@@ -157,8 +153,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Info> a = new ArrayList<>();
-        String cap,town,province;
-        String delimiter=":::";
         String q = "SELECT * FROM record WHERE Town like '%" + input + "%' or Beneficiaryname like '%" + input + "%'";
         Cursor result = db.rawQuery(q, null);
         while (result.moveToNext()) {
@@ -174,32 +168,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return a;
 
     }
-
-  /*  public ArrayList<Info> getPriceMajor() throws SQLException{
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Info> a = new ArrayList<>();
-        Cursor result = db.rawQuery("select * from record where Eligibleexpenditure > 100.000",null);
-        while (result.moveToNext()){
-            a.add(new Info(result.getString(0),result.getString(1),
-        }
-        return a;
-
-    }
-    public ArrayList<Info> getPriceMinor() throws SQLException {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Info> a = new ArrayList<>();
-        Cursor result = db.rawQuery("select * from record where Eligibleexpenditure <= 100.000", null);
-        while (result.moveToNext()) {
-            a.add(new Info(result.getString(0), result.getString(1), result.getString(2),
-                    result.getString(3), result.getString(4).toLowerCase(),
-                    result.getString(5).toLowerCase(), result.getString(6), result.getString(7), result.getString(8),
-                    result.getString(9), result.getString(10), result.getString(11), result.getString(12), result.getString(14),
-                    result.getString(15), result.getString(16)));
-        }
-        return a;
-    } */
-
-
 
 }
 
