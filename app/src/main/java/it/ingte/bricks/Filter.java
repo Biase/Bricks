@@ -105,8 +105,12 @@ public class Filter extends AppCompatActivity implements Serializable {
         String textPrice = spin1.getSelectedItem().toString();
         String textProvince = spin2.getSelectedItem().toString();
         Intent i = new Intent(this, TabList.class);
-        i.putExtra("resultPrice", textPrice);
-        i.putExtra("resultProvince",textProvince);
+        if(spin1.getSelectedItem() == null && spin2.getSelectedItem() == null){
+        }
+        else {
+            i.putExtra("resultPrice", textPrice);
+            i.putExtra("resultProvince", textProvince);
+        }
         setResult(RESULT_OK, i);
         finish();
 

@@ -35,8 +35,6 @@ public class Info implements Parcelable {
     double lng;
 
 
-
-
     public Info(String localIdentifier, String projectCode, String beneficiarycode, String beneficiaryName, String operationName, String operationSummary, String startOperation, String endOpeation, double eligibleExpenditure, String taxFinanciate, String cap, String town, String province, String region, String country, String category, String id, double lat, double lng) {
         this.localIdentifier = localIdentifier;
         this.projectCode = projectCode;

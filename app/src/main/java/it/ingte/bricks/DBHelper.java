@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Data Base Name.
     private static final String DATABASE_NAME = "Dbricks.db";
     // Data Base Version.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 7;
     private static String DB_PATH = "/data/data/it.ingte.bricks/databases/";
     private static SQLiteDatabase sqliteDB;
     private Context context;
@@ -118,8 +118,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ArrayList<Info> info = new ArrayList<Info>();
         Cursor result = db.rawQuery("select * from record", null);
+       if(result!=null && result.getCount() > 0) {
+           if (result.moveToFirst()) {
+               while (result.moveToNext()) {
+                   info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
+                           result.getString(3), result.getString(4),
+                           result.getString(5), result.getString(6), result.getString(7), Double.parseDouble(cleanText(result.getString(8))),
+                           result.getString(9), result.getString(10), result.getString(11), result.getString(12), result.getString(13),
+                           result.getString(14), result.getString(15),result.getString(16),Double.parseDouble(result.getString(17)),Double.parseDouble(result.getString(18))));
 
-        while (result.moveToNext()) {
+               }
+
+           }
+       }
+
+      /*  while (result.moveToNext()) {
 
             info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
                     result.getString(3), result.getString(4),
@@ -127,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     result.getString(9), result.getString(10), result.getString(11), result.getString(12), result.getString(13),
                     result.getString(14), result.getString(15),result.getString(16),Double.parseDouble(result.getString(17)),Double.parseDouble(result.getString(18))));
 
-        }
+        } */
         return info;
 
     }
