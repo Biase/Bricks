@@ -69,7 +69,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         MapsInitializer.initialize(getContext());
         mMap = googleMap;
         setupMap(mMap);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.482344, 12.238054), 9));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
         mClusterManager = new ClusterManager<>(getContext(), mMap);
 
         mMap.setOnCameraIdleListener(mClusterManager);
@@ -250,6 +250,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                         mClusterManager.addItem(p);
                     }
                 }
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                 mClusterManager.cluster();
             }
         });
@@ -280,6 +281,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                         mClusterManager.addItem(p);
                     }
                 }
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                 mClusterManager.cluster();
                 return true;
             }
@@ -334,6 +336,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (prezzo2.equals(s)) {
                     controllo = 2;
@@ -354,6 +357,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (prezzo3.equals(s)) {
                     controllo = 3;
@@ -374,6 +378,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (prezzo4.equals(s)) {
                     controllo = 4;
@@ -394,6 +399,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (prezzo5.equals(s)) {
                     controllo = 5;
@@ -414,6 +420,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 }
                 if (venezia.equalsIgnoreCase(t)) {
@@ -433,6 +440,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (verona.equalsIgnoreCase(t)) {
                     ArrayList<Info> temp = new ArrayList<>();
@@ -451,6 +459,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (vicenza.equalsIgnoreCase(t)) {
                     ArrayList<Info> temp = new ArrayList<>();
@@ -469,6 +478,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (treviso.equalsIgnoreCase(t)) {
                     ArrayList<Info> temp = new ArrayList<>();
@@ -487,6 +497,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (padova.equalsIgnoreCase(t)) {
                     ArrayList<Info> temp = new ArrayList<>();
@@ -505,6 +516,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (belluno.equalsIgnoreCase(t)) {
                     ArrayList<Info> temp = new ArrayList<>();
@@ -523,6 +535,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else if (rovigo.equalsIgnoreCase(t)) {
                     ArrayList<Info> temp = new ArrayList<>();
@@ -541,6 +554,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                             mClusterManager.addItem(p);
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                     mClusterManager.cluster();
                 } else {
                     if (!activate) {
@@ -553,6 +567,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                                 mClusterManager.addItem(p);
                             }
                         }
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
                         mClusterManager.cluster();
                     }
                 }
@@ -567,6 +582,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     mClusterManager.addItem(p);
                 }
             }
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
             mClusterManager.cluster();
         }
     }
