@@ -43,6 +43,7 @@ public class TabList extends Fragment {
     MaterialSearchView searchView;
     ArrayList<Info> original = MainActivity.info;
     ArrayList<Info> result = new ArrayList<>();
+    ArrayList<Info> a = new ArrayList<>();
     final String prezzo1 = "Tra 0.00 € e 25.000 €";
     final String prezzo2 = "Tra 25.000 € e 50.000 €";
     final String prezzo3 = "Tra 50.000 € e 75.000 €";
@@ -66,6 +67,9 @@ public class TabList extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        for (Info i : result) {
+            Log.e("VUOTO?", "" + i.getBeneficiaryName() + "" + i.getProvince());
+        }
         super.onActivityResult(requestCode, resultCode, data);
 
         String s = data.getStringExtra("resultPrice");
@@ -73,10 +77,11 @@ public class TabList extends Fragment {
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             if (prezzo1.equals(s)) {
-                result.clear();
+                // result.clear();
                 for (Info i : original) {
                     if (i.getEligibleExpenditure() >= 0 && i.getEligibleExpenditure() <= 25000) {
                         result.add(i);
+                        Log.e("primaaa sceltaa", "" + i.getBeneficiaryName() + "" + i.getProvince());
                     }
 
                 }
@@ -90,7 +95,7 @@ public class TabList extends Fragment {
                     }
                 });
             } else if (prezzo2.equals(s)) {
-                result.clear();
+                // result.clear();
                 for (Info i : original) {
                     if (i.getEligibleExpenditure() > 25000 && i.getEligibleExpenditure() <= 50000) {
                         result.add(i);
@@ -108,7 +113,7 @@ public class TabList extends Fragment {
 
 
             } else if (prezzo3.equals(s)) {
-                result.clear();
+                // result.clear();
                 for (Info i : original) {
                     if (i.getEligibleExpenditure() > 50000 && i.getEligibleExpenditure() <= 75000) {
                         result.add(i);
@@ -124,7 +129,7 @@ public class TabList extends Fragment {
                     }
                 });
             } else if (prezzo4.equals(s)) {
-                result.clear();
+                //  result.clear();
                 for (Info i : original) {
                     if (i.getEligibleExpenditure() > 75000 && i.getEligibleExpenditure() <= 100000) {
                         result.add(i);
@@ -140,10 +145,11 @@ public class TabList extends Fragment {
                     }
                 });
             } else if (prezzo5.equals(s)) {
-                result.clear();
+                //  result.clear();
                 for (Info i : original) {
                     if (i.getEligibleExpenditure() > 100000) {
                         result.add(i);
+                        Log.d("RESULT", "" + i.getBeneficiaryName() + "" + i.getProvince());
                     }
                 }
                 generateList(result);
@@ -156,8 +162,7 @@ public class TabList extends Fragment {
                     }
                 });
             }
-            final ArrayList<Info> a = new ArrayList<>();
-            if(venezia.equals(t)) {
+            if (venezia.equals(t)) {
                 if (result.isEmpty()) {
                     for (Info i : original) {
                         if (i.getProvince().equals("VENEZIA")) {
@@ -165,11 +170,19 @@ public class TabList extends Fragment {
                         }
                     }
                     generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+
                 } else {
                     for (Info i : result) {
-                        Log.d("aaaaaa", "bbbbb " + i.getEligibleExpenditure() + " " + i.getBeneficiaryName());
                         if (i.getProvince().equals("VENEZIA")) {
-                            Log.e("qqqqqqqqq", "qwertyjnbvd" + i.beneficiaryName + "" + i.getEligibleExpenditure());
+                            //  Log.e("qqqqqqqqq", "qwertyjnbvd" + i.beneficiaryName + "" + i.getEligibleExpenditure());
                             a.add(i);
 
                         }
@@ -185,13 +198,201 @@ public class TabList extends Fragment {
                     });
 
                 }
+
+            } else if (treviso.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("TREVISO")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    for (Info i : result) {
+                        if (i.getProvince().equals("TREVISO")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            } else if (verona.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("VERONA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    for (Info i : result) {
+                        if (i.getProvince().equals("VERONA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            } else if (vicenza.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("VICENZA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    for (Info i : result) {
+                        if (i.getProvince().equals("VICENZA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            } else if (rovigo.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("ROVIGO")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    for (Info i : result) {
+                        if (i.getProvince().equals("ROVIGO")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            } else if (padova.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("PADOVA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    for (Info i : result) {
+                        if (i.getProvince().equals("PADOVA")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            } else if (belluno.equals(t)) {
+                if (result.isEmpty()) {
+                    for (Info i : original) {
+                        if (i.getProvince().equals("BELLUNO")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    for (Info i : result) {
+                        if (i.getProvince().equals("BELLUNO")) {
+                            a.add(i);
+                        }
+                    }
+                    generateList(a);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                            intent.putExtra("myInfo", a.get(i));
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
-
-
-
         }
-
-
     }
 
 
@@ -207,6 +408,7 @@ public class TabList extends Fragment {
 
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+                result.clear();
                 Intent intent = new Intent(TabList.this.getActivity(), Filter.class);
                 startActivityForResult(intent, 1);
                 return false;
