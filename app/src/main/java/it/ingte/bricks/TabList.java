@@ -44,6 +44,7 @@ public class TabList extends Fragment {
     ArrayList<Info> original = MainActivity.info;
     ArrayList<Info> result = new ArrayList<>();
     ArrayList<Info> a = new ArrayList<>();
+    ArrayList<Info> b = new ArrayList<>();
     final String prezzo1 = "Tra 0.00 € e 25.000 €";
     final String prezzo2 = "Tra 25.000 € e 50.000 €";
     final String prezzo3 = "Tra 50.000 € e 75.000 €";
@@ -66,7 +67,7 @@ public class TabList extends Fragment {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             String s = data.getStringExtra("resultPrice");
@@ -79,7 +80,7 @@ public class TabList extends Fragment {
                     for (Info i : original) {
                         if (i.getEligibleExpenditure() >= 0 && i.getEligibleExpenditure() <= 25000) {
                             result.add(i);
-                            Log.e("primaaa sceltaa", "" + i.getBeneficiaryName() + "" + i.getProvince());
+
                         }
 
                     }
@@ -399,7 +400,7 @@ public class TabList extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                                intent.putExtra("myInfo", a.get(i));
+                                intent.putExtra("myInfo", result.get(i));
                                 startActivity(intent);
 
                             }
@@ -417,7 +418,7 @@ public class TabList extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
-                    intent.putExtra("myInfo", a.get(i));
+                    intent.putExtra("myInfo", result.get(i));
                     startActivity(intent);
 
                 }
