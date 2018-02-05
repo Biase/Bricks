@@ -21,7 +21,7 @@ public class ProvaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prova);
 
-        TextView name= (TextView) findViewById(R.id.TextViewTitolo);
+        TextView name = (TextView) findViewById(R.id.TextViewTitolo);
         name.setText(getIntent().getStringExtra("name"));
         ListView mListView = (ListView) findViewById(R.id.listViewM);
         final ArrayList<Person> peopleList = new ArrayList<>();
@@ -111,4 +111,4 @@ public class ProvaActivity extends AppCompatActivity {
         });
 
     }
-}
+    }

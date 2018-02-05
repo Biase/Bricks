@@ -19,10 +19,11 @@ public class DBHelper extends SQLiteOpenHelper {
     // Data Base Name.
     private static final String DATABASE_NAME = "Dbricks.db";
     // Data Base Version.
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static String DB_PATH = "/data/data/it.ingte.bricks/databases/";
     private static SQLiteDatabase sqliteDB;
     private Context context;
+    private static final String TABLE_NAME = "record";
 
     /**
      * Constructor
@@ -50,6 +51,10 @@ public class DBHelper extends SQLiteOpenHelper {
         if (!databaseExist) {
             this.getWritableDatabase();
             copyDataBase();
+
+
+
+
         }
     }
 
@@ -61,6 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean checkDataBase() {
         File databaseFile = new File(DB_PATH + DATABASE_NAME);
         return databaseFile.exists();
+
     }
 
     /**
@@ -111,36 +117,26 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
    public ArrayList<Info> getData() {
+        Cursor result = null;
         SQLiteDatabase db = this.getReadableDatabase();
-        //Stringhe che conterranno i dati clean
-       // String cap, town, province;
-     //   String delimiter = ":::";
-
         ArrayList<Info> info = new ArrayList<Info>();
-        Cursor result = db.rawQuery("select * from record", null);
-       if(result!=null && result.getCount() > 0) {
-           if (result.moveToFirst()) {
+        result = db.rawQuery("select * from record", null);
+        if(result!=null && result.getCount() > 0) {
+           if(result.moveToFirst()) {
+
                while (result.moveToNext()) {
                    info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
                            result.getString(3), result.getString(4),
                            result.getString(5), result.getString(6), result.getString(7), Double.parseDouble(cleanText(result.getString(8))),
                            result.getString(9), result.getString(10), result.getString(11), result.getString(12), result.getString(13),
-                           result.getString(14), result.getString(15),result.getString(16),Double.parseDouble(result.getString(17)),Double.parseDouble(result.getString(18))));
+                           result.getString(14), result.getString(15), result.getString(16), Double.parseDouble(result.getString(17)), Double.parseDouble(result.getString(18))));
 
                }
-
            }
+
+
        }
 
-      /*  while (result.moveToNext()) {
-
-            info.add(new Info(result.getString(0), result.getString(1), result.getString(2),
-                    result.getString(3), result.getString(4),
-                    result.getString(5), result.getString(6), result.getString(7), Double.parseDouble(cleanText(result.getString(8))),
-                    result.getString(9), result.getString(10), result.getString(11), result.getString(12), result.getString(13),
-                    result.getString(14), result.getString(15),result.getString(16),Double.parseDouble(result.getString(17)),Double.parseDouble(result.getString(18))));
-
-        } */
         return info;
 
     }
@@ -157,7 +153,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String q = "CREATE TABLE record (_id INTEGER PRIMARY KEY AUTOINCREMENT)";
+        String q = "CREATE TABLE record (Localidentifierofoperation TEXT not null,Uniqueprojectcode TEXT not null," +
+                    "Beneficiaryfiscalcode TEXT not null,Beneficiaryname TEXT not null,Operationname TEXT not null,Operationsummary TEXT not null," +
+                    "Operationstartdate TEXT not null,Operationenddate TEXT not null,Eligibleexpenditure TEXT not null," +
+                    "EUcofinancingrate TEXT not null,CAP TEXT not null,Town TEXT not null,Province TEXT not null,Region TEXT not null," +
+                    "Country TEXT not null,Categoryofintervention TEXT not null,_id INTEGER PRIMARY KEY AUTOINCREMENT,lat TEXT not null,lng TEXT not null)";
         db.execSQL(q);
         Log.d("split", String.format("INPUT: %s", db.getPath()));
     }

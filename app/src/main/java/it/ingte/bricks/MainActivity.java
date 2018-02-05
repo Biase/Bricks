@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         info = manager.getDbhelper().getData();
 
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bricks");

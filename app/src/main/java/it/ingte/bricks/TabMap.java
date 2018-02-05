@@ -69,7 +69,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         MapsInitializer.initialize(getContext());
         mMap = googleMap;
         setupMap(mMap);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float)7.9));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float) 7.9));
         mClusterManager = new ClusterManager<>(getContext(), mMap);
 
         mMap.setOnCameraIdleListener(mClusterManager);
@@ -135,6 +135,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         }
         mMap.setMyLocationEnabled(true);
     }
+
     int project = 0;
 
     @Override
@@ -199,6 +200,8 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         });
         return false;
     }
+
+
 
     public boolean exist(ArrayList<Person> info, LatLng pos){
         for (Person p: info){

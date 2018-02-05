@@ -424,6 +424,35 @@ public class TabList extends Fragment {
                 }
             });
         }
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                ArrayList<Info> searchFil = MainActivity.manager.getDbhelper().getResult(query);
+                for( Info i: searchFil) {
+                    Log.e("qqqq", "aaaa" + i.getEligibleExpenditure());
+                }
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                }
+
+                result.retainAll(searchFil);
+                for(Info j : result) {
+                    Log.d("qqqqqqqq", "" + j.getEligibleExpenditure()+""+j.getBeneficiaryName());
+                }
+
+                generateList(searchFil);
+
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
     }
 
 
