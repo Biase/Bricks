@@ -18,10 +18,19 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/saveLoginCheckBox"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
-        android:text="Avvia applicazione"
-        android:onClick="ritorna"/>
+        android:onClick="ritorna"
+        android:text="Avvia applicazione" />
+
+    <CheckBox
+        android:id="@+id/saveLoginCheckBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Skip tutorial"
+        android:textColor="#000" />
+
 </RelativeLayout>
 
