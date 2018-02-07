@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="backgroundProject">#808080</color>
+    <color name="colorProgressBar">#FFFFFF</color>
 </resources>

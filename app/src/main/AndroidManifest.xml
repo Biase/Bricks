@@ -48,6 +48,13 @@
         <activity android:name=".Project"></activity>
         <activity android:name=".Contact"></activity>
         <activity android:name=".ProvaActivity"></activity>
-    </application>
+        <activity android:name=".Start"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".CircularBar"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
+
+    </application>
 </manifest>
