@@ -94,6 +94,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    long back_pressed;
+    @Override
+    public void onBackPressed() {
+        if (back_pressed + 1000 > System.currentTimeMillis()){
+            super.onBackPressed();
+        }
+        else{
+            Toast.makeText(getBaseContext(),
+                    "Are you sure you want to quit?", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        back_pressed = System.currentTimeMillis();
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

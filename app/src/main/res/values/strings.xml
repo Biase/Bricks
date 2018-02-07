@@ -27,4 +27,18 @@
         <item>PADOVA</item>
         <item>BELLUNO</item>
     </string-array>
+
+
+    <string-array name="Alfabetico">
+        <item>Seleziona ordine</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+    </string-array>
+
+
+    <string-array name="DataInizio">
+        <item>Selezione ordine</item>
+        <item>Crescente</item>
+        <item>Decrescente</item>
+    </string-array>
     </resources>

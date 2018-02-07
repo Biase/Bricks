@@ -37,6 +37,8 @@ public class Filter extends AppCompatActivity implements Serializable {
 
     Spinner spin1;
     Spinner spin2;
+    Spinner spin3;
+    Spinner spin4;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,18 +49,25 @@ public class Filter extends AppCompatActivity implements Serializable {
 
         spin1 = (Spinner) findViewById(R.id.spinner1);
         spin2 = (Spinner) findViewById(R.id.spinner2);
+        spin3 = (Spinner) findViewById(R.id.spinner3);
+        spin4 = (Spinner) findViewById(R.id.spinner4);
 
 
         TextView text1 = (TextView) findViewById(R.id.textSpin1);
         TextView text2 = (TextView) findViewById(R.id.textSpin2);
+        TextView text3 = (TextView) findViewById(R.id.textSpin3);
+        TextView text4 = (TextView) findViewById(R.id.textSpin4);
 
 
         Button button = (Button) findViewById(R.id.button1);
+        Button button1 = (Button) findViewById(R.id.button2);
 
 
         text0.setText("SELEZIONA I FILTRI DA APPLICARE");
         text1.setText("Prezzo :");
         text2.setText("Provincia :");
+        text3.setText("Ordine alfabetico :");
+        text4.setText("Ordine data inizio :");
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.PriceList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -68,7 +77,6 @@ public class Filter extends AppCompatActivity implements Serializable {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("caaaa","asdfgh"+spin1.getSelectedItem().toString());
 
 
             }
@@ -88,7 +96,7 @@ public class Filter extends AppCompatActivity implements Serializable {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                }
+            }
 
 
             @Override
@@ -97,24 +105,63 @@ public class Filter extends AppCompatActivity implements Serializable {
             }
         });
 
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.Alfabetico, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin3.setAdapter(adapter2);
+        spin3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this, R.array.DataInizio, android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin4.setAdapter(adapter3);
+        spin4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 
     public void ritorna(View v) {
         String textPrice = spin1.getSelectedItem().toString();
         String textProvince = spin2.getSelectedItem().toString();
+        String textAlfabetic = spin3.getSelectedItem().toString();
+        String textStartDate = spin4.getSelectedItem().toString();
         Intent i = new Intent(this, TabList.class);
-        if(spin1.getSelectedItem() == null && spin2.getSelectedItem() == null){
+        if(spin1.getSelectedItem() == null && spin2.getSelectedItem() == null &&
+                spin3.getSelectedItem() == null && spin4.getSelectedItem()== null){
         }
         else {
             i.putExtra("resultPrice", textPrice);
             i.putExtra("resultProvince", textProvince);
+            i.putExtra("resultAlfabetic",textAlfabetic);
+            i.putExtra("resultStartDate",textStartDate);
+
         }
         setResult(RESULT_OK, i);
         finish();
 
+
     }
+
+
 
 
 }

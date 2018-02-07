@@ -49,7 +49,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-
         String beneficiary = (getItem(position).getBeneficiaryName());
         String town = (getItem(position).getTown());
         String price = getItem(position).getEligibleExpenditure()+"";
@@ -75,6 +74,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
         }
 
         result = convertView;
+
 
 
         holder.beneficiary.setText(beneficiary);

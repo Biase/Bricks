@@ -29,6 +29,9 @@ import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,7 +47,6 @@ public class TabList extends Fragment {
     ArrayList<Info> original = MainActivity.info;
     ArrayList<Info> result = new ArrayList<>();
     ArrayList<Info> a = new ArrayList<>();
-    ArrayList<Info> b = new ArrayList<>();
     final String prezzo1 = "Tra 0.00 € e 25.000 €";
     final String prezzo2 = "Tra 25.000 € e 50.000 €";
     final String prezzo3 = "Tra 50.000 € e 75.000 €";
@@ -57,6 +59,10 @@ public class TabList extends Fragment {
     final String rovigo = "ROVIGO";
     final String padova = "PADOVA";
     final String belluno = "BELLUNO";
+    final String az = "A-Z";
+    final String za = "Z-A";
+    final String startDateCresc = "Crescente";
+    final String startDateDesc = "Decrescente";
 
 
     @Override
@@ -72,6 +78,8 @@ public class TabList extends Fragment {
         if (data != null) {
             String s = data.getStringExtra("resultPrice");
             String t = data.getStringExtra("resultProvince");
+            String b = data.getStringExtra("resultAlfabetic");
+            String dc = data.getStringExtra("resultStartDate");
             boolean activate = false;
 
             if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -162,6 +170,7 @@ public class TabList extends Fragment {
                     });
                 }
                 if (venezia.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("VENEZIA")) {
@@ -181,7 +190,6 @@ public class TabList extends Fragment {
                     } else {
                         for (Info i : result) {
                             if (i.getProvince().equals("VENEZIA")) {
-                                //  Log.e("qqqqqqqqq", "qwertyjnbvd" + i.beneficiaryName + "" + i.getEligibleExpenditure());
                                 a.add(i);
 
                             }
@@ -199,13 +207,14 @@ public class TabList extends Fragment {
                     }
 
                 } else if (treviso.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("TREVISO")) {
                                 a.add(i);
                             }
                         }
-                        generateList(a);
+
                         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -231,6 +240,7 @@ public class TabList extends Fragment {
                         });
                     }
                 } else if (verona.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("VERONA")) {
@@ -263,6 +273,7 @@ public class TabList extends Fragment {
                         });
                     }
                 } else if (vicenza.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("VICENZA")) {
@@ -295,6 +306,7 @@ public class TabList extends Fragment {
                         });
                     }
                 } else if (rovigo.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("ROVIGO")) {
@@ -327,6 +339,7 @@ public class TabList extends Fragment {
                         });
                     }
                 } else if (padova.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("PADOVA")) {
@@ -359,6 +372,7 @@ public class TabList extends Fragment {
                         });
                     }
                 } else if (belluno.equals(t)) {
+                    activate = true;
                     if (result.isEmpty()) {
                         for (Info i : original) {
                             if (i.getProvince().equals("BELLUNO")) {
@@ -390,7 +404,134 @@ public class TabList extends Fragment {
                             }
                         });
                     }
-                } else {
+
+                }
+                if (az.equals(b)) {
+                    activate = true;
+                    if (result.isEmpty()) {
+                        Collections.sort(original, new Comparator<Info>() {
+
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s1.compareToIgnoreCase(s2);
+                            }
+                        });
+                        generateList(original);
+                    } else {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s1.compareToIgnoreCase(s2);
+                            }
+                        });
+
+                        generateList(a);
+
+                    }
+                } else if (za.equals(b)) {
+                    activate = true;
+                    if (result.isEmpty()) {
+                        Collections.sort(original, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s2.compareToIgnoreCase(s1);
+
+                            }
+                        });
+                        generateList(original);
+                    } else {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s2.compareToIgnoreCase(s1);
+                            }
+                        });
+                        generateList(a);
+                    }
+                }
+                if(startDateCresc.equals(dc)) {
+                    activate = true;
+                    if (result.isEmpty()) {
+                        Collections.sort(original, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+                        generateList(original);
+                    }
+                    else{
+                        Collections.sort(a, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+
+                        generateList(a);
+                    }
+                }
+                else if (startDateDesc.equals(dc)){
+                    activate=true;
+                    if (result.isEmpty()) {
+                        Collections.sort(original, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+                        generateList(original);
+                    }
+                    else{
+                        Collections.sort(a, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+
+                        generateList(a);
+                    }
+                }
+
+
+                else{
                     if (!activate) {
                         for (Info i : original) {
                             result.add(i);
@@ -424,35 +565,8 @@ public class TabList extends Fragment {
                 }
             });
         }
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                ArrayList<Info> searchFil = MainActivity.manager.getDbhelper().getResult(query);
-                for( Info i: searchFil) {
-                    Log.e("qqqq", "aaaa" + i.getEligibleExpenditure());
-                }
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-                }
-
-                result.retainAll(searchFil);
-                for(Info j : result) {
-                    Log.d("qqqqqqqq", "" + j.getEligibleExpenditure()+""+j.getBeneficiaryName());
-                }
-
-                generateList(searchFil);
 
 
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
     }
 
 
@@ -537,13 +651,10 @@ public class TabList extends Fragment {
                 return true;
             }
 
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return true;
             }
-
-
         });
 
     }
