@@ -63,7 +63,8 @@ public class TabList extends Fragment {
     final String za = "Z-A";
     final String startDateCresc = "Crescente";
     final String startDateDesc = "Decrescente";
-
+    final String orderPriceCresc = "Crescente";
+    final String orderPriceDesc = "Decrescente";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class TabList extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -80,6 +82,7 @@ public class TabList extends Fragment {
             String t = data.getStringExtra("resultProvince");
             String b = data.getStringExtra("resultAlfabetic");
             String dc = data.getStringExtra("resultStartDate");
+            String op = data.getStringExtra("resultOrderPrice");
             boolean activate = false;
 
             if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -406,9 +409,11 @@ public class TabList extends Fragment {
                     }
 
                 }
+
+
                 if (az.equals(b)) {
                     activate = true;
-                    if (result.isEmpty()) {
+                    if (result.isEmpty() && a.isEmpty()) {
                         Collections.sort(original, new Comparator<Info>() {
 
                             @Override
@@ -419,6 +424,54 @@ public class TabList extends Fragment {
                             }
                         });
                         generateList(original);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", original.get(position));
+                                startActivity(intent);
+                            }
+                        });
+
+                    } else if (!result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(result, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s1.compareToIgnoreCase(s2);
+                            }
+                        });
+                        generateList(result);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", result.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (result.isEmpty() && !a.isEmpty()) {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s1.compareToIgnoreCase(s2);
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
                     } else {
                         Collections.sort(a, new Comparator<Info>() {
                             @Override
@@ -430,11 +483,20 @@ public class TabList extends Fragment {
                         });
 
                         generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
 
                     }
                 } else if (za.equals(b)) {
                     activate = true;
-                    if (result.isEmpty()) {
+                    if (result.isEmpty() && a.isEmpty()) {
                         Collections.sort(original, new Comparator<Info>() {
                             @Override
                             public int compare(Info o1, Info o2) {
@@ -445,6 +507,56 @@ public class TabList extends Fragment {
                             }
                         });
                         generateList(original);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", original.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (!result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(result, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s2.compareToIgnoreCase(s1);
+                            }
+                        });
+                        generateList(result);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", result.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (result.isEmpty() && !a.isEmpty()) {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                String s1 = o1.getBeneficiaryName();
+                                String s2 = o2.getBeneficiaryName();
+                                return s2.compareToIgnoreCase(s2);
+                            }
+                        });
+
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
                     } else {
                         Collections.sort(a, new Comparator<Info>() {
                             @Override
@@ -455,13 +567,25 @@ public class TabList extends Fragment {
                             }
                         });
                         generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+
                     }
                 }
-                if(startDateCresc.equals(dc)) {
+                if (startDateCresc.equals(dc)) {
                     activate = true;
-                    if (result.isEmpty()) {
+                    if (result.isEmpty() && a.isEmpty()) {
                         Collections.sort(original, new Comparator<Info>() {
                             DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
                             @Override
                             public int compare(Info o1, Info o2) {
                                 try {
@@ -474,10 +598,71 @@ public class TabList extends Fragment {
                             }
                         });
                         generateList(original);
-                    }
-                    else{
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", original.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (!result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(result, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+                        generateList(result);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", result.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (result.isEmpty() && !a.isEmpty()) {
                         Collections.sort(a, new Comparator<Info>() {
                             DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+                    } else {
+                        Collections.sort(a, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
                             @Override
                             public int compare(Info o1, Info o2) {
                                 try {
@@ -491,13 +676,23 @@ public class TabList extends Fragment {
                         });
 
                         generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
                     }
-                }
-                else if (startDateDesc.equals(dc)){
-                    activate=true;
-                    if (result.isEmpty()) {
+                } else if (startDateDesc.equals(dc)) {
+                    activate = true;
+                    if (result.isEmpty() && a.isEmpty()) {
                         Collections.sort(original, new Comparator<Info>() {
                             DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
                             @Override
                             public int compare(Info o1, Info o2) {
                                 try {
@@ -510,10 +705,20 @@ public class TabList extends Fragment {
                             }
                         });
                         generateList(original);
-                    }
-                    else{
-                        Collections.sort(a, new Comparator<Info>() {
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", original.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (!result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(result, new Comparator<Info>() {
                             DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
                             @Override
                             public int compare(Info o1, Info o2) {
                                 try {
@@ -525,13 +730,263 @@ public class TabList extends Fragment {
                                 return 0;
                             }
                         });
+                        generateList(result);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", result.get(position));
+                                startActivity(intent);
 
+                            }
+                        });
+
+                    } else if (result.isEmpty() && !a.isEmpty()) {
+                        Collections.sort(a, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
                         generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else {
+                        Collections.sort(a, new Comparator<Info>() {
+                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                try {
+                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return 0;
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
                     }
                 }
+                if (orderPriceCresc.equals(op)) {
+                    activate = true;
+                    if (result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(original, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                return (s1 <= s2) ? -1 : 1;
 
+                            }
+                        });
+                        generateList(original);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", original.get(position));
+                                startActivity(intent);
 
-                else{
+                            }
+                        });
+
+                    } else if (!result.isEmpty() && a.isEmpty()) {
+
+                        Collections.sort(result, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                return (s1 <= s2) ? -1 : 1;
+
+                            }
+                        });
+                        generateList(result);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", result.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (result.isEmpty() && !a.isEmpty()) {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                return (s1 <= s2) ? -1 : 1;
+
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                return (s1 <= s2) ? -1 : 1;
+
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    }
+
+                } else if (orderPriceDesc.equals(op)) {
+                    activate = true;
+                    if (result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(original, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                if (s1 >= s2) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+
+                            }
+
+                        });
+                        generateList(original);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", original.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (!result.isEmpty() && a.isEmpty()) {
+                        Collections.sort(result, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                if (s1 >= s2) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+
+                            }
+                        });
+                        generateList(result);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", result.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else if (result.isEmpty() && !a.isEmpty()) {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                if (s1 >= s2) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    } else {
+                        Collections.sort(a, new Comparator<Info>() {
+                            @Override
+                            public int compare(Info o1, Info o2) {
+                                double s1 = o1.getEligibleExpenditure();
+                                double s2 = o2.getEligibleExpenditure();
+                                if (s1 >= s2) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+                            }
+                        });
+                        generateList(a);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
+                                intent.putExtra("myInfo", a.get(position));
+                                startActivity(intent);
+
+                            }
+                        });
+
+                    }
+                } else {
                     if (!activate) {
                         for (Info i : original) {
                             result.add(i);
@@ -550,6 +1005,7 @@ public class TabList extends Fragment {
                 }
             }
 
+
         } else {
             for (Info i : original) {
                 result.add(i);
@@ -565,8 +1021,6 @@ public class TabList extends Fragment {
                 }
             });
         }
-
-
     }
 
 

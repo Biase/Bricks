@@ -39,6 +39,7 @@ public class Filter extends AppCompatActivity implements Serializable {
     Spinner spin2;
     Spinner spin3;
     Spinner spin4;
+    Spinner spin5;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,12 +52,13 @@ public class Filter extends AppCompatActivity implements Serializable {
         spin2 = (Spinner) findViewById(R.id.spinner2);
         spin3 = (Spinner) findViewById(R.id.spinner3);
         spin4 = (Spinner) findViewById(R.id.spinner4);
-
+        spin5 = (Spinner) findViewById(R.id.spinner5);
 
         TextView text1 = (TextView) findViewById(R.id.textSpin1);
         TextView text2 = (TextView) findViewById(R.id.textSpin2);
         TextView text3 = (TextView) findViewById(R.id.textSpin3);
         TextView text4 = (TextView) findViewById(R.id.textSpin4);
+        TextView text5 = (TextView) findViewById(R.id.textSpin5);
 
 
         Button button = (Button) findViewById(R.id.button1);
@@ -68,6 +70,7 @@ public class Filter extends AppCompatActivity implements Serializable {
         text2.setText("Provincia :");
         text3.setText("Ordine alfabetico :");
         text4.setText("Ordine data inizio :");
+        text5.setText("Ordine per prezzo :");
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.PriceList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -136,6 +139,22 @@ public class Filter extends AppCompatActivity implements Serializable {
 
             }
         });
+
+        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,R.array.Prezzo,android.R.layout.simple_spinner_item);
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin5.setAdapter(adapter4);
+        spin5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 
@@ -144,16 +163,17 @@ public class Filter extends AppCompatActivity implements Serializable {
         String textProvince = spin2.getSelectedItem().toString();
         String textAlfabetic = spin3.getSelectedItem().toString();
         String textStartDate = spin4.getSelectedItem().toString();
+        String textOrderPrice = spin5.getSelectedItem().toString();
         Intent i = new Intent(this, TabList.class);
         if(spin1.getSelectedItem() == null && spin2.getSelectedItem() == null &&
-                spin3.getSelectedItem() == null && spin4.getSelectedItem()== null){
+                spin3.getSelectedItem() == null && spin4.getSelectedItem()== null && spin5.getSelectedItem()==null){
         }
         else {
             i.putExtra("resultPrice", textPrice);
             i.putExtra("resultProvince", textProvince);
             i.putExtra("resultAlfabetic",textAlfabetic);
             i.putExtra("resultStartDate",textStartDate);
-
+            i.putExtra("resultOrderPrice",textOrderPrice);
         }
         setResult(RESULT_OK, i);
         finish();

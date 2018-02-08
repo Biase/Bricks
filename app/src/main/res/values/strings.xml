@@ -37,7 +37,13 @@
 
 
     <string-array name="DataInizio">
-        <item>Selezione ordine</item>
+        <item>Seleziona ordine</item>
+        <item>Crescente</item>
+        <item>Decrescente</item>
+    </string-array>
+
+    <string-array name="Prezzo">
+        <item>Seleziona ordine</item>
         <item>Crescente</item>
         <item>Decrescente</item>
     </string-array>
