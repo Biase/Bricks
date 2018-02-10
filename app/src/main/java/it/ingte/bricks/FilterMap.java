@@ -27,7 +27,7 @@ public class FilterMap extends AppCompatActivity implements Serializable {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.filter);
+        setContentView(R.layout.filter_map);
 
         TextView text0 = (TextView) findViewById(R.id.text0);
 
