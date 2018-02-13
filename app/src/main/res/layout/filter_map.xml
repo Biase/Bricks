@@ -42,14 +42,17 @@
 
     <Spinner
         android:id="@+id/spinner1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/textSpin1"
         android:layout_marginEnd="22dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="40dp"
         android:paddingBottom="35dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textSpin1"
         app:layout_constraintTop_toBottomOf="@+id/text0"
         tools:ignore="UnknownId" />
 
@@ -71,14 +74,17 @@
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/spinner1"
         android:layout_below="@+id/spinner1"
         android:layout_marginEnd="22dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="115dp"
         android:paddingBottom="37dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textSpin2"
         app:layout_constraintTop_toBottomOf="@+id/text0" />
 
     <Button
