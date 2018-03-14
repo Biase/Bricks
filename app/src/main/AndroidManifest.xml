@@ -16,6 +16,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/bricks"
+        android:largeHeap="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -45,9 +46,11 @@
         <activity android:name=".itemClick"></activity>
         <activity android:name=".Filter"></activity>
         <activity android:name=".FilterMap"></activity>
+        <activity android:name=".FilterBenificiary"></activity>
         <activity android:name=".Project"></activity>
         <activity android:name=".Contact"></activity>
         <activity android:name=".ProvaActivity"></activity>
+        <activity android:name=".ActivityBeneficiary"></activity>
         <activity android:name=".Start"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

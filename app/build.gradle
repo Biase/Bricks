@@ -20,6 +20,10 @@ android {
     buildToolsVersion '26.0.2'
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -33,5 +37,5 @@ dependencies {
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.android.support:design:26.0.2'
     compile 'com.google.maps.android:android-maps-utils:0.5'
-
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }
