@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,39 +40,50 @@ import static android.app.Activity.RESULT_OK;
 
 public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterItemClickListener<Person>, OnRequestPermissionsResultCallback {
     GoogleMap mMap;
-    ViewGroup container;
+    //ViewGroup container;
     MapView mMapView;
-    View mView;
+    //View mView;
     ClusterManager<Person> mClusterManager;
     ArrayList<Person> clusterPerson = new ArrayList<>();
     private final int MY_PERMISSION_FINE_LOCATION = 101;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.container = container;
-        mView = inflater.inflate(R.layout.activity_maps, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        return mView;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //this.container = container;
+        View mView1 = inflater.inflate(R.layout.activity_maps, container, false);
+        //setHasOptionsMenu(true);
+        return mView1;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInStanceState) {
         super.onViewCreated(view, savedInStanceState);
-        mMapView = (MapView) mView.findViewById(R.id.map);
+        mMapView = (MapView) view.findViewById(R.id.map);
         if (mMapView != null) {
-            mMapView.onCreate(null);
+            mMapView.onCreate(savedInStanceState);
             mMapView.onResume();
             mMapView.getMapAsync(this);
-        }
+        } else {
+            mMapView.onCreate(savedInStanceState);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);}
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MapsInitializer.initialize(getContext());
         mMap = googleMap;
         setupMap(mMap);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.758344, 11.908054), (float) 7.9));
         mClusterManager = new ClusterManager<>(getContext(), mMap);
+
+        clusterPerson.clear();
+        mClusterManager.clearItems();
 
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnInfoWindowClickListener(mClusterManager);
@@ -105,7 +118,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
     private void addPersonItems() {
         ArrayList<Info> info = MainActivity.manager.getDbhelper().getData();
         for(Info i: info) {
-            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 0);
+            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), 0);
             if(!exist(clusterPerson, p.getPosition())){
                 clusterPerson.add(p);
                 mClusterManager.addItem(p);
@@ -201,8 +214,6 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         return false;
     }
 
-
-
     public boolean exist(ArrayList<Person> info, LatLng pos){
         for (Person p: info){
             if(p.getPosition().longitude == pos.longitude && p.getPosition().latitude == pos.latitude){
@@ -247,7 +258,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                 clusterPerson.clear();
                 mClusterManager.clearItems();
                 for(Info i: MainActivity.info) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),0);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),0);
                     if(!exist(clusterPerson, p.getPosition())){
                         clusterPerson.add(p);
                         mClusterManager.addItem(p);
@@ -278,7 +289,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
 
                 }
                 for(Info i: result) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),0);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),0);
                     if(!exist(clusterPerson, p.getPosition())){
                         clusterPerson.add(p);
                         mClusterManager.addItem(p);
@@ -333,7 +344,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     }
                     ris = temp;
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 1);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),  i.getCategory(),1);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -354,7 +365,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 2);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),  i.getCategory(),2);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -375,7 +386,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 3);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),  i.getCategory(),3);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -396,7 +407,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 4);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), 4);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -417,7 +428,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 5);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),  i.getCategory(),5);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -437,7 +448,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -456,7 +467,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -475,7 +486,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -494,7 +505,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -513,7 +524,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -532,7 +543,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -551,7 +562,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                     clusterPerson.clear();
                     mClusterManager.clearItems();
                     for (Info i : ris) {
-                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), controllo);
+                        Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), controllo);
                         if (!exist(clusterPerson, p.getPosition())) {
                             clusterPerson.add(p);
                             mClusterManager.addItem(p);
@@ -564,7 +575,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                         clusterPerson.clear();
                         mClusterManager.clearItems();
                         for (Info i : MainActivity.info) {
-                            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 0);
+                            Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), 0);
                             if (!exist(clusterPerson, p.getPosition())) {
                                 clusterPerson.add(p);
                                 mClusterManager.addItem(p);
@@ -579,7 +590,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
             clusterPerson.clear();
             mClusterManager.clearItems();
             for (Info i : MainActivity.info) {
-                Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), 0);
+                Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(), 0);
                 if (!exist(clusterPerson, p.getPosition())) {
                     clusterPerson.add(p);
                     mClusterManager.addItem(p);

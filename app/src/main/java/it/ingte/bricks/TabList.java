@@ -1,17 +1,12 @@
 package it.ingte.bricks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,23 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,11 +34,14 @@ public class TabList extends Fragment {
     ArrayList<Info> original = MainActivity.info;
     ArrayList<Info> result = new ArrayList<>();
     ArrayList<Info> a = new ArrayList<>();
+
+    //filtri
     final String prezzo1 = "Tra 0.00 € e 25.000 €";
     final String prezzo2 = "Tra 25.000 € e 50.000 €";
     final String prezzo3 = "Tra 50.000 € e 75.000 €";
     final String prezzo4 = "Tra 75.000 € e 100.000 €";
     final String prezzo5 = "Superiore 100.000 €";
+
     final String venezia = "VENEZIA";
     final String treviso = "TREVISO";
     final String verona = "VERONA";
@@ -59,10 +49,26 @@ public class TabList extends Fragment {
     final String rovigo = "ROVIGO";
     final String padova = "PADOVA";
     final String belluno = "BELLUNO";
+
+    final String ds5 = "2015";
+    final String ds6 = "2016";
+    final String ds7 = "2017";
+    final String de6 = "2016";
+    final String de7 = "2017";
+    final String de8 = "2018";
+    final String de9 = "2019";
+    final String de20 = "2020";
+    final String de23 = "2023";
+
+    //ordinamento
     final String az = "A-Z";
     final String za = "Z-A";
-    final String startDateCresc = "Crescente";
-    final String startDateDesc = "Decrescente";
+
+    final String startDateCresc = "Primo a iniziare";
+    final String startDateDesc = "Ultimo a iniziare";
+    final String endDateCresc = "Primo a finire";
+    final String endDateDesc = "Ultimo a finire";
+
     final String orderPriceCresc = "Crescente";
     final String orderPriceDesc = "Decrescente";
 
@@ -80,6 +86,8 @@ public class TabList extends Fragment {
         if (data != null) {
             String s = data.getStringExtra("resultPrice");
             String t = data.getStringExtra("resultProvince");
+            String ds = data.getStringExtra("resultDateStart");
+            String de = data.getStringExtra("resultDateEnd");
             String b = data.getStringExtra("resultAlfabetic");
             String dc = data.getStringExtra("resultStartDate");
             String op = data.getStringExtra("resultOrderPrice");
@@ -1118,7 +1126,7 @@ public class TabList extends Fragment {
         lst.setAdapter(adapter);
     }
 
-
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_list, container, false);
         lst = (ListView) rootView.findViewById(R.id.lstView);
@@ -1128,6 +1136,7 @@ public class TabList extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(TabList.this.getActivity(), itemClick.class);
                 intent.putExtra("myInfo", original.get(i));
+                intent.putExtra("classe", "TabList");
                 startActivity(intent);
             }
         });

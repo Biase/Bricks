@@ -33,42 +33,42 @@ public class ProvaActivity extends AppCompatActivity {
             LatLng temp = (LatLng) getIntent().getParcelableExtra("position");
             if(control == 0) {
                 if (temp.latitude == i.getLat() && temp.longitude == i.getLng() && i.getBeneficiaryName().equalsIgnoreCase(getIntent().getStringExtra("name"))) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),0);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),0);
                     peopleList.add(p);
                     project++;
                 }
             }
             if(control == 1) {
                 if (i.getEligibleExpenditure() >= 0 && i.getEligibleExpenditure()<= 25000 && temp.latitude == i.getLat() && temp.longitude == i.getLng() && i.getBeneficiaryName().equalsIgnoreCase(getIntent().getStringExtra("name"))) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),1);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),1);
                     peopleList.add(p);
                     project++;
                 }
             }
             if(control == 2) {
                 if (i.getEligibleExpenditure() > 25000 && i.getEligibleExpenditure()<= 50000 && temp.latitude == i.getLat() && temp.longitude == i.getLng() && i.getBeneficiaryName().equalsIgnoreCase(getIntent().getStringExtra("name"))) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),1);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),1);
                     peopleList.add(p);
                     project++;
                 }
             }
             if(control == 3) {
                 if (i.getEligibleExpenditure() > 50000 && i.getEligibleExpenditure()<= 75000 && temp.latitude == i.getLat() && temp.longitude == i.getLng() && i.getBeneficiaryName().equalsIgnoreCase(getIntent().getStringExtra("name"))) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),1);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),1);
                     peopleList.add(p);
                     project++;
                 }
             }
             if(control == 4) {
                 if (i.getEligibleExpenditure() > 75000 && i.getEligibleExpenditure()<= 100000 && temp.latitude == i.getLat() && temp.longitude == i.getLng() && i.getBeneficiaryName().equalsIgnoreCase(getIntent().getStringExtra("name"))) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),1);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),1);
                     peopleList.add(p);
                     project++;
                 }
             }
             if(control == 5) {
                 if (i.getEligibleExpenditure() > 100000 && temp.latitude == i.getLat() && temp.longitude == i.getLng() && i.getBeneficiaryName().equalsIgnoreCase(getIntent().getStringExtra("name"))) {
-                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(),1);
+                    Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),1);
                     peopleList.add(p);
                     project++;
                 }
@@ -102,11 +102,11 @@ public class ProvaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i("boh", ""+i);
                 Info a = new Info("", "", "", peopleList.get(i).getBeneficiaryName(), peopleList.get(i).getOperation(), peopleList.get(i).getSummary(), peopleList.get(i).getDateStart(),
-                        peopleList.get(i).getDateFinish(), peopleList.get(i).getPrice(), "", peopleList.get(i).getCap(), peopleList.get(i).getTown(), peopleList.get(i).getProvincia(), "", "", "", "",
+                        peopleList.get(i).getDateFinish(), peopleList.get(i).getPrice(), "", peopleList.get(i).getCap(), peopleList.get(i).getTown(), peopleList.get(i).getProvincia(), "", "", peopleList.get(i).getCategoty(), "",
                         (peopleList.get(i).getPosition()).latitude, (peopleList.get(i).getPosition()).longitude);
                 Intent intent=new Intent(ProvaActivity.this,itemClick.class);
                 intent.putExtra("myInfo", a);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 

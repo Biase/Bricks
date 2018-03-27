@@ -160,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     TabList tab2 = new TabList();
                     return tab2;
+                case 2:
+                    TabBeneficiary tab3 = new TabBeneficiary();
+                    return tab3;
                 default:
                     return null;
             }
@@ -167,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-            return 2;
+            // Show 3 total pages.
+            return 3;
         }
     }
 

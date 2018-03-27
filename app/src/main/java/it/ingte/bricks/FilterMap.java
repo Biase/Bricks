@@ -43,7 +43,7 @@ public class FilterMap extends AppCompatActivity implements Serializable {
 
 
         text0.setText("SELEZIONA I FILTRI DA APPLICARE");
-        text1.setText("Prezzo :");
+        text1.setText("Importo :");
         text2.setText("Provincia :");
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.PriceList, android.R.layout.simple_spinner_item);

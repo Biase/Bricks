@@ -25,10 +25,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
     private int textViewResourceId;
     private List<Info> info;
 
-
-
-
-
     public MyCustomAdapter(Context ct, int textViewResourceId, List<Info> info) {
         super(ct, textViewResourceId, info);
         this.ct = ct;
@@ -41,9 +37,6 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
         TextView town;
         TextView price;
     }
-
-
-
 
     @NonNull
     @Override
@@ -75,14 +68,36 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         result = convertView;
 
-
-
         holder.beneficiary.setText(beneficiary);
         holder.town.setText(town);
-        holder.price.setText(price+" €");
+        String imp = aggiustaStr(price);
+        holder.price.setText(imp+" €");
         return convertView;
 
 
+    }
+
+    public String aggiustaStr(String s){
+        for(int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == '.'){
+                if(s.length()-i == 2){
+                    s += "0";
+                }
+                String t = s.substring(0,i);
+                t += ",";
+                t += s.substring(i+1, s.length());
+                s = t;
+                int j = i-4;
+                while(j >= 0){
+                    String x = s.substring(0,j+1);
+                    x += ".";
+                    x += s.substring(j+1, s.length());
+                    s = x;
+                    j-=3;
+                }
+            }
+        }
+        return s;
     }
 
 }

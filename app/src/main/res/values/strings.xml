@@ -1,15 +1,17 @@
 <resources>
     <string name="app_name">Bricks</string>
-    <string name="tab_text_1">Map</string>
-    <string name="tab_text_2">List</string>
+    <string name="tab_text_1">Mappa</string>
+    <string name="tab_text_2">Progetti</string>
+    <string name="tab_text_3">Beneficiari</string>
     <string name="project">Il Progetto</string>
     <string name="we">Chi siamo</string>
     <string name="contact">Contatti</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_maps">Map</string>
 
+
     <string-array name="PriceList">
-        <item>Seleziona prezzo</item>
+        <item> </item>
         <item>Tra 0.00 € e 25.000 €</item>
         <item>Tra 25.000 € e 50.000 €</item>
         <item>Tra 50.000 € e 75.000 €</item>
@@ -18,7 +20,7 @@
     </string-array>
 
     <string-array name="ProvinceList">
-        <item>Seleziona la provincia</item>
+        <item> </item>
         <item>VENEZIA</item>
         <item>TREVISO</item>
         <item>VERONA</item>
@@ -28,22 +30,39 @@
         <item>BELLUNO</item>
     </string-array>
 
+    <string-array name="DateStartList">
+        <item> </item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+    </string-array>
+
+    <string-array name="DateEndList">
+        <item> </item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2023</item>
+    </string-array>
 
     <string-array name="Alfabetico">
-        <item>Seleziona ordine</item>
+        <item> </item>
         <item>A-Z</item>
         <item>Z-A</item>
     </string-array>
 
-
     <string-array name="DataInizio">
-        <item>Seleziona ordine</item>
-        <item>Crescente</item>
-        <item>Decrescente</item>
+        <item> </item>
+        <item>Primo a iniziare</item>
+        <item>Ultimo a iniziare</item>
+        <item>Primo a finire</item>
+        <item>Ultimo a finire</item>
     </string-array>
 
-    <string-array name="Prezzo">
-        <item>Seleziona ordine</item>
+    <string-array name="Importo">
+        <item> </item>
         <item>Crescente</item>
         <item>Decrescente</item>
     </string-array>

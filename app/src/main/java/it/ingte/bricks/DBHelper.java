@@ -130,13 +130,9 @@ public class DBHelper extends SQLiteOpenHelper {
                            result.getString(5), result.getString(6), result.getString(7), Double.parseDouble(cleanText(result.getString(8))),
                            result.getString(9), result.getString(10), result.getString(11), result.getString(12), result.getString(13),
                            result.getString(14), result.getString(15), result.getString(16), Double.parseDouble(result.getString(17)), Double.parseDouble(result.getString(18))));
-
                }
            }
-
-
        }
-
         return info;
 
     }

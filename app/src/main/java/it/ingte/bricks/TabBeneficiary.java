@@ -1080,10 +1080,13 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                         });
                         */
                         generateList(original);
-                        Collections.reverse(original);
-                        Collections.reverse(mediaImporto);
-                        barChart.clear();
-                        populateGraphic();
+                        if(mediaImporto.get(0) > mediaImporto.get(mediaImporto.size()-1)) {
+                            Collections.reverse(original);
+                            Collections.reverse(mediaImporto);
+                            barChart.clear();
+                            populateGraphic();
+                        }
+                        barChart.zoom(0f, 0f, 0f, 0f);
                         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
@@ -1204,10 +1207,14 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                         });
                         */
                         generateList(original);
-                        Collections.reverse(original);
-                        Collections.reverse(mediaImporto);
-                        barChart.clear();
-                        populateGraphic();
+                        if(mediaImporto.get(0) < mediaImporto.get(mediaImporto.size()-1)) {
+                            Collections.reverse(original);
+                            Collections.reverse(mediaImporto);
+                            barChart.clear();
+                            populateGraphic();
+                        }
+                        Log.i("grafic", "entro qua");
+                        barChart.zoom(0f, 0f, 0f, 0);
                         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
@@ -1225,6 +1232,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                         });
 
                     } else if (!result.isEmpty() && a.isEmpty()) {
+                        Log.i("grafic","non dovrei essere qua");
                         Collections.sort(result, new Comparator<Info>() {
                             @Override
                             public int compare(Info o1, Info o2) {
@@ -1493,8 +1501,8 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         MyBarDataSet barDataSet = new MyBarDataSet(barEntries, "Beneficiari");
         String smin = ""+(max/3);
         String smax = ""+((max/3)*2);
-        String [] name = {"Valori unità di misura "+barChart.getScaleX()+" "+barChart.getScaleY()+" "+barChart.getX()+" "+barChart.getY(),"Valori asse X -> Beneficiario","Valori asse Y -> Importo medio in €","Minore di " + aggiustaStr(smin) + "€","Maggiore/uguale di "  + aggiustaStr(smin) + "€ e minore di " + aggiustaStr(smax) + "€","Maggiore/uguale di " + aggiustaStr(smax) + "€"};
-        int [] color = {Color.WHITE, Color.BLACK, Color.BLACK, 0xBB00BB00, 0xEEDDDD11, 0xBBBB0000};
+        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo medio in €","Minore di " + aggiustaStr(smin) + "€","Maggiore/uguale di "  + aggiustaStr(smin) + "€ e minore di " + aggiustaStr(smax) + "€","Maggiore/uguale di " + aggiustaStr(smax) + "€"};
+        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00BB00, 0xEEDDDD11, 0xBBBB0000};
         barDataSet.setColors(color);
         BarData theData = new BarData(theDates, barDataSet);
         Legend l = barChart.getLegend();
@@ -1795,12 +1803,13 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
             barEntries.add(new BarEntry(val, i));
             theDates.add("");
         }
+        //barChart.zoom(0f, 0f, 0f, 0f, YAxis.AxisDependency.LEFT);
         MyBarDataSet barDataSet = new MyBarDataSet(barEntries, "Beneficiari");
         String smin = ""+(max/3);
         String smax = ""+((max/3)*2);
 
-        String [] name = {"Valori unità di misura ","Valori asse X -> Beneficiario","Valori asse Y -> Importo medio in €","Minore di " + aggiustaStr(smin) + "€","Maggiore/uguale di "  + aggiustaStr(smin) + "€ e minore di " + aggiustaStr(smax) + "€","Maggiore/uguale di " + aggiustaStr(smax) + "€"};
-        int [] color = {Color.WHITE, Color.BLACK, Color.BLACK, 0xBB00BB00, 0xEEDDDD11, 0xBBBB0000};
+        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo medio in €","Minore di " + aggiustaStr(smin) + "€","Maggiore/uguale di "  + aggiustaStr(smin) + "€ e minore di " + aggiustaStr(smax) + "€","Maggiore/uguale di " + aggiustaStr(smax) + "€"};
+        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00BB00, 0xEEDDDD11, 0xBBBB0000};
 
         barDataSet.setColors(color);
         BarData theData = new BarData(theDates, barDataSet);
@@ -1822,8 +1831,5 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         barChart.callOnClick();
         barChart.setOnChartValueSelectedListener(this);
         barChart.zoom(0f, 0f, 0f, 0f, YAxis.AxisDependency.LEFT);
-
-        //barChart = bc;
     }
-
 }

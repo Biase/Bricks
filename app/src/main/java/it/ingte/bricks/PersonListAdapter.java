@@ -92,8 +92,32 @@ public class PersonListAdapter extends ArrayAdapter<Person> {
         //holder.beneficiary.setText(name);
         holder.operation.setText(operation);
         holder.town.setText(town);
-        holder.price.setText(""+price);
+        String imp = aggiustaStr(""+price);
+        holder.price.setText(imp+" €");
 
         return convertView;
+    }
+
+    public String aggiustaStr(String s){
+        for(int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == '.'){
+                if(s.length()-i == 2){
+                    s += "0";
+                }
+                String t = s.substring(0,i);
+                t += ",";
+                t += s.substring(i+1, s.length());
+                s = t;
+                int j = i-4;
+                while(j >= 0){
+                    String x = s.substring(0,j+1);
+                    x += ".";
+                    x += s.substring(j+1, s.length());
+                    s = x;
+                    j-=3;
+                }
+            }
+        }
+        return s;
     }
 }
