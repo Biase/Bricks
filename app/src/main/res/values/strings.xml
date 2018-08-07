@@ -9,9 +9,8 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_maps">Map</string>
 
-
     <string-array name="PriceList">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>Tra 0.00 € e 25.000 €</item>
         <item>Tra 25.000 € e 50.000 €</item>
         <item>Tra 50.000 € e 75.000 €</item>
@@ -20,7 +19,7 @@
     </string-array>
 
     <string-array name="ProvinceList">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>VENEZIA</item>
         <item>TREVISO</item>
         <item>VERONA</item>
@@ -31,14 +30,14 @@
     </string-array>
 
     <string-array name="DateStartList">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>2015</item>
         <item>2016</item>
         <item>2017</item>
     </string-array>
 
     <string-array name="DateEndList">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>2016</item>
         <item>2017</item>
         <item>2018</item>
@@ -48,13 +47,13 @@
     </string-array>
 
     <string-array name="Alfabetico">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>A-Z</item>
         <item>Z-A</item>
     </string-array>
 
     <string-array name="DataInizio">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>Primo a iniziare</item>
         <item>Ultimo a iniziare</item>
         <item>Primo a finire</item>
@@ -62,7 +61,7 @@
     </string-array>
 
     <string-array name="Importo">
-        <item> </item>
+        <item>Nessun filtro</item>
         <item>Crescente</item>
         <item>Decrescente</item>
     </string-array>

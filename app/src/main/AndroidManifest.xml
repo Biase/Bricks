@@ -47,6 +47,7 @@
         <activity android:name=".Filter"></activity>
         <activity android:name=".FilterMap"></activity>
         <activity android:name=".FilterBenificiary"></activity>
+        <activity android:name=".FilterBeneficiary"></activity>
         <activity android:name=".Project"></activity>
         <activity android:name=".Contact"></activity>
         <activity android:name=".ProvaActivity"></activity>
