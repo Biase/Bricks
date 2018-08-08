@@ -57,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-
-
-
-
+        
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -76,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
          */
 
         searchView = findViewById(R.id.search_view);
+        searchView.showSearch(false);
+        searchView.closeSearch();
 
 
         /**
@@ -92,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         });
         */
     }
-
 
     long back_pressed;
     @Override

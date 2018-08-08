@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Data Base Name.
     private static final String DATABASE_NAME = "Dbricks.db";
     // Data Base Version.
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static String DB_PATH = "/data/data/it.ingte.bricks/databases/";
     private static SQLiteDatabase sqliteDB;
     private Context context;

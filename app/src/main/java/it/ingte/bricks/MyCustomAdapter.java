@@ -35,6 +35,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
     private class ViewHolder {
         TextView beneficiary;
         TextView town;
+        TextView data;
         TextView price;
     }
 
@@ -44,6 +45,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         String beneficiary = (getItem(position).getBeneficiaryName());
         String town = (getItem(position).getTown());
+        String data = "inizio: " + (getItem(position).getStartOperation()) + "\nfine: " + (getItem(position).getEndOpeation());
         String price = getItem(position).getEligibleExpenditure()+"";
 
 
@@ -57,6 +59,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
             holder = new ViewHolder();
             holder.beneficiary = (TextView) convertView.findViewById(R.id.textView1);
             holder.town = (TextView) convertView.findViewById(R.id.textView2);
+            holder.data = (TextView) convertView.findViewById(R.id.textView3);
             holder.price = (TextView) convertView.findViewById(R.id.textView);
 
 
@@ -70,6 +73,7 @@ public class MyCustomAdapter extends ArrayAdapter<Info> {
 
         holder.beneficiary.setText(beneficiary);
         holder.town.setText(town);
+        holder.data.setText(data);
         String imp = aggiustaStr(price);
         holder.price.setText(imp+" €");
         return convertView;

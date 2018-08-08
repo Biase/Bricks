@@ -132,955 +132,19 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            String s = data.getStringExtra("resultPrice");
             String t = data.getStringExtra("resultProvince");
-            String ds = data.getStringExtra("resultDateStart");
-            String de = data.getStringExtra("resultDateEnd");
-            String b = data.getStringExtra("resultAlfabetic");
-            String dc = data.getStringExtra("resultStartDate");
             String op = data.getStringExtra("resultOrderPrice");
             boolean activate = false;
 
             if (requestCode == 1 && resultCode == RESULT_OK) {
-                if (prezzo1.equals(s)) {
-                    activate = true;
-                    for (Info i : original) {
-                        if (i.getEligibleExpenditure() >= 0 && i.getEligibleExpenditure() <= 25000) {
-                            result.add(i);
+                original.clear();
+                mediaImporto.clear();
+                Listbeneficiary();
 
-                        }
-
-                    }
-                    valPrezzo = 1;
-                    generateList(result);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                            intent.putExtra("name", result.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", result.get(i).getOperationName());
-                            intent.putExtra("town", result.get(i).getTown());
-                            LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 1);
-                            intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                } else if (prezzo2.equals(s)) {
-                    activate = true;
-                    for (Info i : original) {
-                        if (i.getEligibleExpenditure() > 25000 && i.getEligibleExpenditure() <= 50000) {
-                            result.add(i);
-                        }
-                    }
-                    valPrezzo = 2;
-                    generateList(result);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                            intent.putExtra("name", result.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", result.get(i).getOperationName());
-                            intent.putExtra("town", result.get(i).getTown());
-                            LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 2);
-                            intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-
-
-                } else if (prezzo3.equals(s)) {
-                    activate = true;
-                    for (Info i : original) {
-                        if (i.getEligibleExpenditure() > 50000 && i.getEligibleExpenditure() <= 75000) {
-                            result.add(i);
-                        }
-                    }
-                    valPrezzo = 3;
-                    generateList(result);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                            intent.putExtra("name", result.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", result.get(i).getOperationName());
-                            intent.putExtra("town", result.get(i).getTown());
-                            LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 3);
-                            intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                } else if (prezzo4.equals(s)) {
-                    activate = true;
-                    for (Info i : original) {
-                        if (i.getEligibleExpenditure() > 75000 && i.getEligibleExpenditure() <= 100000) {
-                            result.add(i);
-                        }
-                    }
-                    valPrezzo = 4;
-                    generateList(result);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                            intent.putExtra("name", result.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", result.get(i).getOperationName());
-                            intent.putExtra("town", result.get(i).getTown());
-                            LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 4);
-                            intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                } else if (prezzo5.equals(s)) {
-                    activate = true;
-                    for (Info i : original) {
-                        if (i.getEligibleExpenditure() > 100000) {
-                            result.add(i);
-                            Log.d("RESULT", "" + i.getBeneficiaryName() + "" + i.getProvince());
-                        }
-                    }
-                    valPrezzo = 5;
-                    generateList(result);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                            intent.putExtra("name", result.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", result.get(i).getOperationName());
-                            intent.putExtra("town", result.get(i).getTown());
-                            LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 5);
-                            intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                }
-                if (venezia.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("VENEZIA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("VENEZIA")) {
-                                a.add(i);
-
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);;
-                            }
-                        });
-
-                    }
-
-                } else if (treviso.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("TREVISO")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("TREVISO")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                } else if (verona.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("VERONA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("VERONA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                } else if (vicenza.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("VICENZA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("VICENZA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                } else if (rovigo.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("ROVIGO")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("ROVIGO")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                } else if (padova.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("PADOVA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("PADOVA")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                } else if (belluno.equals(t)) {
-                    activate = true;
-                    if (result.isEmpty()) {
-                        for (Info i : original) {
-                            if (i.getProvince().equals("BELLUNO")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        for (Info i : result) {
-                            if (i.getProvince().equals("BELLUNO")) {
-                                a.add(i);
-                            }
-                        }
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-                    }
-
-                }
-
-
-                if (az.equals(b)) {
-                    activate = true;
-                    if (result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(original, new Comparator<Info>() {
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s1.compareToIgnoreCase(s2);
-                            }
-                        });
-                        generateList(original);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-
-                    } else if (!result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(result, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s1.compareToIgnoreCase(s2);
-                            }
-                        });
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (result.isEmpty() && !a.isEmpty()) {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s1.compareToIgnoreCase(s2);
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-                    } else {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s1.compareToIgnoreCase(s2);
-                            }
-                        });
-
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    }
-                } else if (za.equals(b)) {
-                    activate = true;
-                    if (result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(original, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s2.compareToIgnoreCase(s1);
-
-                            }
-                        });
-                        generateList(original);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (!result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(result, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s2.compareToIgnoreCase(s1);
-                            }
-                        });
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (result.isEmpty() && !a.isEmpty()) {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s2.compareToIgnoreCase(s2);
-                            }
-                        });
-
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-                    } else {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                String s1 = o1.getBeneficiaryName();
-                                String s2 = o2.getBeneficiaryName();
-                                return s2.compareToIgnoreCase(s1);
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-
-                    }
-                }
-                if (startDateCresc.equals(dc)) {
-                    activate = true;
-                    if (result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(original, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(original);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (!result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(result, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
-
-                    } else if (result.isEmpty() && !a.isEmpty()) {
-                        Collections.sort(a, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-                    } else {
-                        Collections.sort(a, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o1.getStartOperation()).compareTo(f.parse(o2.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    }
-                } else if (startDateDesc.equals(dc)) {
-                    activate = true;
-                    if (result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(original, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(original);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (!result.isEmpty() && a.isEmpty()) {
-                        Collections.sort(result, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (result.isEmpty() && !a.isEmpty()) {
-                        Collections.sort(a, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else {
-                        Collections.sort(a, new Comparator<Info>() {
-                            DateFormat f = new SimpleDateFormat("dd/MM/yy");
-
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                try {
-                                    return f.parse(o2.getStartOperation()).compareTo(f.parse(o1.getStartOperation()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return 0;
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    }
-                }
                 if (orderPriceCresc.equals(op)) {
                     activate = true;
-                    if (result.isEmpty() && a.isEmpty()) {
-                        /*
-                        Collections.sort(original, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                return (s1 <= s2) ? -1 : 1;
-
-                            }
-                        });
-                        */
                         generateList(original);
-                        if(mediaImporto.get(0) > mediaImporto.get(mediaImporto.size()-1)) {
+                        if (mediaImporto.get(0) > mediaImporto.get(mediaImporto.size() - 1)) {
                             Collections.reverse(original);
                             Collections.reverse(mediaImporto);
                             barChart.clear();
@@ -1094,7 +158,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                                 intent.putExtra("name", original.get(i).getBeneficiaryName());
                                 intent.putExtra("operation", original.get(i).getOperationName());
                                 intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                                LatLng position = new LatLng(original.get(i).getLat(), original.get(i).getLng());
                                 intent.putExtra("position", position);
                                 intent.putExtra("control", valPrezzo);
                                 intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
@@ -1102,122 +166,233 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
 
                             }
                         });
-
-                    } else if (!result.isEmpty() && a.isEmpty()) {
-
-                        Collections.sort(result, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                return (s1 <= s2) ? -1 : 1;
-
-                            }
-                        });
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (result.isEmpty() && !a.isEmpty()) {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                return (s1 <= s2) ? -1 : 1;
-
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                return (s1 <= s2) ? -1 : 1;
-
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    }
-
                 } else if (orderPriceDesc.equals(op)) {
                     activate = true;
-                    if (result.isEmpty() && a.isEmpty()) {
-                        /*
-                        Collections.sort(original, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                if (s1 >= s2) {
-                                    return -1;
-                                } else {
-                                    return 1;
-                                }
-
-                            }
-
-                        });
-                        */
                         generateList(original);
-                        if(mediaImporto.get(0) < mediaImporto.get(mediaImporto.size()-1)) {
+                        if (mediaImporto.get(0) < mediaImporto.get(mediaImporto.size() - 1)) {
                             Collections.reverse(original);
                             Collections.reverse(mediaImporto);
                             barChart.clear();
                             populateGraphic();
                         }
-                        Log.i("grafic", "entro qua");
                         barChart.zoom(0f, 0f, 0f, 0);
                         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                                intent.putExtra("name", original.get(i).getBeneficiaryName());
+                                intent.putExtra("operation", original.get(i).getOperationName());
+                                intent.putExtra("town", original.get(i).getTown());
+                                LatLng position = new LatLng(original.get(i).getLat(), original.get(i).getLng());
+                                intent.putExtra("position", position);
+                                intent.putExtra("control", valPrezzo);
+                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                                startActivity(intent);
+
+                            }
+                        });
+                }
+                if (venezia.equals(t)) {
+                        for (int i = 0; i < original.size(); i++) {
+                            if (!original.get(i).getProvince().equals("VENEZIA")) {
+                                original.remove(i);
+                                mediaImporto.remove(i);
+                                i--;
+                            }
+                        }
+                        barChart.clear();
+                        populateGraphic();
+                        barChart.zoom(0f, 0f, 0f, 0f);
+                        generateList(original);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                                intent.putExtra("name", original.get(i).getBeneficiaryName());
+                                intent.putExtra("operation", original.get(i).getOperationName());
+                                intent.putExtra("town", original.get(i).getTown());
+                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                                intent.putExtra("position", position);
+                                intent.putExtra("control", 0);
+                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                                startActivity(intent);
+                            }
+                        });
+                } else if (treviso.equals(t)) {
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("TREVISO")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+                } else if (verona.equals(t)) {
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("VERONA")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+                } else if (vicenza.equals(t)) {
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("VICENZA")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+                } else if (rovigo.equals(t)) {
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("ROVIGO")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+                } else if (padova.equals(t)) {
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("PADOVA")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+                } else if (belluno.equals(t)) {
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("BELLUNO")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+
+                }
+                else {
+                    if (!activate) {
+                        /*
+                        for (Info i : original) {
+                            result.add(i);
+                        }
+                        */
+                        original.clear();
+                        mediaImporto.clear();
+                        Listbeneficiary();
+                        barChart.clear();
+                        populateGraphic();
+                        barChart.zoom(0f, 0f, 0f, 0f);
+                        generateList(original);
+                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
                                 intent.putExtra("name", original.get(i).getBeneficiaryName());
                                 intent.putExtra("operation", original.get(i).getOperationName());
@@ -1230,142 +405,30 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
 
                             }
                         });
-
-                    } else if (!result.isEmpty() && a.isEmpty()) {
-                        Log.i("grafic","non dovrei essere qua");
-                        Collections.sort(result, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                if (s1 >= s2) {
-                                    return -1;
-                                } else {
-                                    return 1;
-                                }
-
-                            }
-                        });
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else if (result.isEmpty() && !a.isEmpty()) {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                if (s1 >= s2) {
-                                    return -1;
-                                } else {
-                                    return 1;
-                                }
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    } else {
-                        Collections.sort(a, new Comparator<Info>() {
-                            @Override
-                            public int compare(Info o1, Info o2) {
-                                double s1 = o1.getEligibleExpenditure();
-                                double s2 = o2.getEligibleExpenditure();
-                                if (s1 >= s2) {
-                                    return -1;
-                                } else {
-                                    return 1;
-                                }
-                            }
-                        });
-                        generateList(a);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", a.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", a.get(i).getOperationName());
-                                intent.putExtra("town", a.get(i).getTown());
-                                LatLng position = new LatLng(a.get(i).getLat(),a.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(a.get(i).getBeneficiaryName(), a.get(i).getLat(), a.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
-
-                    }
-                } else {
-                    if (!activate) {
-                        for (Info i : original) {
-                            result.add(i);
-                        }
-                        generateList(result);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                                intent.putExtra("name", result.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", result.get(i).getOperationName());
-                                intent.putExtra("town", result.get(i).getTown());
-                                LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
-                                intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
-                                startActivity(intent);
-
-                            }
-                        });
                     }
                 }
             }
 
 
         } else {
-            for (Info i : original) {
-                result.add(i);
-            }
-            generateList(result);
+            original.clear();
+            mediaImporto.clear();
+            Listbeneficiary();
+            barChart.clear();
+            populateGraphic();
+            barChart.zoom(0f, 0f, 0f, 0f);
+            generateList(original);
             lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(TabBeneficiary.this.getActivity(), ProvaActivity.class);
-                    intent.putExtra("name", result.get(i).getBeneficiaryName());
-                    intent.putExtra("operation", result.get(i).getOperationName());
-                    intent.putExtra("town", result.get(i).getTown());
-                    LatLng position = new LatLng(result.get(i).getLat(),result.get(i).getLng());
+                    intent.putExtra("name", original.get(i).getBeneficiaryName());
+                    intent.putExtra("operation", original.get(i).getOperationName());
+                    intent.putExtra("town", original.get(i).getTown());
+                    LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                     intent.putExtra("position", position);
                     intent.putExtra("control", valPrezzo);
-                    intent.putExtra("nproject", countProject(result.get(i).getBeneficiaryName(), result.get(i).getLat(), result.get(i).getLng()));
+                    intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
                     startActivity(intent);
 
                 }
@@ -1388,7 +451,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
             public boolean onMenuItemClick(MenuItem menuItem) {
                 result.clear();
                 a.clear();
-                Intent intent = new Intent(TabBeneficiary.this.getActivity(), FilterBenificiary.class);
+                Intent intent = new Intent(TabBeneficiary.this.getActivity(), FilterBeneficiary.class);
                 startActivityForResult(intent, 1);
                 return false;
             }
@@ -1582,7 +645,6 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
     public void onNothingSelected() {
 
     }
-
 
     public void Listbeneficiary(){
         ArrayList<Info> init = MainActivity.info;

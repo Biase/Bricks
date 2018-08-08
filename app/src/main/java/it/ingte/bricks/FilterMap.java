@@ -42,7 +42,7 @@ public class FilterMap extends AppCompatActivity implements Serializable {
         Button button = (Button) findViewById(R.id.button1);
 
 
-        text0.setText("SELEZIONA I FILTRI DA APPLICARE");
+        text0.setText("SELEZIONA I FILTRI");
         text1.setText("Importo :");
         text2.setText("Provincia :");
 
