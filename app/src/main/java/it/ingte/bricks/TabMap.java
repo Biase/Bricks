@@ -201,7 +201,7 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TabMap.this.getActivity(), ProvaActivity.class);
+                Intent intent = new Intent(TabMap.this.getActivity(), ProvaActivity.class);;
                 intent.putExtra("name", mimmo.getBeneficiaryName());
                 intent.putExtra("operation", mimmo.getOperation());
                 intent.putExtra("town", mimmo.getTown());
@@ -280,14 +280,13 @@ public class TabMap extends Fragment implements OnMapReadyCallback, OnClusterIte
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
                 }
-
 
                 if (result.isEmpty()) {
                     Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
-
                 }
+                Log.i("result size: "," "+result.size());
+
                 for(Info i: result) {
                     Person p = new Person(i.getLat(), i.getLng(), i.getBeneficiaryName(), "", i.getEligibleExpenditure(), i.getOperationName(), i.getOperationSummary(), i.getTown(), i.getStartOperation(), i.getEndOpeation(), i.getCap(), i.getProvince(), i.getCategory(),0);
                     if(!exist(clusterPerson, p.getPosition())){

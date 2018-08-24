@@ -11,11 +11,12 @@
         android:id="@+id/TextViewTitolo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="21sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="ciao"
         android:textAlignment="center"
-        android:textStyle="bold"
-        android:layout_margin="5dp"
-        android:text="ciao" />
+        android:textSize="21sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/TextViewFiltro"
@@ -32,7 +33,18 @@
         android:id="@+id/listViewM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button4"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/TextViewFiltro" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:background="#FFF"
+        android:text="Grafico Beneficiario" />
 
 </RelativeLayout>

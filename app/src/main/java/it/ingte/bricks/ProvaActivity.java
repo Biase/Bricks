@@ -1,12 +1,14 @@
 package it.ingte.bricks;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +24,35 @@ public class ProvaActivity extends AppCompatActivity {
         setContentView(R.layout.prova);
 
         TextView name = (TextView) findViewById(R.id.TextViewTitolo);
+        Button b = (Button) findViewById(R.id.button4);
+        b.setPaintFlags(b.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProvaActivity.this, SpecificBeneficiary.class);
+                LatLng temp = (LatLng) getIntent().getParcelableExtra("position");
+                intent.putExtra("position", temp);
+                String s = "";
+                String s1 = "";
+                for (Info i: MainActivity.info){
+                    if(temp.latitude == i.getLat() && temp.longitude == i.getLng()){
+                        s = i.getBeneficiarycode();
+                        s1 = i.getBeneficiaryName();
+                    }
+                }
+                intent.putExtra("beneficiaryCode", s);
+                intent.putExtra("name", s1);
+                /*intent.putExtra("operation", original.get(e.getXIndex()).getOperationName());
+                intent.putExtra("town", original.get(e.getXIndex()).getTown());
+                LatLng pos = new LatLng(original.get(e.getXIndex()).getLat(),original.get(e.getXIndex()).getLng());
+                intent.putExtra("position", pos);
+                intent.putExtra("control", valPrezzo);
+                */
+                intent.putExtra("nproject", getIntent().getIntExtra("nproject", 0));
+
+                startActivity(intent);
+            }
+        });
         name.setText(getIntent().getStringExtra("name"));
         ListView mListView = (ListView) findViewById(R.id.listViewM);
         final ArrayList<Person> peopleList = new ArrayList<>();

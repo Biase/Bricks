@@ -2,6 +2,7 @@ package it.ingte.bricks;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -67,7 +69,7 @@ import static android.graphics.Typeface.BOLD;
  * Created by Domenico on 27/02/2018.
  */
 
-public class TabBeneficiary extends Fragment implements OnChartValueSelectedListener{
+public class SpecificBeneficiary extends AppCompatActivity implements OnChartValueSelectedListener{
     static float max;
     static float min;
 
@@ -123,12 +125,88 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        //etHasOptionsMenu(true);
+        setContentView(R.layout.tab_bene_spe);
+        String CodeBeneficiary = getIntent().getStringExtra("beneficiaryCode");
+        LatLng temp = (LatLng) getIntent().getParcelableExtra("position");
+
+        TextView titolo = (TextView) findViewById(R.id.TextViewTitolo);
+        titolo.setText(getIntent().getStringExtra("name")+"\nNumero progetti: "+getIntent().getIntExtra("nproject",0));
+
+        barChart = (BarChart) findViewById(R.id.bargraph);
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        ArrayList<String> theDates = new ArrayList<>();
+        original = new ArrayList<>();
+        mediaImporto = new ArrayList<>();
+        Listbeneficiary(CodeBeneficiary, temp);
+
+        for(int i = 0; i < original.size(); i++){
+            beneficiari.add(original.get(i).getBeneficiaryName());
+            double valore = mediaImporto.get(i);
+            float val = (float) valore;
+            barEntries.add(new BarEntry(val, i));
+            theDates.add("");
+        }
+        MyBarDataSetSpeBen barDataSet = new MyBarDataSetSpeBen(barEntries, "Beneficiari",original);
+        //String smin = String.format("%1$.2f", 500000,00);
+        //String smax = String.format("%1$.2f", 1000000,00);
+        //String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di " + prova(smin) + "€","Importo >= di "  + prova(smin) + "€ e < di " + prova(smax) + "€","Importo >= di " + prova(smax) + "€"};
+        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Anno inizio del progetto"," - Valori asse Y -> Importo del progetto in €","Anno 2015","Anno 2016","Anno 2017","Importo < di 500.000,00 €","Importo >= di 500.000,00 € e < di 1.000.000,00 €","Importo >= di 1.000.000,00 €"};
+        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00008B, 0xBB7B68EE, 0x9900BEEE, 0xBB00BB00, 0xBBFFDD11, 0xBBBB0000};
+        barDataSet.setColors(color);
+        BarData theData = new BarData(theDates, barDataSet);
+        Legend l = barChart.getLegend();
+        l.setFormSize(10f); // set the size of the legend forms/shapes
+        l.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
+        l.setTextSize(11f);
+        l.setTextColor(Color.BLACK);
+        l.setXEntrySpace(5f); // set the space between the legend entries on the x-axis
+        l.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
+        l.setEnabled(true);
+        //l.setPosition();
+        l.setCustom(color, name);
+        barChart.setX(0f);
+        barChart.setY(0f);
+        barChart.setScaleY(1.0f);
+        barChart.setScaleX(1.0f);
+        barChart.getLegend().setWordWrapEnabled(true);
+        barChart.setData(theData);
+        //barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        barChart.setDescription("");
+        barChart.callOnClick();
+        barChart.setOnChartValueSelectedListener(this);
+
+        lst = (ListView) findViewById(R.id.lstView);
+        populateList();
+        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                intent.putExtra("myInfo", original.get(i));
+                startActivity(intent);
+                /*
+                Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
+                intent.putExtra("name", original.get(i).getBeneficiaryName());
+                intent.putExtra("operation", original.get(i).getOperationName());
+                intent.putExtra("town", original.get(i).getTown());
+                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                intent.putExtra("position", position);
+                intent.putExtra("control", 0);
+                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                startActivity(intent);
+                /*
+                Intent intent = new Intent(TabBeneficiary.this.getActivity(), itemClick.class);
+                intent.putExtra("myInfo", original.get(i));
+                */
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
+
         if (data != null) {
             String t = data.getStringExtra("resultProvince");
             String op = data.getStringExtra("resultOrderPrice");
@@ -137,7 +215,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
             if (requestCode == 1 && resultCode == RESULT_OK) {
                 original.clear();
                 mediaImporto.clear();
-                Listbeneficiary();
+                Listbeneficiary("ciao", new LatLng(12.22, 12.2));
 
                 if (orderPriceCresc.equals(op)) {
                     activate = true;
@@ -146,77 +224,76 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                         Collections.reverse(original);
                         Collections.reverse(mediaImporto);
                         barChart.clear();
-                        }
+                    }
                     populateGraphic();
                     barChart.zoom(0f, 0f, 0f, 0f);
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                                intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(), original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", valPrezzo);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+
+                        }
+                    });
                 } else if (orderPriceDesc.equals(op)) {
                     activate = true;
-                        generateList(original);
+                    generateList(original);
                     if (mediaImporto.get(0) < mediaImporto.get(mediaImporto.size() - 1)) {
-                            Collections.reverse(original);
-                            Collections.reverse(mediaImporto);
-                            barChart.clear();
-                        }
+                        Collections.reverse(original);
+                        Collections.reverse(mediaImporto);
+                        barChart.clear();
+                    }
                     populateGraphic();
                     barChart.zoom(0f, 0f, 0f, 0);
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                                intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(), original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", valPrezzo);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+
+                        }
+                    });
                 }
                 if (venezia.equals(t)) {
-                        for (int i = 0; i < original.size(); i++) {
-                            if (!original.get(i).getProvince().equals("VENEZIA")) {
-                                original.remove(i);
-                                mediaImporto.remove(i);
-                                i--;
-                            }
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!original.get(i).getProvince().equals("VENEZIA")) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
                         }
-                        barChart.clear();
-                        populateGraphic();
-                        barChart.zoom(0f, 0f, 0f, 0f);
-                        generateList(original);
-                        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                                intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                                intent.putExtra("operation", original.get(i).getOperationName());
-                                intent.putExtra("town", original.get(i).getTown());
-                                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                                intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
-                                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                                startActivity(intent);
-                            }
-                        });
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
                 } else if (treviso.equals(t)) {
                     for (int i = 0; i < original.size(); i++) {
                         if (!original.get(i).getProvince().equals("TREVISO")) {
@@ -232,8 +309,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                             intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
@@ -259,8 +335,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                             intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
@@ -286,8 +361,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                             intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
@@ -313,8 +387,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                             intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
@@ -340,8 +413,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                             intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
@@ -367,8 +439,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                             intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
@@ -388,9 +459,10 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                             result.add(i);
                         }
                         */
+
                         original.clear();
                         mediaImporto.clear();
-                        Listbeneficiary();
+                        Listbeneficiary("ciao", new LatLng(12.22, 12.2));
                         barChart.clear();
                         populateGraphic();
                         barChart.zoom(0f, 0f, 0f, 0f);
@@ -398,16 +470,16 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                                intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                                Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                                 intent.putExtra("name", original.get(i).getBeneficiaryName());
                                 intent.putExtra("operation", original.get(i).getOperationName());
                                 intent.putExtra("town", original.get(i).getTown());
                                 LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                                 intent.putExtra("position", position);
-                                intent.putExtra("control", 0);
+                                intent.putExtra("control", valPrezzo);
                                 intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
                                 startActivity(intent);
+
                             }
                         });
                     }
@@ -418,7 +490,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         } else {
             original.clear();
             mediaImporto.clear();
-            Listbeneficiary();
+            Listbeneficiary("ciao", new LatLng(12.22, 12.2));
             barChart.clear();
             populateGraphic();
             barChart.zoom(0f, 0f, 0f, 0f);
@@ -426,241 +498,51 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
             lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                    intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                    Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
                     intent.putExtra("name", original.get(i).getBeneficiaryName());
                     intent.putExtra("operation", original.get(i).getOperationName());
                     intent.putExtra("town", original.get(i).getTown());
                     LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                     intent.putExtra("position", position);
-                    intent.putExtra("control", 0);
+                    intent.putExtra("control", valPrezzo);
                     intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
                     startActivity(intent);
+
                 }
             });
         }
-    }
 
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = ((MainActivity) getActivity()).searchView;
-        searchView.setMenuItem(searchItem);
-        MenuItem filter = menu.findItem(R.id.action_filter);
-        searchView.setMenuItem(filter);
-        filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                //Log.i("sono qui","sono qui");
-                result.clear();
-                a.clear();
-                Intent intent = new Intent(TabBeneficiary.this.getActivity(), FilterBeneficiary.class);
-                startActivityForResult(intent, 1);
-                return false;
-            }
-        });
-
-
-        /*funzioni per search */
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                original.clear();
-                mediaImporto.clear();
-                Listbeneficiary();
-                barChart.clear();
-                populateGraphic();
-                barChart.zoom(0f, 0f, 0f, 0f);
-                generateList(original);
-                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                        intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
-                        intent.putExtra("name", original.get(i).getBeneficiaryName());
-                        intent.putExtra("operation", original.get(i).getOperationName());
-                        intent.putExtra("town", original.get(i).getTown());
-                        LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                        intent.putExtra("position", position);
-                        intent.putExtra("control", 0);
-                        intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                        startActivity(intent);
-                    }
-                });
-            }
-
-        });
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(final String query) {
-                //pulisco
-                original.clear();
-                mediaImporto.clear();
-                Listbeneficiary();
-                barChart.clear();
-                populateGraphic();
-                barChart.zoom(0f, 0f, 0f, 0f);
-                generateList(original);
-
-                result = MainActivity.manager.getDbhelper().getResult(query);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                }
-
-                if (result.isEmpty()) {
-                    Toast.makeText(getContext(), "no result from search", Toast.LENGTH_SHORT).show();
-                    original.clear();
-                    mediaImporto.clear();
-                    barChart.clear();
-                } else {
-                    Log.i("result size: "," "+result.size());
-
-                    for (int i = 0; i < original.size(); i++) {
-                        if (original.get(i).getProvince().contains(query.toUpperCase()) || original.get(i).getTown().contains(query.toUpperCase()) || original.get(i).getBeneficiaryName().contains(query.toUpperCase())) {
-                        } else {
-                            original.remove(i);
-                            mediaImporto.remove(i);
-                            i--;
-                        }
-                    }
-                    barChart.clear();
-                    populateGraphic();
-                    barChart.zoom(0f, 0f, 0f, 0f);
-                    generateList(original);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", original.get(i).getOperationName());
-                            intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 0);
-                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
 
     }
 
     public void generateList(ArrayList<Info> source) {
-        MyCustomAdapterBen adapter = new MyCustomAdapterBen(getContext(), R.layout.da_text, source);
+        MyCustomAdapterSpeBen adapter = new MyCustomAdapterSpeBen(this, R.layout.da_text, source);
         lst.setAdapter(adapter);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_bene, container, false);
-        //
-        barChartView = rootView;
-        barChart = (BarChart) rootView.findViewById(R.id.bargraph);
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        ArrayList<String> theDates = new ArrayList<>();
-
-        Listbeneficiary();
-
-        for(int i = 0; i < original.size(); i++){
-            beneficiari.add(original.get(i).getBeneficiaryName());
-            double valore = mediaImporto.get(i);
-            float val = (float) valore;
-            barEntries.add(new BarEntry(val, i));
-            theDates.add("");
-        }
-        MyBarDataSet barDataSet = new MyBarDataSet(barEntries, "Beneficiari");
-        //String smin = String.format("%1$.2f", 500000,00);
-        //String smax = String.format("%1$.2f", 1000000,00);
-        //String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di " + prova(smin) + "€","Importo >= di "  + prova(smin) + "€ e < di " + prova(smax) + "€","Importo >= di " + prova(smax) + "€"};
-        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di 500.000,00 €","Importo >= di 500.000,00 € e < di 1.000.000,00 €","Importo >= di 1.000.000,00 €"};
-        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00BB00, 0xBBFFDD11, 0xBBBB0000};
-        barDataSet.setColors(color);
-        BarData theData = new BarData(theDates, barDataSet);
-        Legend l = barChart.getLegend();
-        l.setFormSize(10f); // set the size of the legend forms/shapes
-        l.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
-        l.setTextSize(11f);
-        l.setTextColor(Color.BLACK);
-        l.setXEntrySpace(5f); // set the space between the legend entries on the x-axis
-        l.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
-        l.setEnabled(true);
-        //l.setPosition();
-        l.setCustom(color, name);
-        barChart.setX(0f);
-        barChart.setY(0f);
-        barChart.setScaleY(1.0f);
-        barChart.setScaleX(1.0f);
-        barChart.getLegend().setWordWrapEnabled(true);
-        barChart.setData(theData);
-        //barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-        barChart.setDescription("");
-        barChart.callOnClick();
-        barChart.setOnChartValueSelectedListener(this);
-
-        lst = (ListView) rootView.findViewById(R.id.lstView);
-        populateList();
-        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-                intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
-                intent.putExtra("name", original.get(i).getBeneficiaryName());
-                intent.putExtra("operation", original.get(i).getOperationName());
-                intent.putExtra("town", original.get(i).getTown());
-                LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                intent.putExtra("position", position);
-                intent.putExtra("control", 0);
-                intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                startActivity(intent);
-                /*
-                Intent intent = new Intent(TabBeneficiary.this.getActivity(), itemClick.class);
-                intent.putExtra("myInfo", original.get(i));
-                */
-            }
-        });
-
-
-        return rootView;
-    }
 
     public void populateList() {
-        lst.setAdapter(new MyCustomAdapterBen(getContext(), R.layout.da_text, original));
+        lst.setAdapter(new MyCustomAdapterSpeBen(this, R.layout.da_text, original));
 
     }
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-     //   Intent intent = new Intent(TabBeneficiary.this.getActivity(), ActivityBeneficiary.class);
+        //   Intent intent = new Intent(TabBeneficiary.this.getActivity(), ActivityBeneficiary.class);
         /*
         BarData pro = barChart.getBarData();
         IBarDataSet pro2 = pro.getFirstLeft();
         BarEntry pro3 = pro2.getEntryForXIndex(dataSetIndex);
         */
-       // intent.putExtra("id",e.getXIndex());
-       // startActivity(intent);
-        Intent intent = new Intent(TabBeneficiary.this.getActivity(), SpecificBeneficiary.class);
-        intent.putExtra("beneficiaryCode", original.get(e.getXIndex()).getBeneficiarycode());
+        // intent.putExtra("id",e.getXIndex());
+        // startActivity(intent);
+        //Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
+
+        Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+        intent.putExtra("myInfo", original.get(e.getXIndex()));
+        startActivity(intent);
+        /*
         intent.putExtra("name", original.get(e.getXIndex()).getBeneficiaryName());
         intent.putExtra("operation", original.get(e.getXIndex()).getOperationName());
         intent.putExtra("town", original.get(e.getXIndex()).getTown());
@@ -669,14 +551,14 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         intent.putExtra("control", valPrezzo);
         intent.putExtra("nproject", countProject(original.get(e.getXIndex()).getBeneficiaryName(), original.get(e.getXIndex()).getLat(), original.get(e.getXIndex()).getLng()));
         startActivity(intent);
-    }
+    */}
 
     @Override
     public void onNothingSelected() {
 
     }
 
-    public void Listbeneficiary(){
+    public void Listbeneficiary(String key, LatLng pos){
         ArrayList<Info> init = MainActivity.info;
         Collections.sort(init, new Comparator<Info>() {
             @Override
@@ -686,15 +568,15 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                 return s1.compareToIgnoreCase(s2);
             }
         });
-
+/*
         ArrayList<Info> orderPos = new ArrayList<>();
         ArrayList<Info> initTemp = new ArrayList<>();
         orderPos.add(init.get(0));
-      //  Log.i("init",""+0+" "+init.get(0).getBeneficiaryName()+" "+init.get(0).getTown()+" "+init.size());
+        //  Log.i("init",""+0+" "+init.get(0).getBeneficiaryName()+" "+init.get(0).getTown()+" "+init.size());
 
 
         for(int i = 1; i < init.size(); i++){
-           // Log.i("init",""+i+" "+init.get(i).getBeneficiaryName()+" "+init.get(i).getTown()+" "+init.size());
+            // Log.i("init",""+i+" "+init.get(i).getBeneficiaryName()+" "+init.get(i).getTown()+" "+init.size());
             //LatLng posx = new LatLng(init.get(i-1).getLat(), init.get(i-1).getLng());
             //LatLng posy = new LatLng(init.get(i).getLat(), init.get(i).getLng());
             if(i == init.size()-1){
@@ -753,7 +635,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         for(int i = 0; i < initTemp.size(); i++){
                 Log.i("initTemp",""+i+" "+initTemp.get(i).getBeneficiaryName()+" "+initTemp.get(i).getTown()+" "+initTemp.size());
         }
-*/
+*//*
 
         original.add(initTemp.get(0));
         //Log.i("Original",""+0+" "+init.get(0).getBeneficiaryName()+" "+init.get(0).getTown());
@@ -771,7 +653,20 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                 Log.i("initTemp",""+i+" "+initTemp.get(i).getBeneficiaryName()+" "+initTemp.get(i).getTown());
         }
 */
+        Log.i("original size: ",""+original.size());
+        original.clear();
+        mediaImporto.clear();
+        for(int i = 0; i < init.size(); i++){
+            if (init.get(i).getBeneficiarycode().equalsIgnoreCase(key) && init.get(i).getLat() == pos.latitude && init.get(i).getLng() == pos.longitude) {
+                original.add(init.get(i));
+                mediaImporto.add((init.get(i).getEligibleExpenditure()));
+            }
+        }
+        Log.i("original size: ",""+original.size());
 
+
+
+/*
         int cont = 0;
         double somma = 0;
         for(int i = 0; i < initTemp.size()-1; i++){
@@ -796,7 +691,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
                 }
             }
         }
-
+*/
         double mini = mediaImporto.get(0);
         double maxi = mediaImporto.get(0);
         for(int i = 1; i < mediaImporto.size(); i++) {
@@ -808,6 +703,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
             }
         }
         quickSort(mediaImporto, original, 0, mediaImporto.size()-1); //ordina in prezzo decrescente
+
         min = (float) mini;
         max = (float) maxi;
         Log.i("Min"," "+min);
@@ -836,12 +732,23 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         int i = left, j = right;
         double tmp;
         Info temp;
-        double pivot = arr.get((left + right) / 2);
+        String pivot = arrB.get((left + right) / 2).getStartOperation();
+        Date pivo = new Date(Integer.parseInt(pivot.substring(6,8)),Integer.parseInt(pivot.substring(3,5)),Integer.parseInt(pivot.substring(0,2)));
         while (i <= j) {
-            while (arr.get(i) > pivot)
+            String si = arrB.get(i).getStartOperation();
+            Date di = new Date(Integer.parseInt(si.substring(6,8)),Integer.parseInt(si.substring(3,5)),Integer.parseInt(si.substring(0,2)));
+            while (di.compareTo(pivo) < 0) {
                 i++;
-            while (arr.get(j) < pivot)
+                si = arrB.get(i).getStartOperation();
+                di = new Date(Integer.parseInt(si.substring(6,8)),Integer.parseInt(si.substring(3,5)),Integer.parseInt(si.substring(0,2)));
+            }
+            String sj = arrB.get(j).getStartOperation();
+            Date dj = new Date(Integer.parseInt(sj.substring(6,8)),Integer.parseInt(sj.substring(3,5)),Integer.parseInt(sj.substring(0,2)));
+            while (dj.compareTo(pivo) > 0) {
                 j--;
+                sj = arrB.get(j).getStartOperation();
+                dj = new Date(Integer.parseInt(sj.substring(6,8)),Integer.parseInt(sj.substring(3,5)),Integer.parseInt(sj.substring(0,2)));
+            }
             if (i <= j) {
                 tmp = arr.get(i);
                 temp = arrB.get(i);
@@ -916,7 +823,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
     public void populateGraphic(){
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         ArrayList<String> theDates = new ArrayList<>();
-       for(int i = 0; i < original.size(); i++){
+        for(int i = 0; i < original.size(); i++){
             beneficiari.add(original.get(i).getBeneficiaryName());
             double valore = mediaImporto.get(i);
             float val = (float) valore;
@@ -924,14 +831,14 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
             theDates.add("");
         }
         //barChart.zoom(0f, 0f, 0f, 0f, YAxis.AxisDependency.LEFT);
-        MyBarDataSet barDataSet = new MyBarDataSet(barEntries, "Beneficiari");
+        MyBarDataSetSpeBen barDataSet = new MyBarDataSetSpeBen(barEntries, "Beneficiari", original);
         //String smin = ""+(max/3);
         //String smax = ""+((max/3)*2);
         //String smin = String.format("%1$.2f", 500000,00);
         //String smax = String.format("%1$.2f", 1000000,00);
 
-        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di 500.000,00 €","Importo >= di 500.000,00 € e < di 1.000.000,00 €","Importo >= di 1.000.000,00 €"};
-        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00BB00, 0xBBFFDD11, 0xBBBB0000};
+        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Anno inizio del progetto"," - Valori asse Y -> Importo del progetto in €","Anno 2015","Anno 2016","Anno 2017","Importo < di 500.000,00 €","Importo >= di 500.000,00 € e < di 1.000.000,00 €","Importo >= di 1.000.000,00 €"};
+        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00008B, 0xBB7B68EE, 0x9900BEEE, 0xBB00BB00, 0xBBFFDD11, 0xBBBB0000};
 
         barDataSet.setColors(color);
         BarData theData = new BarData(theDates, barDataSet);

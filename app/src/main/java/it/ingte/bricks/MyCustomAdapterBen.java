@@ -46,8 +46,10 @@ public class MyCustomAdapterBen extends ArrayAdapter<Info> {
         cont = 0;
         String beneficiary = (getItem(position).getBeneficiaryName());
         String town = (getItem(position).getTown());
-        double prezzoM = arrotonda(prezzoMedio(),2);
-        String price = "" + prezzoM;
+        //double prezzoM = arrotonda(prezzoMedio(),2);
+        double prezzoM = prezzoMedio();
+        String price = String.format("%1$.2f", prezzoM);
+        //price = prova(price);
         String proj = "Progetti: " + cont;
 
 
@@ -77,13 +79,24 @@ public class MyCustomAdapterBen extends ArrayAdapter<Info> {
         holder.beneficiary.setText(beneficiary);
         holder.town.setText(town);
         holder.proj.setText(proj);
-        String imp = aggiustaStr(price);
+        //String imp = aggiustaStr(price);
+        String imp = prova(price);
         holder.price.setText(imp+"€");
-        if(prezzoM < TabBeneficiary.max / 3) { // less than 95 green
+        /*if(prezzoM < TabBeneficiary.max / 3) { // less than 95 green
             holder.price.setTextColor(0xBB00BB00);
         }
         else if(prezzoM >= TabBeneficiary.max / 3 && prezzoM < (TabBeneficiary.max / 3)*2) { // less than 100 orange
             holder.price.setTextColor(0xEEDDDD11);
+        }
+        else { // greater or equal than 100 red
+            holder.price.setTextColor(0xBBBB0000);
+        }
+        */
+        if(prezzoM < 500000) { // less than 95 green
+            holder.price.setTextColor(0xBB00BB00);
+        }
+        else if(prezzoM >= 500000 && prezzoM < 1000000) { // less than 100 orange
+            holder.price.setTextColor(0xBBFFDD11);
         }
         else { // greater or equal than 100 red
             holder.price.setTextColor(0xBBBB0000);
@@ -100,7 +113,8 @@ public class MyCustomAdapterBen extends ArrayAdapter<Info> {
              cont++;
             }
         }
-        return media/cont;
+        //return media/cont;
+        return media;
     }
 
     public String aggiustaStr(String s){
@@ -125,6 +139,29 @@ public class MyCustomAdapterBen extends ArrayAdapter<Info> {
         }
         return s;
     }
+
+    public String prova(String s){
+        int cont = -1;
+        boolean tr = false;
+        for(int i = s.length()-1; i >= 0; i--) {
+            if (s.charAt(i) == ',') {
+                cont = 4;
+                tr = true;
+            }
+            if (tr) {
+                cont--;
+            }
+            if (cont == 0 && i != 0) {
+                cont = 3;
+                String t = s.substring(0, i);
+                t += ".";
+                t += s.substring(i, s.length());
+                s = t;
+            }
+        }
+        return s;
+    }
+
 
     double arrotonda(double d, int p){
         return Math.rint(d*Math.pow(10,p))/Math.pow(10,p);

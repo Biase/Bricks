@@ -52,6 +52,7 @@
         <activity android:name=".Contact"></activity>
         <activity android:name=".ProvaActivity"></activity>
         <activity android:name=".ActivityBeneficiary"></activity>
+        <activity android:name=".SpecificBeneficiary"></activity>
         <activity android:name=".Start"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

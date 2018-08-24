@@ -47,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
         manager = new DBmanager(this);
         info = manager.getDbhelper().getData();
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("FSE_Bricks");
-
 
         // Create the adapter that will return a fragment for each of the three (two in our case)
         // primary sections of the activity.
