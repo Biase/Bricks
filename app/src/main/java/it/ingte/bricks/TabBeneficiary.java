@@ -128,6 +128,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        Log.i("qua","sono qua cazzozozo");
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             String t = data.getStringExtra("resultProvince");
@@ -450,6 +451,7 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         searchView.setMenuItem(searchItem);
         MenuItem filter = menu.findItem(R.id.action_filter);
         searchView.setMenuItem(filter);
+
         filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override

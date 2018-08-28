@@ -15,11 +15,10 @@ import android.widget.TextView;
 import java.io.Serializable;
 
 /**
- * Created by Mimmo on 22/01/18.
+ * Created by Domenico on 28/08/2018.
  */
 
-
-public class FilterBeneficiary extends AppCompatActivity implements Serializable {
+public class FilterSpecificBeneficiary extends AppCompatActivity implements Serializable {
 
     private int select;
     Spinner spin1;
@@ -43,10 +42,10 @@ public class FilterBeneficiary extends AppCompatActivity implements Serializable
 
 
         text0.setText("SELEZIONA I FILTRI");
-        text1.setText("Ordine per importo :");
-        text2.setText("Provincia :");
+        text1.setText("Anno di inizio :");
+        text2.setText("Importo :");
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Importo, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.DateStartList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin1.setAdapter(adapter);
         spin1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -64,7 +63,7 @@ public class FilterBeneficiary extends AppCompatActivity implements Serializable
 
         });
 
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.ProvinceList, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.Importo3Bene, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin2.setAdapter(adapter1);
         spin2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,7 +82,8 @@ public class FilterBeneficiary extends AppCompatActivity implements Serializable
     public void ritorna(View v) {
         String textOrderPrice = spin1.getSelectedItem().toString();
         String textProvince = spin2.getSelectedItem().toString();
-        Intent i = new Intent(this, TabBeneficiary.class);
+        Log.i("prova ben filter", ""+textOrderPrice);
+        Intent i = new Intent(this, SpecificBeneficiary.class);
         if(spin1.getSelectedItem() == null){
         } else {
             i.putExtra("resultOrderPrice",textOrderPrice);

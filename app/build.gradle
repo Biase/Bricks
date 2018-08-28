@@ -38,4 +38,5 @@ dependencies {
     implementation 'com.android.support:design:26.0.2'
     compile 'com.google.maps.android:android-maps-utils:0.5'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+
 }

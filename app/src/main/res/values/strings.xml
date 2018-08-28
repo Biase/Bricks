@@ -36,6 +36,13 @@
         <item>2017</item>
     </string-array>
 
+    <string-array name="Importo3Bene">
+        <item>Nessun filtro</item>
+        <item>Tra 0.00 € e 500.000 €</item>
+        <item>Tra 500.000 € e 1.000.000 €</item>
+        <item>Superiore 1.000.000 €</item>
+    </string-array>
+
     <string-array name="DateEndList">
         <item>Nessun filtro</item>
         <item>2016</item>

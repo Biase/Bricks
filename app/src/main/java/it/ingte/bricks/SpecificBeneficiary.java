@@ -1,9 +1,11 @@
 package it.ingte.bricks;
 
+import android.content.ClipData;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.view.ActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +43,6 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -49,7 +50,10 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.quadtree.PointQuadTree;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import android.support.v7.widget.Toolbar;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -76,59 +80,36 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
     View barChartView;
     BarChart barChart;
     ListView lst;
-    MaterialSearchView searchView;
     static ArrayList<Info> original = new ArrayList<>();
     ArrayList<Info> result = new ArrayList<>();
     ArrayList<Info> a = new ArrayList<>();
 
     //filtri
-    final String prezzo1 = "Tra 0.00 € e 25.000 €";
-    final String prezzo2 = "Tra 25.000 € e 50.000 €";
-    final String prezzo3 = "Tra 50.000 € e 75.000 €";
-    final String prezzo4 = "Tra 75.000 € e 100.000 €";
-    final String prezzo5 = "Superiore 100.000 €";
+    final String prezzo1 = "Tra 0.00 € e 500.000 €";
+    final String prezzo2 = "Tra 500.000 € e 1.000.000 €";
+    final String prezzo3 = "Superiore 1.000.000 €";
     int valPrezzo = 0;
-
-    final String venezia = "VENEZIA";
-    final String treviso = "TREVISO";
-    final String verona = "VERONA";
-    final String vicenza = "VICENZA";
-    final String rovigo = "ROVIGO";
-    final String padova = "PADOVA";
-    final String belluno = "BELLUNO";
 
     final String ds5 = "2015";
     final String ds6 = "2016";
     final String ds7 = "2017";
-    final String de6 = "2016";
-    final String de7 = "2017";
-    final String de8 = "2018";
-    final String de9 = "2019";
-    final String de20 = "2020";
-    final String de23 = "2023";
-
-    //ordinamento
-    final String az = "A-Z";
-    final String za = "Z-A";
-
-    final String startDateCresc = "Primo a iniziare";
-    final String startDateDesc = "Ultimo a iniziare";
-    final String endDateCresc = "Primo a finire";
-    final String endDateDesc = "Ultimo a finire";
-
-    final String orderPriceCresc = "Crescente";
-    final String orderPriceDesc = "Decrescente";
 
     ArrayList<String> beneficiari = new ArrayList<>();
     static ArrayList<Double> mediaImporto = new ArrayList<>();
 
+    MaterialSearchView searchView;
+    String CodeBeneficiary;
+    LatLng temp;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //etHasOptionsMenu(true);
         setContentView(R.layout.tab_bene_spe);
-        String CodeBeneficiary = getIntent().getStringExtra("beneficiaryCode");
-        LatLng temp = (LatLng) getIntent().getParcelableExtra("position");
+        MaterialSearchView x = findViewById(R.id.search_view2);
+        x.setVisibility(View.GONE);
+
+        CodeBeneficiary = getIntent().getStringExtra("beneficiaryCode");
+        temp = (LatLng) getIntent().getParcelableExtra("position");
 
         TextView titolo = (TextView) findViewById(R.id.TextViewTitolo);
         titolo.setText(getIntent().getStringExtra("name")+"\nNumero progetti: "+getIntent().getIntExtra("nproject",0));
@@ -215,62 +196,105 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
             if (requestCode == 1 && resultCode == RESULT_OK) {
                 original.clear();
                 mediaImporto.clear();
-                Listbeneficiary("ciao", new LatLng(12.22, 12.2));
+                Listbeneficiary(CodeBeneficiary, temp);
 
-                if (orderPriceCresc.equals(op)) {
+                Log.i("return procva ",""+t);
+                Log.i("return aba",""+op);
+
+                if (prezzo1.equals(t)) {
                     activate = true;
                     generateList(original);
-                    if (mediaImporto.get(0) > mediaImporto.get(mediaImporto.size() - 1)) {
-                        Collections.reverse(original);
-                        Collections.reverse(mediaImporto);
-                        barChart.clear();
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!(original.get(i).getEligibleExpenditure() < 500000)) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
                     }
+                    barChart.clear();
                     populateGraphic();
                     barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("myInfo", original.get(i));
+                            /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(), original.get(i).getLng());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                             intent.putExtra("position", position);
-                            intent.putExtra("control", valPrezzo);
+                            intent.putExtra("control", 0);
                             intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            */
                             startActivity(intent);
-
                         }
                     });
-                } else if (orderPriceDesc.equals(op)) {
+                } else if (prezzo2.equals(t)) {
                     activate = true;
                     generateList(original);
-                    if (mediaImporto.get(0) < mediaImporto.get(mediaImporto.size() - 1)) {
-                        Collections.reverse(original);
-                        Collections.reverse(mediaImporto);
-                        barChart.clear();
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!((original.get(i).getEligibleExpenditure() >= 500000) && (original.get(i).getEligibleExpenditure() < 1000000))) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
                     }
+                    barChart.clear();
                     populateGraphic();
-                    barChart.zoom(0f, 0f, 0f, 0);
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("myInfo", original.get(i));
+                            /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(), original.get(i).getLng());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                             intent.putExtra("position", position);
-                            intent.putExtra("control", valPrezzo);
+                            intent.putExtra("control", 0);
                             intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            */
                             startActivity(intent);
-
+                        }
+                    });
+                } else if (prezzo3.equals(t)) {
+                    activate = true;
+                    generateList(original);
+                    for (int i = 0; i < original.size(); i++) {
+                        if (!(original.get(i).getEligibleExpenditure() >= 1000000)) {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("myInfo", original.get(i));
+                            /*intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            */
+                            startActivity(intent);
                         }
                     });
                 }
-                if (venezia.equals(t)) {
+                if (ds5.equals(op)) {
                     for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("VENEZIA")) {
+                        if (!original.get(i).getStartOperation().substring(6,8).equals("15")) {
                             original.remove(i);
                             mediaImporto.remove(i);
                             i--;
@@ -283,20 +307,22 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("myInfo", original.get(i));
+                            /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
                             LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                             intent.putExtra("position", position);
                             intent.putExtra("control", 0);
                             intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            */
                             startActivity(intent);
                         }
                     });
-                } else if (treviso.equals(t)) {
+                } else if (ds6.equals(op)) {
                     for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("TREVISO")) {
+                        if (!original.get(i).getStartOperation().substring(6,8).equals("16")) {
                             original.remove(i);
                             mediaImporto.remove(i);
                             i--;
@@ -309,20 +335,22 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("myInfo", original.get(i));
+                            /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
                             LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                             intent.putExtra("position", position);
                             intent.putExtra("control", 0);
                             intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            */
                             startActivity(intent);
                         }
                     });
-                } else if (verona.equals(t)) {
+                } else if (ds7.equals(op)) {
                     for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("VERONA")) {
+                        if (!original.get(i).getStartOperation().substring(6,8).equals("17")) {
                             original.remove(i);
                             mediaImporto.remove(i);
                             i--;
@@ -335,122 +363,19 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
                     lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("myInfo", original.get(i));
+                            /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                             intent.putExtra("operation", original.get(i).getOperationName());
                             intent.putExtra("town", original.get(i).getTown());
                             LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                             intent.putExtra("position", position);
                             intent.putExtra("control", 0);
                             intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            */
                             startActivity(intent);
                         }
                     });
-                } else if (vicenza.equals(t)) {
-                    for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("VICENZA")) {
-                            original.remove(i);
-                            mediaImporto.remove(i);
-                            i--;
-                        }
-                    }
-                    barChart.clear();
-                    populateGraphic();
-                    barChart.zoom(0f, 0f, 0f, 0f);
-                    generateList(original);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", original.get(i).getOperationName());
-                            intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 0);
-                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                } else if (rovigo.equals(t)) {
-                    for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("ROVIGO")) {
-                            original.remove(i);
-                            mediaImporto.remove(i);
-                            i--;
-                        }
-                    }
-                    barChart.clear();
-                    populateGraphic();
-                    barChart.zoom(0f, 0f, 0f, 0f);
-                    generateList(original);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", original.get(i).getOperationName());
-                            intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 0);
-                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                } else if (padova.equals(t)) {
-                    for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("PADOVA")) {
-                            original.remove(i);
-                            mediaImporto.remove(i);
-                            i--;
-                        }
-                    }
-                    barChart.clear();
-                    populateGraphic();
-                    barChart.zoom(0f, 0f, 0f, 0f);
-                    generateList(original);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", original.get(i).getOperationName());
-                            intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 0);
-                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-                } else if (belluno.equals(t)) {
-                    for (int i = 0; i < original.size(); i++) {
-                        if (!original.get(i).getProvince().equals("BELLUNO")) {
-                            original.remove(i);
-                            mediaImporto.remove(i);
-                            i--;
-                        }
-                    }
-                    barChart.clear();
-                    populateGraphic();
-                    barChart.zoom(0f, 0f, 0f, 0f);
-                    generateList(original);
-                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                            intent.putExtra("name", original.get(i).getBeneficiaryName());
-                            intent.putExtra("operation", original.get(i).getOperationName());
-                            intent.putExtra("town", original.get(i).getTown());
-                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
-                            intent.putExtra("position", position);
-                            intent.putExtra("control", 0);
-                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
-                            startActivity(intent);
-                        }
-                    });
-
                 }
                 else {
                     if (!activate) {
@@ -462,7 +387,7 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
 
                         original.clear();
                         mediaImporto.clear();
-                        Listbeneficiary("ciao", new LatLng(12.22, 12.2));
+                        Listbeneficiary(CodeBeneficiary, temp);
                         barChart.clear();
                         populateGraphic();
                         barChart.zoom(0f, 0f, 0f, 0f);
@@ -470,16 +395,18 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
                         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                                intent.putExtra("name", original.get(i).getBeneficiaryName());
+                                Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                                //Log.i("vado qua ma non va",""+original.get(i));
+                                intent.putExtra("myInfo", original.get(i));
+                                /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                                 intent.putExtra("operation", original.get(i).getOperationName());
                                 intent.putExtra("town", original.get(i).getTown());
                                 LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                                 intent.putExtra("position", position);
-                                intent.putExtra("control", valPrezzo);
+                                intent.putExtra("control", 0);
                                 intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                                */
                                 startActivity(intent);
-
                             }
                         });
                     }
@@ -490,7 +417,7 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
         } else {
             original.clear();
             mediaImporto.clear();
-            Listbeneficiary("ciao", new LatLng(12.22, 12.2));
+            Listbeneficiary(CodeBeneficiary, temp);
             barChart.clear();
             populateGraphic();
             barChart.zoom(0f, 0f, 0f, 0f);
@@ -498,22 +425,186 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
             lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(SpecificBeneficiary.this, ProvaActivity.class);
-                    intent.putExtra("name", original.get(i).getBeneficiaryName());
+                    //Log.i("vado qua ma non va",""+original.get(i));
+                    Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                    intent.putExtra("myInfo", original.get(i));
+
+                    /*intent.putExtra("name", original.get(i).getBeneficiaryName());
                     intent.putExtra("operation", original.get(i).getOperationName());
                     intent.putExtra("town", original.get(i).getTown());
                     LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
                     intent.putExtra("position", position);
-                    intent.putExtra("control", valPrezzo);
+                    intent.putExtra("control", 0);
                     intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                    */
                     startActivity(intent);
-
                 }
             });
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem contact = menu.findItem(R.id.action_contact);
+        contact.setVisible(false);
+        MenuItem project = menu.findItem(R.id.action_project);
+        project.setVisible(false);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
+       /*
+        searchView = findViewById(R.id.search_view2);
+        searchView.setMenuItem(searchItem);
+*/
+        MenuItem filter = menu.findItem(R.id.action_filter);
+        filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                //Log.i("sono qui","sono qui");
+                result.clear();
+                a.clear();
+                Intent intent = new Intent(SpecificBeneficiary.this, FilterSpecificBeneficiary.class);
+                startActivityForResult(intent, 1);
+                return false;
+            }
+        });
+
+/*
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+
+            @Override
+            public void onSearchViewShown() {
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                original.clear();
+                mediaImporto.clear();
+                Listbeneficiary(CodeBeneficiary, temp);
+                barChart.clear();
+                populateGraphic();
+                barChart.zoom(0f, 0f, 0f, 0f);
+                generateList(original);
+                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                        intent.putExtra("name", original.get(i).getBeneficiaryName());
+                        intent.putExtra("operation", original.get(i).getOperationName());
+                        intent.putExtra("town", original.get(i).getTown());
+                        LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                        intent.putExtra("position", position);
+                        intent.putExtra("control", valPrezzo);
+                        intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                        startActivity(intent);
+
+                    }
+                });
+            }
+
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(final String query) {
+                //pulisco
+                original.clear();
+                mediaImporto.clear();
+                Listbeneficiary(CodeBeneficiary, temp);
+                barChart.clear();
+                populateGraphic();
+                barChart.zoom(0f, 0f, 0f, 0f);
+                generateList(original);
+
+                result = MainActivity.manager.getDbhelper().getResult(query);
+                InputMethodManager imm = (InputMethodManager) SpecificBeneficiary.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
+
+                if (result.isEmpty()) {
+                    Toast.makeText(SpecificBeneficiary.this, "no result from search", Toast.LENGTH_SHORT).show();
+                    original.clear();
+                    mediaImporto.clear();
+                    barChart.clear();
+                } else {
+                    Log.i("result size: "," "+result.size());
+
+                    for (int i = 0; i < original.size(); i++) {
+                        if (original.get(i).getProvince().contains(query.toUpperCase()) || original.get(i).getTown().contains(query.toUpperCase()) || original.get(i).getBeneficiaryName().contains(query.toUpperCase())) {
+                        } else {
+                            original.remove(i);
+                            mediaImporto.remove(i);
+                            i--;
+                        }
+                    }
+                    barChart.clear();
+                    populateGraphic();
+                    barChart.zoom(0f, 0f, 0f, 0f);
+                    generateList(original);
+                    lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(SpecificBeneficiary.this, itemClick.class);
+                            intent.putExtra("beneficiaryCode", original.get(i).getBeneficiarycode());
+                            intent.putExtra("name", original.get(i).getBeneficiaryName());
+                            intent.putExtra("operation", original.get(i).getOperationName());
+                            intent.putExtra("town", original.get(i).getTown());
+                            LatLng position = new LatLng(original.get(i).getLat(),original.get(i).getLng());
+                            intent.putExtra("position", position);
+                            intent.putExtra("control", 0);
+                            intent.putExtra("nproject", countProject(original.get(i).getBeneficiaryName(), original.get(i).getLat(), original.get(i).getLng()));
+                            startActivity(intent);
+                        }
+                    });
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                MaterialSearchView x = findViewById(R.id.search_view2);
+                x.setVisibility(View.VISIBLE);
+
+                return true;
+            }
+        });
+*/
 
 
+
+
+
+
+
+
+
+
+
+
+        /*
+        MenuItem filter = menu.findItem(R.id.action_filter);
+        searchView.setMenuItem(filter);
+        filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                //Log.i("sono qui","sono qui");
+                result.clear();
+                a.clear();
+                Intent intent = new Intent(SpecificBeneficiary.this, FilterBeneficiary.class);
+                startActivityForResult(intent, 1);
+                return false;
+            }
+        });
+        */
+        return true;
     }
 
     public void generateList(ArrayList<Info> source) {
