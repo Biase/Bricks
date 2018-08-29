@@ -19,7 +19,8 @@ public class MyBarDataSet extends BarDataSet{
 
         @Override
         public int getColor(int index) {
-            /*if(getEntryForXIndex(index).getVal() < TabBeneficiary.max / 3) { // less than 95 green
+            /*
+            if(getEntryForXIndex(index).getVal() < TabBeneficiary.max / 3) { // less than 95 green
                 //Log.i("valVERDE", "" + getEntryForXIndex(index).getVal());
                 mColors.set(3, 0xBB00BB00);
                 return mColors.get(3);
@@ -33,21 +34,22 @@ public class MyBarDataSet extends BarDataSet{
                 //Log.i("valROSSO", "" + getEntryForXIndex(index).getVal());
                 mColors.set(5, 0xBBBB0000);
                 return mColors.get(5);
-            }*/
+            }
+            */
             if(getEntryForXIndex(index).getVal() < 500000) { // less than 95 green
                 //Log.i("valVERDE", "" + getEntryForXIndex(index).getVal());
-                mColors.set(3, 0xBB00BB00);
-                return mColors.get(3);
+                mColors.set(0, 0xBB00BB00);
+                return mColors.get(0);
             }
             else if(getEntryForXIndex(index).getVal() >= 500000 && getEntryForXIndex(index).getVal() < 1000000) { // less than 100 orange
                 //Log.i("valGIALLO", "" + getEntryForXIndex(index).getVal());
-                mColors.set(4, 0xBBFFDD11);
-                return mColors.get(4);
+                mColors.set(1, 0xBBFFDD11);
+                return mColors.get(1);
             }
             else { // greater or equal than 100 red
                 //Log.i("valROSSO", "" + getEntryForXIndex(index).getVal());
-                mColors.set(5, 0xBBBB0000);
-                return mColors.get(5);
+                mColors.set(2, 0xBBBB0000);
+                return mColors.get(2);
             }
         }
 }

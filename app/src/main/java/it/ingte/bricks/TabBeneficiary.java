@@ -594,8 +594,8 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         //String smin = String.format("%1$.2f", 500000,00);
         //String smax = String.format("%1$.2f", 1000000,00);
         //String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di " + prova(smin) + "€","Importo >= di "  + prova(smin) + "€ e < di " + prova(smax) + "€","Importo >= di " + prova(smax) + "€"};
-        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di 500.000,00 €","Importo >= di 500.000,00 € e < di 1.000.000,00 €","Importo >= di 1.000.000,00 €"};
-        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00BB00, 0xBBFFDD11, 0xBBBB0000};
+        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €"};
+        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
         barDataSet.setColors(color);
         BarData theData = new BarData(theDates, barDataSet);
         Legend l = barChart.getLegend();
@@ -932,8 +932,8 @@ public class TabBeneficiary extends Fragment implements OnChartValueSelectedList
         //String smin = String.format("%1$.2f", 500000,00);
         //String smax = String.format("%1$.2f", 1000000,00);
 
-        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €","Importo < di 500.000,00 €","Importo >= di 500.000,00 € e < di 1.000.000,00 €","Importo >= di 1.000.000,00 €"};
-        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0xBB00BB00, 0xBBFFDD11, 0xBBBB0000};
+        String [] name = {"Valori unità di misura del Grafico:"," - Valori asse X -> Beneficiario"," - Valori asse Y -> Importo totale dei progetti in €"};
+        int [] color = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
 
         barDataSet.setColors(color);
         BarData theData = new BarData(theDates, barDataSet);
