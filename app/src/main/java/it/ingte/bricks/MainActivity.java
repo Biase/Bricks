@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("FSE_Bricks");
+        getSupportActionBar().setTitle("FSE Bricks");
 
         // Create the adapter that will return a fragment for each of the three (two in our case)
         // primary sections of the activity.

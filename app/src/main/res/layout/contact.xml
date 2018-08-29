@@ -53,45 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textViewContactBiase"
         android:layout_below="@+id/textViewContactBiase"
-        android:text="Software Librarian" />
-
-
-
-    <!-- Dati per Murador Marco -->
-    <ImageView
-        android:id="@+id/imageMarco"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_alignStart="@+id/imageBiase"
-        android:layout_below="@+id/imageBiase"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/marco" />
-
-    <TextView
-        android:id="@+id/textViewNameMarco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewContactBiase"
-        android:layout_alignTop="@+id/imageMarco"
-        android:text="Murador Marco"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textViewContactMarco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewNameMarco"
-        android:layout_below="@+id/textViewNameMarco"
-        android:text="858042@stud.unive.it" />
-
-    <TextView
-        android:id="@+id/textViewInfoMarco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewContactMarco"
-        android:layout_below="@+id/textViewContactMarco"
-        android:text="Backup Engineer" />
+        android:text="Software Developer" />
 
 
 
@@ -100,8 +62,8 @@
         android:id="@+id/imageDomenico"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_alignStart="@+id/imageMarco"
-        android:layout_below="@+id/imageMarco"
+        android:layout_alignStart="@+id/imageBiase"
+        android:layout_below="@+id/imageBiase"
         android:layout_marginTop="30dp"
         android:src="@drawable/mimmo" />
 
@@ -109,7 +71,7 @@
         android:id="@+id/textViewNameDomenico"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewContactMarco"
+        android:layout_alignStart="@+id/textViewContactBiase"
         android:layout_alignTop="@+id/imageDomenico"
         android:text="Parisi Domenico"
         android:textSize="18dp"
@@ -129,43 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textViewContactDomenico"
         android:layout_below="@+id/textViewContactDomenico"
-        android:text="Project Manager" />
+        android:text="Software Developer" />
 
 
-    <!-- Dati per Quartarone Paolo -->
-    <ImageView
-        android:id="@+id/imagePaolo"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_alignStart="@+id/imageDomenico"
-        android:layout_below="@+id/imageDomenico"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/paolo" />
-
-    <TextView
-        android:id="@+id/textViewNamePaolo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewContactDomenico"
-        android:layout_alignTop="@+id/imagePaolo"
-        android:text="Quartarone Paolo"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textViewContactPaolo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewNamePaolo"
-        android:layout_below="@+id/textViewNamePaolo"
-        android:text="859724@stud.unive.it" />
-
-    <TextView
-        android:id="@+id/textViewInfoPaolo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textViewContactPaolo"
-        android:layout_below="@+id/textViewContactPaolo"
-        android:text="Software Architect" />
 
 </RelativeLayout>

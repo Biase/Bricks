@@ -24,11 +24,10 @@ public class Project extends AppCompatActivity{
         tv1.setText("IL PROGETTO");
 
         TextView tv2 = findViewById(R.id.textView2);
-        tv2.setText("Bricks: diffusione fondi europei sul nostro territorio");
+        tv2.setText("FSE Bricks: diffusione fondi europei sul territorio Veneto");
 
         TextView tv3 = findViewById(R.id.textView3);
-        tv3.setText("Questa applicazione mostra la distribuzione dei fondi europei nel nostro territorio.\n" +
-                "Il progetto nasce per il corso Ingegneria del Software all'università Ca'Foscari di Venezia.");
+        tv3.setText("Applicazione realizzata all'interno del progetto CEVID - Azione 1 in collaborazione con la Direzione Sistemi Informativi della Regione Veneto.\n\n\n\nCoordinatore\nProf. Agostino Cortesì\n\nSupervisore allo Sviluppo\nDott. Alvise Spanò\n\nSviluppatori\nDomenico Parisi\nDavide Bassetto");
     }
 
 }
