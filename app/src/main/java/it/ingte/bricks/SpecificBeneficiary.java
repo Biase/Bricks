@@ -105,8 +105,6 @@ public class SpecificBeneficiary extends AppCompatActivity implements OnChartVal
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_bene_spe);
-        MaterialSearchView x = findViewById(R.id.search_view2);
-        x.setVisibility(View.GONE);
 
         CodeBeneficiary = getIntent().getStringExtra("beneficiaryCode");
         temp = (LatLng) getIntent().getParcelableExtra("position");
